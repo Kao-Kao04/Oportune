@@ -37,8 +37,9 @@ Illustrative paths (these may become Next.js pages, route handlers, or server ac
 - `POST /admin/opportunities/{id}/publish`, `POST /admin/opportunities/{id}/expire`
 - `POST /admin/import` (CSV upload → preview → confirm)
 - `GET /admin/reports`, `PATCH /admin/reports/{id}`
-- Phase 3: `GET/POST/PATCH /admin/source-pages`, `GET /admin/inbox`, `POST /admin/inbox/{id}/convert` (creates a draft listing), `POST /admin/inbox/{id}/ignore`
-- Phase 3 job: `POST /jobs/collect-social` (protected by `CRON_SECRET`)
+- Phase 3: `GET /admin/inbox`, `POST /admin/inbox/{id}/convert` (creates a draft listing), `POST /admin/inbox/{id}/ignore`
+- Phase 3 (logged in, rate-limited): `POST /share` (Web Share Target / app share), `POST /submit-opportunity`, `POST /connected-pages` (OAuth with Facebook/LinkedIn), `DELETE /connected-pages/{id}`
+- Phase 3 job: `POST /jobs/sync-connected-pages` (protected by `CRON_SECRET`)
 
 All endpoints: input validation, authorization, rate limiting where needed, audit logs for admin actions.
 
@@ -89,12 +90,13 @@ All endpoints: input validation, authorization, rate limiting where needed, audi
 - Account deletion removes all files and `documents` rows; orphaned files are cleaned up by a weekly job.
 - Show a notice before the first upload: what's stored, who can see it (only you), and how to delete it.
 
-### 7.8 Social media sourcing (Phase 3)
-- Only pages on the `source_pages` allow-list, added by a curator; public organization pages only.
-- Use the platform's official API and approvals where available; respect rate limits and the platform's terms.
-- Store only the post link, post text, and dates in `inbox_items`; drop names, comments, and images of people.
-- Deduplicate by `post_url`; a curator converts a post into a draft listing written in our own words, with the official source link where one exists.
-- If access is blocked or revoked, the job stops and alerts; the rest of the app is unaffected.
+### 7.8 Curator inbox (Phase 3)
+- **Share to Oportune:** the web app manifest declares a `share_target` that posts `title`, `text`, and `url` to `/share`; the mobile app registers an Android share intent and an iOS share extension that call the same endpoint. Web Share Target works only in the installed app on Android, not in iPhone Safari.
+- If the student isn't signed in, keep the shared link, sign them in, then save it.
+- Normalize the URL (strip tracking parameters such as `fbclid` and `utm_*`), then mark it `duplicate` if it matches an existing inbox item or a listing's `source_url`.
+- Don't fetch or store the contents of Facebook/LinkedIn posts; the curator opens the link themselves. Store only the link and the student's own note.
+- **Connected pages:** only the page's own admin can connect it, through the platform's official OAuth flow and permissions; tokens are encrypted, refreshed before expiry, and deleted on disconnect. The daily job reads new posts from connected pages only.
+- A curator converts an item into a draft listing in our own words, with the official source link (not the FB post) wherever one exists.
 
 ### 7.9 Mobile app (Phase 3)
 - Capacitor app that loads the production web app; the same accounts and data.

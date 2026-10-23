@@ -21,7 +21,7 @@ The MVP prioritizes:
 - save + reminders (email and push)
 - privacy and low running costs
 
-**Not in scope:** payments. Phase 2 adds the OJT checklist, document uploads, and the AI helper; Phase 3 adds the Android/iPhone app and social media sourcing. The DOST ROS tracker is deferred.
+**Not in scope:** payments. Phase 2 adds the OJT checklist, document uploads, and the AI helper; Phase 3 adds the Android/iPhone app and the curator inbox ("Share to Oportune", submissions, connected pages). The DOST ROS tracker is deferred.
 
 ## 2. Architecture Overview
 
@@ -44,10 +44,15 @@ flowchart TD
 ### How listings get in
 1. **Human curation:** curators research official sources and enter listings in the admin panel or the spreadsheet.
 2. **Spreadsheet import:** the admin panel imports `data/opportunities.csv`.
-3. **Phase 3 — social media sourcing:** a job collects public posts from an allow-list of organization pages on Facebook and LinkedIn (official APIs first) into a **curator inbox** as drafts. Nothing from it is published without a curator.
-4. **Later:** official RSS feeds, organizer submissions, AI-assisted entry.
+3. **Phase 3 — curator inbox**, fed by:
+   - **"Share to Oportune":** students share a Facebook/LinkedIn post or any link to the app from the phone's share menu
+   - **"Submit an opportunity" form** for schools, orgs, LGUs, and companies
+   - **Connected pages:** posts from pages whose admins connect them through the official API
 
-Never collect from personal profiles or private groups, and never store personal data from posts.
+   Nothing in the inbox is published without a curator.
+4. **Later:** official RSS feeds, AI-assisted entry, Facebook Page Public Content Access.
+
+No scraping of Facebook, LinkedIn, or other platforms.
 
 ## 3. Technology Stack
 

@@ -65,14 +65,17 @@
 
 ### 4.7 Phase 3 modules
 - **Mobile app:** Capacitor wrapper around the web app for Google Play (then the App Store), with native push through Firebase Cloud Messaging alongside web push
-- **Social media sourcing:**
-  - Curators keep an allow-list of public organization pages (schools, agencies, companies) on Facebook and LinkedIn
-  - A scheduled job collects new posts (official APIs first) into a **curator inbox**
-  - Stored: post link, organization, post text, collected date. Not stored: commenters, names, photos of people, contact details
-  - A curator turns a post into a draft listing in our own words; nothing is auto-published
+- **Curator inbox:** one queue of suggested opportunities from three sources:
+  - **"Share to Oportune":** the installed app appears in the phone's share menu (Web Share Target for the installed web app on Android; share intent / share extension in the mobile app). The student shares a link and optionally adds a note
+  - **"Submit an opportunity" form:** for schools, orgs, LGUs, and companies: title, organization, official link, deadline, submitter email
+  - **Connected pages:** a page admin signs in with Facebook or LinkedIn and grants read access to their own page; a daily job pulls that page's new posts
+  - Sign-in required to share or submit; rate-limited
+  - Stored: link, optional note or post text, submitter, dates. Not stored: names, comments, or photos of other people
+  - A curator checks the official source, then turns the item into a draft listing in our own words, or ignores it; nothing is auto-published
+  - The student who shared it gets a notice when it's published
 
 ### Deferred
 - DOST ROS tracker and penalty calculator
-- AI-assisted admin entry, RSS feeds, organizer submissions
+- AI-assisted admin entry, RSS feeds, Facebook Page Public Content Access
 - Messenger/Telegram reminders, offline mode
 - Payments

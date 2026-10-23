@@ -88,8 +88,8 @@ Allowed CSV values: `status` ∈ {`ready`, `needs-check`, `closed`}; `delivery_m
 - `ai_requests` (`id`, `user_id`, `opportunity_id` (nullable), `feature` (`explain` / `eligibility_check` / `writing_help`), `tokens_used`, `created_at`). Used for daily limits and cost tracking; prompts and answers are **not** stored
 
 ### Phase 3 tables
-- `source_pages` (`id`, `platform` (`facebook` / `linkedin`), `page_url` (unique), `organization`, `is_active`, `added_by`)
-- `inbox_items` (`id`, `source_page_id`, `post_url` (unique), `post_text`, `posted_at`, `collected_at`, `status` (`new` / `converted` / `ignored`), `opportunity_id` (nullable)). No names, comments, or photos of people
+- `inbox_items` (`id`, `source` (`share` / `submission` / `connected_page`), `url`, `note` (shared note or post text), `submitted_by` (nullable user), `submitter_email` (nullable, form only), `connected_page_id` (nullable), `status` (`new` / `converted` / `ignored` / `duplicate`), `opportunity_id` (nullable), `reviewed_by`); unique (`source`, `url`). No names, comments, or photos of other people
+- `connected_pages` (`id`, `platform` (`facebook` / `linkedin`), `page_id`, `page_name`, `connected_by`, `access_token` (encrypted), `token_expires_at`, `is_active`); disconnecting deletes the token
 - `push_subscriptions` gains `platform` (`web` / `android` / `ios`) and `fcm_token` (nullable) for the mobile app
 
 ### Not planned now

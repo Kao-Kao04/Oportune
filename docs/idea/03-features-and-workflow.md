@@ -44,7 +44,11 @@
 | Feature | Notes |
 |---|---|
 | **Android app** (iPhone later) | Wraps the same web app so there is one codebase; native push notifications. Publish on Google Play first since most students use Android. |
-| **Social media sourcing** | Collect public posts from **organization** pages (schools, agencies, companies) on Facebook and LinkedIn into a curator inbox as drafts. Never personal profiles or private groups; no personal data stored; a curator checks every post before it is published. Requires the legal check in [Part 5 §16](05-validation-metrics-risks.md#16-facts-to-verify) first. |
+| **"Share to Oportune"** | A student who sees an opportunity on Facebook, LinkedIn, or anywhere else shares the link to the app from the phone's share menu. It lands in the **curator inbox**. No automated collection from Facebook or LinkedIn. |
+| **"Submit an opportunity" form** | Schools, student orgs, LGUs, and companies submit their own opportunities (title, link, deadline, contact). They land in the same curator inbox. |
+| **Connected pages** (optional) | An organization that admins a Facebook Page or LinkedIn page can connect it so its new posts flow into the inbox, using the platform's official API with the admin's permission. |
+
+Everything in the inbox is published only after a curator checks the official source and writes the listing in our own words.
 
 ### 6.4 Not now (deferred or dropped)
 

@@ -34,14 +34,14 @@
 | **0 — Curate & post (now)** | Telegram channel or FB page; post 3–5 checked opportunities a day from the spreadsheet; refresh the spreadsheet every 1–2 weeks | Builds the audience and the first data. Track followers and link clicks. |
 | **1 — MVP** | Everything in §9 | Launch to the channel's followers |
 | **2 — Track & prepare** | Simple application tracker, OJT requirements checklist, "for you" filter, **document uploads**, **AI helper** | Only after the MVP shows students save and come back |
-| **3 — Grow** | **Android app** (iPhone after), **social media sourcing** into the curator inbox, more categories and regional listings, Messenger/Telegram reminders, offline viewing of saved items, AI-assisted admin entry, DOST ROS info page | Based on what students use most |
-| **Later / maybe** | DOST ROS tracker, organizer submissions, school or employer features, payments/monetization | Only if there's a clear need |
+| **3 — Grow** | **Android app** (iPhone after), **"Share to Oportune"**, **"Submit an opportunity" form**, connected pages, curator inbox, more categories and regional listings, Messenger/Telegram reminders, offline viewing of saved items, AI-assisted admin entry, DOST ROS info page | Based on what students use most |
+| **Later / maybe** | DOST ROS tracker, Facebook Page Public Content Access (needs a registered organization and Meta App Review), school or employer features, payments/monetization | Only if there's a clear need |
 
 ## 11. What We Won't Build
 
 - Payments or subscriptions (not needed now; see §12)
 - Loan referrals
-- Scraping of personal profiles or private groups, or storing anyone's personal data from social media
+- Scraping of Facebook, LinkedIn, or other platforms (against their terms); we use sharing, submissions, and official APIs instead
 
 ## 12. Monetization (Deferred)
 

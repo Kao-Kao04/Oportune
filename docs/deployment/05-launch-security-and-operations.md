@@ -99,6 +99,6 @@ Before launch:
 | AI provider (Phase 2) | An LLM API that doesn't train on API data (e.g., Claude) | TBD |
 | File storage (Phase 2) | Supabase Storage, private bucket | TBD |
 | Mobile app (Phase 3) | Capacitor + Firebase Cloud Messaging | TBD |
-| Social media sourcing (Phase 3) | Official platform APIs, allow-listed pages | TBD |
+| Curator inbox (Phase 3) | Web Share Target + app share intent; Facebook/LinkedIn developer apps for connected pages | TBD |
 
 Start with the smallest secure deployment that supports the MVP.
