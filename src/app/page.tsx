@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { Suspense } from "react";
+import { ClosingStrip } from "@/components/closing-strip";
 import { ListingRow } from "@/components/listing-row";
 import { categoryChipLabel } from "@/lib/opportunities/categories";
 import { groupByDeadline, isClosingSoon, isOpen, type Listing } from "@/lib/opportunities/listing";
@@ -188,10 +189,19 @@ function Results({ filters, listings, today }: { filters: Filters; listings: Lis
     );
   }
 
+  // This week's deadlines go in the swipeable strip; the list starts after them.
+  const groups = groupByDeadline(listings, today);
+  const thisWeek = groups.find((g) => g.label === "This week")?.listings ?? [];
+
   return (
     <>
       {count}
-      {groupByDeadline(listings, today).map((group) => (
+      <ClosingStrip
+        listings={thisWeek}
+        today={today}
+        seeAllHref={browseHref(filters, { view: "closing-soon" })}
+      />
+      {groups.filter((g) => g.label !== "This week").map((group) => (
         <section key={group.label} aria-label={group.label}>
           <h2 className="border-t border-line bg-paper px-4 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-muted">
             {group.label}
