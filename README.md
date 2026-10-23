@@ -15,6 +15,7 @@ Payments are deferred — the platform is free for students.
 │   ├── deployment.md        # Deployment → 5 parts in docs/deployment/
 │   ├── design/stitch-prompts.md  # Google Stitch UI prompts (original)
 │   ├── design/stitch-student-friendly.md  # v2: student-friendly redesign prompts
+│   ├── design/adjust-prompts.md  # Tweak designs in Stitch; build them with Claude Code
 │   ├── validation.md        # Optional interview kit → docs/validation/
 │   └── launch-checklist.md  # What is left before launch
 ├── data/
