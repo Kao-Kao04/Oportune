@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "db": "node scripts/supabase-db.mjs"
+    "db": "node scripts/supabase-db.mjs",
+    "import:opportunities": "tsx scripts/import-opportunities.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -26,6 +28,11 @@
     "eslint-config-next": "16.4.2",
     "supabase": "^2.121.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^4.1.12"
+  },
+  "engines": {
+    "node": ">=20.12"
   }
 }

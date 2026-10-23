@@ -41,7 +41,7 @@ Each part starts with a **"✅ What to do with this file"** checklist.
 
 ## Local setup
 
-Needs Node.js 20 or newer.
+Needs Node.js 20.12 or newer.
 
 ```bash
 npm install
@@ -49,7 +49,7 @@ cp .env.example .env.local   # fill in local values — never commit real secret
 npm run dev                  # http://localhost:3000
 ```
 
-Checks: `npm run lint`, `npm run typecheck`, `npm run build`.
+Checks (also run by GitHub Actions on every PR): `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
 Database (uses `DATABASE_URL` from `.env.local`; use the Supabase **session pooler** URL):
 
@@ -62,3 +62,12 @@ npm run db -- lint             # check the schema
 Add schema changes as new files in `supabase/migrations/` (`npx supabase migration new <name>`); never edit a migration that has already been pushed.
 
 See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.
+
+Import the curated spreadsheet into the database as **drafts** (needs `SUPABASE_SECRET_KEY` in `.env.local`):
+
+```bash
+npm run import:opportunities             # preview: new / updated / rejected rows
+npm run import:opportunities -- --apply  # write
+```
+
+Re-running is safe: drafts are updated by their `OPP-###` id, slugs never change, and published listings are never touched.
