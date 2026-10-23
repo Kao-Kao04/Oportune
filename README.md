@@ -4,7 +4,7 @@ A free, phone-first platform where college students in the Philippines (any publ
 
 Payments are deferred — the platform is free for students.
 
-> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog, M3 Admin panel, and M4 Accounts + Save built.
+> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog, M3 Admin panel, M4 Accounts + Save, and M5 Reminders + Jobs built.
 
 ## Project structure
 
@@ -89,3 +89,13 @@ Before going live, set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KE
 Students sign in at `/sign-in` (email link now; **Continue with Google** appears automatically once Google is switched on in Supabase → Authentication → Providers), answer the quick profile at `/welcome`, save listings, and manage reminders or delete their account at `/me`.
 
 To turn on Google: create an OAuth client (type "Web application") in Google Cloud Console with the redirect URI `https://<project-ref>.supabase.co/auth/v1/callback`, then paste its client ID and secret into the Supabase Google provider.
+
+### Reminders and daily jobs
+
+`vercel.json` schedules three jobs (times in UTC; Philippine time is UTC+8): auto-expire (00:05 PH), send reminders (08:00 PH), cleanup. Each needs `CRON_SECRET`:
+
+```bash
+curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/jobs/send-reminders
+```
+
+Phone notifications use web push (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`; generate with `npx web-push generate-vapid-keys`). Reminder emails use Resend: set `EMAIL_PROVIDER_API_KEY` and `EMAIL_FROM_ADDRESS` (a verified sender domain). Without them, the job sends push only and reports `email: false`.

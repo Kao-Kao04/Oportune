@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import { toggleSave, type SaveResult } from "@/app/saved/actions";
+import { PushPrompt } from "./push-prompt";
 
 // Bookmark button. `autoSave` finishes a save that started before sign-in.
 export function SaveButton({
@@ -20,6 +21,14 @@ export function SaveButton({
   const [state, action, pending] = useActionState<SaveResult, FormData>(toggleSave, { saved: initialSaved });
   const formRef = useRef<HTMLFormElement>(null);
   const autoSaved = useRef(false);
+  // After the first save on this page, offer phone notifications.
+  const [promptOpen, setPromptOpen] = useState(false);
+  const wasSaved = useRef(initialSaved);
+  useEffect(() => {
+    if (state.saved && !wasSaved.current && !state.error) setPromptOpen(true);
+    wasSaved.current = state.saved;
+  }, [state.saved, state.error]);
+  const closePrompt = useCallback(() => setPromptOpen(false), []);
 
   useEffect(() => {
     if (!autoSave || autoSaved.current || initialSaved) return;
@@ -56,6 +65,7 @@ export function SaveButton({
           {state.error}
         </p>
       )}
+      {promptOpen && <PushPrompt onClose={closePrompt} />}
     </form>
   );
 }

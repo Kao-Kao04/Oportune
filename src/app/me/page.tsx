@@ -6,6 +6,7 @@ import { courseGroupLabel, yearLevelLabel } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../sign-in/actions";
 import { updateReminderSettings } from "./actions";
+import { PushDevice } from "./push-device";
 
 export const metadata: Metadata = { title: "Me", robots: { index: false } };
 
@@ -73,9 +74,7 @@ export default async function MePage({ searchParams }: PageProps<"/me">) {
             />
           </label>
           <label className="flex items-center justify-between gap-3">
-            <span className="text-ink">
-              Phone notifications <span className="text-sm text-muted">(coming soon)</span>
-            </span>
+            <span className="text-ink">Phone notifications</span>
             <input
               type="checkbox"
               name="push_reminders_enabled"
@@ -87,6 +86,9 @@ export default async function MePage({ searchParams }: PageProps<"/me">) {
             Save reminder settings
           </button>
         </form>
+        <div className="mt-4 border-t border-line pt-3">
+          <PushDevice />
+        </div>
       </section>
 
       <section className="border-b border-line py-4">

@@ -28,15 +28,16 @@ Don't guess DNS records or callback URLs.
 
 | Job | When | What it does |
 |---|---|---|
-| Auto-expire | Daily, just after midnight PH time | Marks listings past their deadline as `expired`; sets `recheck_due` on rolling/TBA listings not checked in 30+ days |
-| Send reminders | Daily, ~8:00 AM PH time | Finds listings due in 7 or 1 days and sends reminders by push, then email ([System Design §7.3](../system-design/04-api-and-logic.md#73-reminders)) |
-| Cleanup | Daily | Deletes old `rate_limits` windows; weekly: orphaned files (Phase 2) |
+| Auto-expire (`/api/jobs/auto-expire`) | Daily, just after midnight PH time | Marks listings past their deadline as `expired`; sets `recheck_due` on rolling/TBA listings not checked in 30+ days |
+| Send reminders (`/api/jobs/send-reminders`) | Daily, ~8:00 AM PH time | Finds listings due in 7 or 1 days and sends reminders by push, then email ([System Design §7.3](../system-design/04-api-and-logic.md#73-reminders)) |
+| Cleanup (`/api/jobs/cleanup`) | Daily | Deletes old `rate_limits` windows; weekly: orphaned files (Phase 2) |
 
 Rules:
 - Store timestamps in UTC; calculate "today" in Philippine time (UTC+8). Cron schedules are in UTC: midnight PH = 16:00 UTC, 8:00 AM PH = 00:00 UTC.
 - Jobs must be idempotent (unique deduplication key per reminder, including the deadline date).
 - Send in batches and resume on the next call, so a big day never hits the function time limit.
-- Protect job endpoints with `CRON_SECRET`.
+- Protect job endpoints with `CRON_SECRET` (Vercel Cron sends it as `Authorization: Bearer <CRON_SECRET>`). Schedules live in `vercel.json`.
+- Run a job by hand: `curl -H "Authorization: Bearer $CRON_SECRET" <app URL>/api/jobs/send-reminders`.
 - Log each run in `job_runs` (count sent, count failed); alert someone if a job fails twice in a row.
 - Respect each student's reminder settings and email unsubscribes.
 

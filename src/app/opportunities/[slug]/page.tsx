@@ -125,7 +125,7 @@ async function OpportunityDetail({
               <SaveSlot opportunityId={listing.id} slug={listing.slug} searchParams={searchParams} />
             </Suspense>
           )}
-          <ShareButton title={listing.title} path={`/opportunities/${listing.slug}`} />
+          <ShareButton title={listing.title} path={`/opportunities/${listing.slug}`} compact={!closed} />
           {closed ? (
             <Link
               href={`/?category=${listing.categorySlug}`}
@@ -138,7 +138,7 @@ async function OpportunityDetail({
               href={listing.application_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-ui bg-teal px-4 text-sm font-semibold text-white hover:bg-teal-dark"
+              className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-ui bg-teal px-4 text-sm font-semibold text-white hover:bg-teal-dark"
             >
               Apply on official site
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
