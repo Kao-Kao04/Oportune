@@ -4,7 +4,7 @@ A free, phone-first platform where college students in the Philippines (any publ
 
 Payments are deferred — the platform is free for students.
 
-> Status: Phase 0 (curating and posting opportunities) and Phase 1, M1 Setup: Next.js app connected to Supabase; no features yet.
+> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog (browse, closing soon, search, detail pages, link previews) built.
 
 ## Project structure
 

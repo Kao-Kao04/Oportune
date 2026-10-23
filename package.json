@@ -11,7 +11,8 @@
     "db": "node scripts/supabase-db.mjs",
     "import:opportunities": "tsx scripts/import-opportunities.ts",
     "test": "vitest run",
-    "publish:drafts": "tsx scripts/publish-drafts.ts"
+    "publish:drafts": "tsx scripts/publish-drafts.ts",
+    "db:types": "node scripts/supabase-db.mjs gen types typescript --schema public > src/lib/supabase/database.types.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
