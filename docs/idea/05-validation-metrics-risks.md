@@ -54,6 +54,8 @@ These targets are starting points, not industry rules. Adjust them once you see 
 | Student data leak | Collect minimal data; Row-Level Security; breach plan (notify NPC within 72 hours for qualifying breaches) |
 | Uploaded documents leak | Private storage, owner-only access, short-lived download links, no curator access, delete on account deletion; documents count as sensitive personal information |
 | Costs grow with AI and storage | Daily AI limit per student; file size limits; monthly budget alerts |
+| Free tiers run out (email cap, paused database) | Push reminders first, email second; watch daily send counts; upgrade before launch day if needed |
+| Apple rejects the iPhone app | Android first; add native features before submitting to Apple |
 | No money to run the platform | Keep costs low (free tiers where possible); revisit monetization later |
 
 ## 16. Facts to Verify
@@ -61,7 +63,9 @@ These targets are starting points, not industry rules. Adjust them once you see 
 - [ ] Full text of NPC Advisory No. 2026-01 on scraping public personal data (before any automated collection)
 - [ ] Facebook (Meta) and LinkedIn API rules for reading posts of pages whose admins connect them (before connected pages, Phase 3)
 - [ ] NPC rules for storing students' documents (sensitive personal information) and whether NPC registration is needed (before uploads, Phase 2)
-- [ ] Google Play and Apple App Store requirements and fees (before the Phase 3 app)
+- [ ] Google Play and Apple App Store requirements and fees, including Apple's minimum-functionality rule for wrapped web apps (before the Phase 3 app)
+- [ ] Data Privacy Act rules for users under 18 (some first-year students are 17): what consent is needed and which features they can use (before launch)
+- [ ] Current free-tier limits of Vercel, Supabase, and the email provider (before launch)
 - [ ] NPC breach-notification rules and whether the app needs NPC registration
 - [ ] CMO 104 s. 2017 requirements and any amendments ([CHED PDF](https://legacy.ched.gov.ph/wp-content/uploads/2018/03/CMO-NO.-104-S.-2017.pdf)) before building the OJT checklist (Phase 2)
 - [ ] Official DOST-SEI Return of Service rules before writing the ROS info page (Phase 3)

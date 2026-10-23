@@ -17,6 +17,8 @@
 - [ ] HTTPS enforced
 - [ ] Secrets stored outside source control; only `NEXT_PUBLIC_*` values in the browser
 - [ ] Row-Level Security enabled and tested on all student-owned tables
+- [ ] Anon key can read only `public_opportunities` (no internal columns, no drafts)
+- [ ] Roles stored in `user_roles`; a student can't grant themselves a role
 - [ ] Admin/curator routes restricted and audited
 - [ ] Input validation, XSS sanitization, and rate limits configured
 - [ ] Job endpoints protected with `CRON_SECRET`
@@ -39,7 +41,7 @@ After each production release, verify:
 4. A listing link pasted into Messenger shows a proper preview.
 5. Share button works on a phone.
 6. Google sign-in and the quick profile work.
-7. Save/unsave works; reminders are scheduled for a saved test listing.
+7. Save/unsave works; a test listing with a deadline 7 days away gets a reminder on the next reminder run.
 8. A test push notification arrives on a test device.
 9. Report button creates a report visible in the admin panel.
 10. Curators can import the CSV, publish, and expire listings.

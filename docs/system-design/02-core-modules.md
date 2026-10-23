@@ -21,12 +21,14 @@
 - **No login required**
 - Every page has Open Graph tags (title, deadline, image) so links preview nicely in Messenger/FB
 - Listings past their deadline are hidden from lists and marked "Closed" on the detail page
+- Listing URLs (`/opportunities/{slug}`) never change, so shared links keep working
+- Search tolerates typos and Taglish (see the search indexes in [Part 3](03-data-model.md#indexes))
 
 ### 4.2 Accounts and Profile
 - Google sign-in
-- Quick profile: school, course, year level, interests (categories)
-- Account deletion (removes profile, saved items, push subscriptions, notifications)
-- Roles: `student`, `curator`, `admin`
+- Quick profile, all pick-from-a-list so the "For you" filter works later: school (searchable list + "Other"), course group (fixed list) + course name, year level, interests (categories), and an "I am 18 or older" checkbox
+- Account deletion (removes profile, saved items, push subscriptions, notifications, and in Phase 2 documents)
+- Roles: everyone is a `student`; `curator` and `admin` are granted only by an admin and stored in `user_roles`, never in the editable profile
 
 ### 4.3 Saved Opportunities
 - Save/unsave a listing (prompts sign-in the first time)
@@ -42,8 +44,9 @@
 
 ### 4.5 Admin and Curation
 - Create, edit, review, publish, expire, archive listings
-- **Import `data/opportunities.csv`**: preview, validate, skip duplicates (same source URL), save as drafts
-- Review queue for student reports
+- **Import `data/opportunities.csv`**: preview, validate, save new rows as drafts, and show a diff for changes to already-published listings
+- Review queue for student reports, and a "Re-check due" queue for rolling/TBA listings not checked in 30+ days
+- Admins grant or remove curator/admin roles (audit-logged)
 - Audit log of admin actions
 - Required before publishing: title, organization, category, official/source URL, deadline (or "rolling"/"TBA"), last-checked date
 
@@ -56,15 +59,16 @@
   - PDF, JPG, PNG only; 5 MB per file; 100 MB per student
   - Curators and admins can't open student files
   - Deleted with the account; the student can delete any file at any time
+  - Turned on only after the NPC registration check (see [Part 4 §7.7](04-api-and-logic.md#77-document-uploads-phase-2))
 - **AI helper** (server-side only):
   - "Explain in Taglish": a plain-language summary of a listing
   - "Pasok ba ako?": compares the listing's eligibility with the student's profile and answers *possible match* / *check this requirement*, never "you qualify"
   - Writing help: drafts for essays, cover letters, and resumes, which the student edits
   - Daily limit per student; every answer labeled "AI-generated — check the official link"
-  - Student documents are sent to the AI only when the student explicitly picks one
+  - Student documents are sent to the AI only when the student explicitly picks one, after a separate consent screen
 
 ### 4.7 Phase 3 modules
-- **Mobile app:** Capacitor wrapper around the web app for Google Play (then the App Store), with native push through Firebase Cloud Messaging alongside web push
+- **Mobile app:** Capacitor wrapper around the web app for Google Play, with native push through Firebase Cloud Messaging alongside web push. The App Store comes after the app has enough native features to pass Apple's review (see [Part 4 §7.9](04-api-and-logic.md#79-mobile-app-phase-3))
 - **Curator inbox:** one queue of suggested opportunities from three sources:
   - **"Share to Oportune":** the installed app appears in the phone's share menu (Web Share Target for the installed web app on Android; share intent / share extension in the mobile app). The student shares a link and optionally adds a note
   - **"Submit an opportunity" form:** for schools, orgs, LGUs, and companies: title, organization, official link, deadline, submitter email

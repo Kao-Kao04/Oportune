@@ -62,7 +62,9 @@ No scraping of Facebook, LinkedIn, or other platforms.
 | Hosting | Vercel | Managed, free tier for the pilot |
 | Database | Managed **PostgreSQL** (Supabase) | Free tier, Row-Level Security, built-in auth |
 | Auth | **Supabase Auth with Google sign-in** | Fastest sign-up for students; no passwords to manage |
-| Scheduled jobs | Vercel Cron or Supabase scheduled functions (Inngest/Trigger.dev if needed) | Reminders and auto-expiry |
+| Scheduled jobs | Vercel Cron or Supabase scheduled functions (Inngest/Trigger.dev if needed) | Reminders and auto-expiry; batched so they fit function time limits |
+| Rate limiting | Upstash Redis (free tier) or a Postgres `rate_limits` table; Cloudflare Turnstile captcha on logged-out forms | Serverless functions don't share memory |
+| Search | Postgres full-text (`simple` config) + `pg_trgm` | Works with Taglish and typos; no extra service |
 | Email | Resend | Reminder emails |
 | Push notifications | Web Push (VAPID) via a service worker | Phone notifications without a native app |
 | Installable app | Web app manifest + service worker | "Add to home screen" |
@@ -86,4 +88,4 @@ Use **one** backend: Next.js server routes/server actions.
 | App store accounts (Phase 3) | One-time Google Play fee; yearly Apple fee (check current prices) |
 | **Total** | **About $0–75/month** during the pilot |
 
-Check current provider pricing; free-tier limits change.
+Check current provider pricing; free-tier limits change. Known limits to plan around (Vercel Hobby is non-commercial, Supabase Free pauses inactive projects, email free tiers cap daily sends) are in [Deployment Part 4 §10](../deployment/04-domain-jobs-and-push.md#10-scheduled-jobs).

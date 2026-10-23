@@ -25,7 +25,7 @@
 | Wary of scams | Source link, last-checked date, official-site badge, report button |
 | Little or no money | Everything free, no payments |
 | Won't sign up just to look | Browse without an account; sign up only to save |
-| Hate long forms | Google sign-in + 4 quick profile questions (school, course, year, interests) |
+| Hate long forms | Google sign-in + 4 quick profile questions (school, course, year, interests), all pick-from-a-list, plus an "18 or older" checkbox |
 
 ### Student types
 

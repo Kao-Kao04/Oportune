@@ -43,6 +43,8 @@ Illustrative paths (these may become Next.js pages, route handlers, or server ac
 
 All endpoints: input validation, authorization, rate limiting where needed, audit logs for admin actions.
 
+**Rate limiting:** serverless functions don't share memory, so counters live in a shared store: Upstash Redis (free tier) or the `rate_limits` table. Suggested limits: reports 5/hour per IP, analytics events 120/hour per IP, sign-in attempts per Supabase Auth settings, AI 20/day per student, shares/submissions 20/day per student. Logged-out forms (reports) also need a captcha such as Cloudflare Turnstile. IPs are stored only as a salted hash.
+
 ## 7. Core Logic
 
 ### 7.1 Official-site badge
@@ -53,15 +55,24 @@ All endpoints: input validation, authorization, rate limiting where needed, audi
 
 ### 7.2 Closing soon and expiry
 - **Closing soon:** `status = published` and `deadline` between today and today + 7 days (Philippine time, UTC+8).
-- **Auto-expire job (daily):** set `status = expired` when `deadline < today` (Philippine time). Rolling/TBA listings never auto-expire. Instead, flag them for re-checking when `last_checked_at` is older than 30 days.
+- **Auto-expire job (daily):** set `status = expired` when `deadline < today` (Philippine time). Rolling/TBA listings never auto-expire. Instead, set `recheck_due = true` when `last_checked_at` is older than 30 days; saving the listing with a new `last_checked_at` clears it. The admin panel shows a "Re-check due" queue.
+- If a curator extends the deadline of an expired listing, it goes back to `published` (audit-logged).
 - Sort order: dated deadlines first (soonest first), then rolling, then TBA.
 
 ### 7.3 Reminders
-- When a student saves a listing with a date deadline, schedule `deadline_7d` and `deadline_1d` notifications for each enabled channel (skip any that are already in the past).
-- `deduplication_key` = `user_id:opportunity_id:type:channel`, so a job can safely run twice.
-- Before sending, re-check that the listing is still saved and still published, and that the deadline hasn't changed. If the deadline changed, reschedule.
-- Send at a sensible local time (e.g., 8:00 AM Philippine time).
-- Remove push subscriptions that the push service reports as expired.
+Reminders are **not** scheduled when a student saves. Instead, the daily job (8:00 AM Philippine time) works out what is due **today** from the current data, so TBA deadlines that later get a date, extensions, and earlier deadlines are all handled automatically.
+
+1. Compute `today` in Philippine time.
+2. Find every saved listing where `status = published`, `deadline_type = date`, and `deadline = today + 7` (type `deadline_7d`) or `deadline = today + 1` (type `deadline_1d`).
+3. For each student and each enabled channel (email if `email_reminders_enabled`; push if `push_reminders_enabled` and they have a subscription), build `deduplication_key` = `user_id:opportunity_id:type:channel:deadline`.
+4. Insert the `notifications` row first with `on conflict (deduplication_key) do nothing`; send only if the insert succeeded. Running the job twice never sends twice, and a changed deadline gets new reminders because the key changes.
+5. Send in batches (e.g., 50 at a time) and continue in the next invocation if time runs out, so the job never hits the function time limit. Respect the email provider's daily limit; push goes first, email after.
+6. Mark each row `sent` or `failed`; retry `failed` once on the next run.
+
+Other rules:
+- If a student saves a listing less than 7 days before its deadline, they get only the 1-day reminder; saving the day before or on the deadline sends none (the "Closing soon" label already shows it).
+- Remove push subscriptions that the push service reports as expired (HTTP 404/410).
+- Every email has a one-click unsubscribe link using `email_unsubscribe_token`, and a `List-Unsubscribe` header.
 
 ### 7.4 Sharing
 - Use the browser's share sheet (Web Share API) on phones; fall back to "Copy link" and Messenger/FB share links.
@@ -70,7 +81,9 @@ All endpoints: input validation, authorization, rate limiting where needed, audi
 ### 7.5 Spreadsheet import
 - Apply the [CSV → `opportunities` mapping](03-data-model.md#csv--opportunities-mapping) (dates vs. `rolling`/`open`/`TBA`, delivery mode, category lookup, slug).
 - Recompute `source_trust` from the URL (don't trust the CSV value).
-- Match existing rows by `external_id` first, then by (`source_url`, `title`); update unpublished drafts, skip published ones. Skip rows with `status = closed`.
+- Match existing rows by `external_id` first, then by (`source_url`, `title`). Skip rows with `status = closed`.
+- New rows → created as drafts. Matching drafts → updated.
+- Matching **published** rows → never changed silently. The preview marks them "Changed" and shows a field-by-field diff (e.g., deadline 2026-10-25 → 2026-11-08); the curator ticks which changes to apply. Applied changes update `last_checked_at` and are audit-logged.
 - The preview lists rejected rows with the reason (unknown category, bad date, non-`https` URL) before anything is saved.
 - Import as `draft` so a curator reviews them before publishing; `needs-check` rows keep `needs_check = true` and can't be published until a curator clears it.
 
@@ -82,8 +95,11 @@ All endpoints: input validation, authorization, rate limiting where needed, audi
 - Every answer shows "AI-generated — check the official link" and a "Report this answer" button.
 - Limits: e.g., 20 requests per student per day; a monthly spending cap at the provider.
 - Don't store prompts or answers; log only feature, token count, and time in `ai_requests`.
+- **Consent before sending a document:** the first time a student attaches one of their documents to writing help, show a separate consent screen: which file, that it goes to an outside AI provider, that the provider doesn't keep it for training, and that they can say no. Record consent per student (with date) and allow withdrawing it in settings. Never send documents for "Explain" or "Pasok ba ako?".
+- Choose a provider whose API terms say inputs aren't used for training, and list it in the privacy notice.
 
 ### 7.7 Document uploads (Phase 2)
+- **Launch gate:** don't turn uploads on until the NPC registration question is answered (and registration done if required), the privacy notice covers documents, and a DPO/privacy contact is named. Medical certificates, IDs, and similar files are *sensitive personal information* under the Data Privacy Act.
 - The server checks type (by file content, not just the extension) and size, then issues a one-time signed upload URL into `<user_id>/` in the private bucket.
 - Storage policies allow each student to read and delete only their own folder; there is no admin read access.
 - Downloads use signed links that expire after a few minutes.
@@ -100,5 +116,6 @@ All endpoints: input validation, authorization, rate limiting where needed, audi
 
 ### 7.9 Mobile app (Phase 3)
 - Capacitor app that loads the production web app; the same accounts and data.
+- **Google Play first.** Apple often rejects apps that are only a website in a wrapper (App Store Review Guideline 4.2, minimum functionality). Before submitting to Apple, the app must have real native features: native push, the share extension ("Share to Oportune"), saved listings available offline, and native navigation. Budget extra time for iOS review.
 - Native push via Firebase Cloud Messaging, stored in `push_subscriptions` with `platform`; the reminder job sends to web and native subscriptions.
 - Google sign-in uses the system browser (not an embedded web view).

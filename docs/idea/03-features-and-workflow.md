@@ -43,7 +43,7 @@
 
 | Feature | Notes |
 |---|---|
-| **Android app** (iPhone later) | Wraps the same web app so there is one codebase; native push notifications. Publish on Google Play first since most students use Android. |
+| **Android app** (iPhone later) | Wraps the same web app so there is one codebase; native push notifications. Publish on Google Play first since most students use Android. Apple rejects apps that are only a wrapped website, so the iPhone version waits until the app has real native features (share extension, offline saved listings). |
 | **"Share to Oportune"** | A student who sees an opportunity on Facebook, LinkedIn, or anywhere else shares the link to the app from the phone's share menu. It lands in the **curator inbox**. No automated collection from Facebook or LinkedIn. |
 | **"Submit an opportunity" form** | Schools, student orgs, LGUs, and companies submit their own opportunities (title, link, deadline, contact). They land in the same curator inbox. |
 | **Connected pages** (optional) | An organization that admins a Facebook Page or LinkedIn page can connect it so its new posts flow into the inbox, using the platform's official API with the admin's permission. |

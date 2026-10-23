@@ -146,7 +146,8 @@ The detail screen is dimmed behind it.
 ```
 Same style, no bottom navigation on this screen. Create a one-page profile setup shown right after Google sign-in.
 - Heading: "Quick setup" and the line "So we can show what fits you. Takes 20 seconds."
-- Fields: School (searchable dropdown, placeholder "e.g., PUP Manila"), Course (text field, e.g., "BS Information Technology"), Year level (segmented: 1st, 2nd, 3rd, 4th, 5th+).
+- Fields: School (searchable dropdown, placeholder "e.g., PUP Manila", with "Other"), Field of study (dropdown: IT & Computer Science, Engineering, Health, Education, Business, Arts & Humanities, Sciences, Agriculture, Other), Course (text field, e.g., "BS Information Technology"), Year level (segmented: 1st, 2nd, 3rd, 4th, 5th, Graduating).
+- A checkbox: "I am 18 or older".
 - "What are you looking for?" with toggle chips: Scholarships, Internships, Hackathons, CTFs, Courses, Events, Research grants.
 - Bottom button: "Done" (filled teal). A small "Skip for now" text link.
 ```
