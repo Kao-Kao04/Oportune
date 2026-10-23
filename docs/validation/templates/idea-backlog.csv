@@ -1,0 +1,23 @@
+id,idea,segment,hypothesis (we believe... because...),pass signal,cheapest test,source,frequency (1-5),severity (1-5),evidence (0-5),workaround pain (1-5),feasibility (1-5),total,status,notes
+I01,CMO 104 OJT requirements checklist,OJT students (C/D),Students lose time on unclear/late OJT requirements because they are tracked by memo and group chat,>=50% of C+D describe requirement confusion or delays unprompted,Interviews + coordinator review,Research #2,,,,,4,,testing,
+I02,DOST Return of Service tracker,DOST graduates (B),ROS-serving graduates can't easily tell months served/remaining because they track it manually and rules are unclear,>=50% of B describe ROS tracking difficulty unprompted; >=3 beta signups,Interviews + concierge Google Sheet for 5 graduates,Research #1,,,,,4,,testing,
+I03,ROS breach penalty calculator,DOST scholars (A/B),Scholars underestimate breach costs because terms are buried in the contract,Scholars can't state the refund/interest rule; ask to see their number,Interviews + concierge calculation,Research #9,,,,,5,,testing,Verify interest terms first
+I04,Official .gov.ph/.edu.ph badge,All students,Students fall for fake scholarship/assistance posts because they can't tell official sources,Several unprompted scam stories,Interviews,Research #7,,,,,5,,testing,
+I05,Curated verified opportunity listings,All students,Students miss opportunities because they are scattered across FB/websites,Concierge channel click-through >=10%,Concierge Telegram/FB channel,Original idea,,,,,5,,testing,
+I06,Saved items + application tracker + reminders,All students,Students miss deadlines because they have no single tracker,Students describe missed deadlines unprompted,Interviews,Original idea,,,,,5,,testing,
+I07,Data-lite offline PWA,Data-limited students,Students avoid heavy sites because of prepaid data costs,Students mention data limits/slow loading unprompted,Interviews,Research #15,,,,,3,,testing,
+I08,Hardware/gadget/connectivity grant tag,IT/CS students,Tech students lack devices because most scholarships only cover tuition,Students mention device/internet costs unprompted,Interviews + fake door,Research #12,,,,,5,,untested,
+I09,Stipend delay forecaster,Government scholars,Scholars suffer from delayed stipends because release dates are unknown,Many unprompted delay stories with workarounds,Interviews (stipend section),Research #8,,,,,2,,untested,Cold-start crowdsourcing risk
+I10,Scholarship stackability checker,Low-income students,Students don't know if two grants conflict because terms are unclear,Students describe declining/losing a grant due to conflicts,Interviews + fake door,Research #11,,,,,3,,untested,
+I11,PRC board exam timeline tracker,Graduating students,Graduates miss board exam steps because deadlines are scattered,Graduates describe missed filing/review steps,Fake door,Research #6,,,,,5,,untested,
+I12,TESDA NC competency mapping,TVET/IT students,Students can't tell which certifications employers want,Students ask which certs matter; employers name specific NCs,Interviews + employer conversations,Research #3,,,,,2,,untested,
+I13,OJT geolocation time logger,Interns/schools,Hour logs are lost or faked because they're on paper,Coordinators name hour logging as a top problem,Coordinator review,Research #4,,,,,2,,untested,Privacy risk (location data)
+I14,Academic load checker for OJT students,Working students,Students enroll in too many units during OJT,Coordinators report load violations,Coordinator review,Research #5,,,,,3,,untested,Verify rule first
+I15,Employer internship gateway,Local employers,Small employers can't afford big job boards,Employers agree to post internships directly,Employer conversations,Research #13,,,,,4,,untested,Phase 3
+I16,School OJT/tracer dashboard,Coordinators,Coordinators track OJT/tracer studies in spreadsheets,Coordinators describe spreadsheet pain + ask for a tool,Coordinator review,Research #14,,,,,3,,untested,Phase 3
+I17,Ghost job detector,Job seekers,Students waste time on fake/perpetual listings,Students describe never-answered applications,Interviews,Research #16,,,,,3,,untested,
+I18,Peer interview debriefs,Job seekers,Students lack employer-specific interview info,Students ask seniors about interviews,Interviews,Research #19,,,,,3,,untested,Moderation cost
+I19,Micro-credential wallet,Upskilling students,,,,Research #17,,,,,1,,killed,Too complex
+I20,LGU PESO API integration,Students,,,,Research #18,,,,,1,,killed,No standard LGU APIs
+I21,AI resume tailoring,Job seekers,,,,Research #20,,,,,4,,killed,No moat; hallucination risk
+I22,Student loan referral switchboard,Distressed scholars,,,,Research #10,,,,,3,,killed,Reputational risk
