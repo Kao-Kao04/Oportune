@@ -273,7 +273,17 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "hit_rate_limit":
+            "analytics_top_listings":
+{ Args: { "max_rows"?: number,"since": string }; Returns: {
+              "official_clicks": number,"opportunity_id": string,"saves": number,"shares": number,"slug": string,"title": string,"views": number
+            }[]
+                           },
+"analytics_totals":
+{ Args: { "since": string }; Returns: {
+              "event": string,"events": number,"visitors": number
+            }[]
+                           },
+"hit_rate_limit":
 { Args: { "limit_key": string,"max_hits": number,"window_seconds": number }; Returns: boolean
                            },
 "is_admin":

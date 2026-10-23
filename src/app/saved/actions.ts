@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { safeNextPath } from "@/lib/safe-next";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export type SaveResult = { saved: boolean; error?: string };
@@ -27,6 +28,7 @@ export async function toggleSave(_prev: SaveResult, form: FormData): Promise<Sav
       .from("saved_opportunities")
       .upsert({ user_id: user.id, opportunity_id: opportunityId }, { onConflict: "user_id,opportunity_id", ignoreDuplicates: true });
     if (error) return { saved: false, error: "Couldn't save this listing." };
+    await recordSave(opportunityId);
     return { saved: true };
   }
 
@@ -37,4 +39,10 @@ export async function toggleSave(_prev: SaveResult, form: FormData): Promise<Sav
     .eq("opportunity_id", opportunityId);
   if (error) return { saved: true, error: "Couldn't remove it. Try again." };
   return { saved: false };
+}
+
+// Save counts for the stats page (not linked to the student).
+async function recordSave(opportunityId: string) {
+  const { error } = await createAdminClient().from("analytics_events").insert({ event: "save", opportunity_id: opportunityId });
+  if (error) console.warn("[events] save not recorded", error.message);
 }

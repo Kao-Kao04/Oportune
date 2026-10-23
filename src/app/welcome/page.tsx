@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { categoryChipLabel } from "@/lib/opportunities/categories";
@@ -46,6 +47,12 @@ export default async function WelcomePage({ searchParams }: PageProps<"/welcome"
       <h1 className="text-2xl font-bold text-ink">{editing ? "Edit profile" : "Quick setup"}</h1>
       <p className="mb-6 mt-1 text-muted">
         {editing ? "Used only to show what fits you." : "So we can show what fits you. Takes 20 seconds."}
+      </p>
+      <p className="-mt-4 mb-6 text-xs text-muted">
+        By saving, you agree that we use these answers to show listings that fit you. You can edit or delete them anytime.{" "}
+        <Link href="/privacy" className="underline">
+          Privacy notice
+        </Link>
       </p>
       <ProfileForm
         values={values}

@@ -37,7 +37,8 @@ export async function autoExpire(): Promise<JobOutcome> {
   return { ok: true, sent: expired.length, details: { expired: expired.length, flaggedForRecheck: flagged.length } };
 }
 
-// Daily: drop old rate-limit windows and job history.
+// Daily: drop old rate-limit windows, job history, and analytics events
+// past the retention in the privacy notice (13 months).
 export async function cleanup(): Promise<JobOutcome> {
   const admin = createAdminClient();
   const twoDaysAgo = new Date(Date.now() - 2 * 86_400_000).toISOString();
@@ -47,5 +48,8 @@ export async function cleanup(): Promise<JobOutcome> {
   if (error) throw error;
   const { error: runsError } = await admin.from("job_runs").delete().lt("started_at", halfYearAgo);
   if (runsError) throw runsError;
+  const thirteenMonthsAgo = new Date(Date.now() - 395 * 86_400_000).toISOString();
+  const { error: eventsError } = await admin.from("analytics_events").delete().lt("created_at", thirteenMonthsAgo);
+  if (eventsError) throw eventsError;
   return { ok: true };
 }

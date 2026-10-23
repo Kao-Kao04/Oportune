@@ -13,7 +13,8 @@
     "test": "vitest run",
     "publish:drafts": "tsx scripts/publish-drafts.ts",
     "db:types": "node scripts/supabase-db.mjs gen types typescript --schema public > src/lib/supabase/database.types.ts",
-    "grant-role": "tsx scripts/grant-role.ts"
+    "grant-role": "tsx scripts/grant-role.ts",
+    "smoke": "tsx scripts/smoke.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

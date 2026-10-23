@@ -4,7 +4,7 @@ A free, phone-first platform where college students in the Philippines (any publ
 
 Payments are deferred — the platform is free for students.
 
-> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog, M3 Admin panel, M4 Accounts + Save, and M5 Reminders + Jobs built.
+> Status: Phase 0 (curating and posting opportunities) and Phase 1: MVP milestones M1–M6 built. See [docs/launch-checklist.md](docs/launch-checklist.md) for what is left before launch.
 
 ## Project structure
 
@@ -14,7 +14,8 @@ Payments are deferred — the platform is free for students.
 │   ├── system-design.md     # Architecture → 5 parts in docs/system-design/
 │   ├── deployment.md        # Deployment → 5 parts in docs/deployment/
 │   ├── design/stitch-prompts.md  # Google Stitch UI prompts
-│   └── validation.md        # Optional interview kit → docs/validation/
+│   ├── validation.md        # Optional interview kit → docs/validation/
+│   └── launch-checklist.md  # What is left before launch
 ├── data/
 │   ├── opportunities.csv    # Curated opportunity list (seed data for the app)
 │   └── categories.csv       # Canonical category names + slugs

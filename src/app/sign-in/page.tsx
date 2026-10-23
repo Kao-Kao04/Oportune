@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { getEnabledProviders } from "@/lib/auth-providers";
 import { safeNextPath } from "@/lib/safe-next";
@@ -51,7 +52,16 @@ export default function SignInPage({ searchParams }: PageProps<"/sign-in">) {
               )}
               <SignInForm next={afterSignIn} />
               <p className="text-xs text-muted">
-                We only use your name and email, plus the 4 quick questions you answer next.
+                We only use your name and email, plus the 4 quick questions you answer next. By continuing, you agree to
+                our{" "}
+                <Link href="/terms" className="underline">
+                  terms
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy" className="underline">
+                  privacy notice
+                </Link>
+                .
               </p>
             </div>
           );

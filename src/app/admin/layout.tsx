@@ -26,6 +26,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
     { href: "/admin/recheck", label: "Re-check", count: recheck },
     { href: "/admin/reports", label: "Reports", count: openReports },
     { href: "/admin/import", label: "Import" },
+    { href: "/admin/stats", label: "Stats" },
     ...(user.role === "admin" ? [{ href: "/admin/roles", label: "Users & roles" }] : []),
   ];
 

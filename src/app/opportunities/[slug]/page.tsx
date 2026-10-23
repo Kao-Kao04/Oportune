@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { TONE_TEXT } from "@/components/listing-row";
 import { OfficialBadge } from "@/components/official-badge";
 import { ShareButton } from "@/components/share-button";
+import { OfficialLink, ViewTracker } from "@/components/tracking";
 import { categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
@@ -125,7 +126,7 @@ async function OpportunityDetail({
               <SaveSlot opportunityId={listing.id} slug={listing.slug} searchParams={searchParams} />
             </Suspense>
           )}
-          <ShareButton title={listing.title} path={`/opportunities/${listing.slug}`} compact={!closed} />
+          <ShareButton title={listing.title} path={`/opportunities/${listing.slug}`} opportunityId={listing.id} compact={!closed} />
           {closed ? (
             <Link
               href={`/?category=${listing.categorySlug}`}
@@ -134,20 +135,20 @@ async function OpportunityDetail({
               Find similar opportunities
             </Link>
           ) : (
-            <a
+            <OfficialLink
               href={listing.application_url}
-              target="_blank"
-              rel="noopener noreferrer"
+              opportunityId={listing.id}
               className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-ui bg-teal px-4 text-sm font-semibold text-white hover:bg-teal-dark"
             >
               Apply on official site
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
+            </OfficialLink>
           )}
         </div>
       </div>
+      <ViewTracker opportunityId={listing.id} />
     </main>
   );
 }

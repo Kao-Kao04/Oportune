@@ -1,10 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 
 // Phone share sheet when available (Messenger, group chats); otherwise
 // copy link + Facebook (docs/system-design/04-api-and-logic.md §7.4).
-export function ShareButton({ title, path, compact = false }: { title: string; path: string; compact?: boolean }) {
+export function ShareButton({
+  title,
+  path,
+  opportunityId,
+  compact = false,
+}: {
+  title: string;
+  path: string;
+  opportunityId?: string;
+  compact?: boolean;
+}) {
   const [fallbackOpen, setFallbackOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -16,6 +27,7 @@ export function ShareButton({ title, path, compact = false }: { title: string; p
     if (navigator.share) {
       try {
         await navigator.share({ title, url: url() });
+        track("share", opportunityId);
       } catch {
         // The student closed the share sheet; nothing to do.
       }
@@ -27,6 +39,7 @@ export function ShareButton({ title, path, compact = false }: { title: string; p
   async function copy() {
     try {
       await navigator.clipboard.writeText(url());
+      track("share", opportunityId);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -57,6 +70,7 @@ export function ShareButton({ title, path, compact = false }: { title: string; p
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url())}`}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track("share", opportunityId)}
             className="block px-4 py-2 text-sm hover:bg-ink/5"
           >
             Share on Facebook

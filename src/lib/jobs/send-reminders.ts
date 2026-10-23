@@ -103,7 +103,7 @@ export async function sendReminders(): Promise<JobOutcome> {
       organization: listing.organization,
       subject: reminderSubject(r.type, daysLeft, listing.title),
       deadlineText: `Deadline: ${formatLongDate(listing.deadline!)}`,
-      path: `/opportunities/${listing.slug}`,
+      path: `/opportunities/${listing.slug}?ref=reminder`,
     };
 
     if (r.channel === "email") {
