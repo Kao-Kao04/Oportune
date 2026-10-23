@@ -18,7 +18,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - name: Install dependencies
+        # Surface npm errors as an annotation (visible without opening the log).
+        run: |
+          set +e
+          npm ci --no-audit --no-fund 2>&1 | tee npm-ci.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            echo "::error title=npm ci failed::$(grep -E 'npm (error|ERR)' npm-ci.log | tail -25 | sed ':a;N;$!ba;s/\n/%0A/g')"
+            exit "$status"
+          fi
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
