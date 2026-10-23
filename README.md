@@ -61,8 +61,6 @@ npm run db -- lint             # check the schema
 
 Add schema changes as new files in `supabase/migrations/` (`npx supabase migration new <name>`); never edit a migration that has already been pushed.
 
-See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.
-
 Import the curated spreadsheet into the database as **drafts** (needs `SUPABASE_SECRET_KEY` in `.env.local`):
 
 ```bash
@@ -71,3 +69,5 @@ npm run import:opportunities -- --apply  # write
 ```
 
 Re-running is safe: drafts are updated by their `OPP-###` id, slugs never change, and published listings are never touched.
+
+See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.
