@@ -13,7 +13,8 @@ Payments are deferred — the platform is free for students.
 │   ├── idea.md              # Product idea → 5 parts in docs/idea/
 │   ├── system-design.md     # Architecture → 5 parts in docs/system-design/
 │   ├── deployment.md        # Deployment → 5 parts in docs/deployment/
-│   ├── design/stitch-prompts.md  # Google Stitch UI prompts
+│   ├── design/stitch-prompts.md  # Google Stitch UI prompts (original)
+│   ├── design/stitch-student-friendly.md  # v2: student-friendly redesign prompts
 │   ├── validation.md        # Optional interview kit → docs/validation/
 │   └── launch-checklist.md  # What is left before launch
 ├── data/
