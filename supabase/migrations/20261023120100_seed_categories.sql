@@ -1,0 +1,14 @@
+-- Categories from data/categories.csv (the source of truth). Keep both in sync.
+insert into public.categories (name, slug, sort_order) values
+  ('Scholarship and financial aid', 'scholarships', 1),
+  ('Internship and OJT', 'internships', 2),
+  ('Entry-level jobs', 'entry-level-jobs', 3),
+  ('Hackathons and technical competitions', 'hackathons', 4),
+  ('Cybersecurity CTFs', 'ctfs', 5),
+  ('Courses, certifications, and TESDA programs', 'courses', 6),
+  ('Student leadership and ambassador programs', 'leadership', 7),
+  ('Events and conferences', 'events', 8),
+  ('Research grants and innovation programs', 'research-grants', 9),
+  ('Hardware, gadget, and connectivity grants', 'hardware-grants', 10)
+on conflict (slug) do update
+  set name = excluded.name, sort_order = excluded.sort_order;

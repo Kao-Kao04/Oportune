@@ -22,6 +22,8 @@ Payments are deferred — the platform is free for students.
 │   ├── app/                 # Next.js pages (App Router)
 │   ├── lib/supabase/        # Supabase clients: server, browser, session refresh
 │   └── proxy.ts             # Refreshes the Supabase session on each request
+├── supabase/migrations/     # Database schema (tables, RLS, views), applied in order
+├── scripts/                 # Dev helpers (e.g. supabase-db.mjs)
 ├── tests/                   # Automated tests
 ├── .env.example             # Environment variable template (no real secrets)
 └── README.md
@@ -48,5 +50,15 @@ npm run dev                  # http://localhost:3000
 ```
 
 Checks: `npm run lint`, `npm run typecheck`, `npm run build`.
+
+Database (uses `DATABASE_URL` from `.env.local`; use the Supabase **session pooler** URL):
+
+```bash
+npm run db -- migration list   # what's applied
+npm run db -- push             # apply new files in supabase/migrations
+npm run db -- lint             # check the schema
+```
+
+Add schema changes as new files in `supabase/migrations/` (`npx supabase migration new <name>`); never edit a migration that has already been pushed.
 
 See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.
