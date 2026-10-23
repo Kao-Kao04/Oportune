@@ -45,13 +45,14 @@ export async function updateSession(request: NextRequest) {
     // action also saves it in a short-lived cookie.
     const next = target.searchParams.get("next") ?? request.cookies.get(SIGN_IN_NEXT_COOKIE)?.value;
     target.searchParams.delete("next");
+    let destination: URL = target;
     if (error) {
-      target.pathname = "/sign-in";
-      target.search = "?error=link-expired";
+      destination = new URL("/sign-in?error=link-expired", request.url);
     } else if (next?.startsWith("/") && !next.startsWith("//")) {
-      target.pathname = next;
+      // next may carry its own query string (e.g. /welcome?next=...).
+      destination = new URL(next, request.url);
     }
-    const redirect = NextResponse.redirect(target);
+    const redirect = NextResponse.redirect(destination);
     response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
     redirect.cookies.delete(SIGN_IN_NEXT_COOKIE);
     return redirect;

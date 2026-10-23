@@ -4,7 +4,7 @@ A free, phone-first platform where college students in the Philippines (any publ
 
 Payments are deferred — the platform is free for students.
 
-> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog and M3 Admin panel built.
+> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog, M3 Admin panel, and M4 Accounts + Save built.
 
 ## Project structure
 
@@ -83,3 +83,9 @@ npm run grant-role -- you@example.com admin
 ```
 
 Before going live, set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` (Cloudflare Turnstile). In production, the report form refuses submissions without them.
+
+### Student accounts
+
+Students sign in at `/sign-in` (email link now; **Continue with Google** appears automatically once Google is switched on in Supabase → Authentication → Providers), answer the quick profile at `/welcome`, save listings, and manage reminders or delete their account at `/me`.
+
+To turn on Google: create an OAuth client (type "Web application") in Google Cloud Console with the redirect URI `https://<project-ref>.supabase.co/auth/v1/callback`, then paste its client ID and secret into the Supabase Google provider.

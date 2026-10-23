@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BottomNav } from "@/components/bottom-nav";
 import { Suspense } from "react";
 import { ListingRow } from "@/components/listing-row";
 import { categoryChipLabel } from "@/lib/opportunities/categories";
@@ -48,6 +49,7 @@ export default function BrowsePage({ searchParams }: PageProps<"/">) {
           <Browse filters={readFilters(params)} />
         ))}
       </Suspense>
+      <BottomNav active="/" />
     </main>
   );
 }

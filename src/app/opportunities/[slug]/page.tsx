@@ -9,6 +9,9 @@ import { categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
 import { getListingBySlug, getToday } from "@/lib/opportunities/queries";
+import { SaveButton } from "@/components/save-button";
+import { getCurrentUser } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { ReportForm } from "./report-form";
 
 export async function generateMetadata({ params }: PageProps<"/opportunities/[slug]">): Promise<Metadata> {
@@ -36,17 +39,23 @@ export async function generateMetadata({ params }: PageProps<"/opportunities/[sl
   };
 }
 
-export default function OpportunityPage({ params }: PageProps<"/opportunities/[slug]">) {
+export default function OpportunityPage({ params, searchParams }: PageProps<"/opportunities/[slug]">) {
   return (
     <Suspense fallback={<DetailSkeleton />}>
       {params.then(({ slug }) => (
-        <OpportunityDetail slug={slug} />
+        <OpportunityDetail slug={slug} searchParams={searchParams} />
       ))}
     </Suspense>
   );
 }
 
-async function OpportunityDetail({ slug }: { slug: string }) {
+async function OpportunityDetail({
+  slug,
+  searchParams,
+}: {
+  slug: string;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const [result, today] = await Promise.all([getListingBySlug(slug), getToday()]);
   if (!result) notFound();
   if ("redirectTo" in result) permanentRedirect(`/opportunities/${result.redirectTo}`);
@@ -111,6 +120,11 @@ async function OpportunityDetail({ slug }: { slug: string }) {
 
       <div className="sticky bottom-0 z-10 border-t border-line bg-paper/95 px-4 py-3 backdrop-blur">
         <div className="flex gap-3">
+          {!closed && (
+            <Suspense fallback={<SaveButtonPlaceholder />}>
+              <SaveSlot opportunityId={listing.id} slug={listing.slug} searchParams={searchParams} />
+            </Suspense>
+          )}
           <ShareButton title={listing.title} path={`/opportunities/${listing.slug}`} />
           {closed ? (
             <Link
@@ -201,4 +215,41 @@ function DetailSkeleton() {
       </div>
     </div>
   );
+}
+
+// Reads the session (is it saved?), so it streams in after the cached page.
+async function SaveSlot({
+  opportunityId,
+  slug,
+  searchParams,
+}: {
+  opportunityId: string;
+  slug: string;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const [user, params] = await Promise.all([getCurrentUser(), searchParams]);
+  let saved = false;
+  if (user) {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("saved_opportunities")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("opportunity_id", opportunityId)
+      .maybeSingle();
+    saved = Boolean(data);
+  }
+  return (
+    <SaveButton
+      opportunityId={opportunityId}
+      initialSaved={saved}
+      back={`/opportunities/${slug}`}
+      autoSave={Boolean(user) && params.save === "1"}
+      compact
+    />
+  );
+}
+
+function SaveButtonPlaceholder() {
+  return <div aria-hidden="true" className="h-11 w-11 rounded-ui border border-line bg-white" />;
 }

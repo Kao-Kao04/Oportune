@@ -42,7 +42,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </div>
         </header>
         <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col">{children}</div>
-        <footer className="mx-auto w-full max-w-2xl px-4 py-8 text-sm text-muted">
+        {/* Bottom padding leaves room for the fixed bottom nav on main screens. */}
+        <footer className="mx-auto w-full max-w-2xl px-4 pb-24 pt-8 text-sm text-muted">
           Checked by our team. Always confirm on the official site.
         </footer>
       </body>

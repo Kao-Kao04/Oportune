@@ -12,12 +12,24 @@ export const TONE_TEXT: Record<DeadlineTone, string> = {
   closed: "text-closed",
 };
 
-export function ListingRow({ listing, today }: { listing: Listing; today: string }) {
+// `trailing` (e.g. an unsave button) sits in the top-right corner, outside the link.
+export function ListingRow({
+  listing,
+  today,
+  trailing,
+}: {
+  listing: Listing;
+  today: string;
+  trailing?: React.ReactNode;
+}) {
   const deadline = deadlineInfo(listing, today);
 
   return (
-    <li className="border-b border-line last:border-b-0">
-      <Link href={`/opportunities/${listing.slug}`} className="flex gap-4 px-4 py-4 hover:bg-ink/[0.03]">
+    <li className="relative border-b border-line last:border-b-0">
+      <Link
+        href={`/opportunities/${listing.slug}`}
+        className={`flex gap-4 px-4 py-4 hover:bg-ink/[0.03] ${trailing ? "pr-16" : ""}`}
+      >
         <div className={`tabular w-20 shrink-0 ${TONE_TEXT[deadline.tone]}`}>
           <div className="font-semibold">{deadline.label}</div>
           <div className="text-xs leading-snug">
@@ -33,6 +45,7 @@ export function ListingRow({ listing, today }: { listing: Listing; today: string
           </div>
         </div>
       </Link>
+      {trailing && <div className="absolute right-3 top-3">{trailing}</div>}
     </li>
   );
 }
