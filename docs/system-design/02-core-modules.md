@@ -25,10 +25,10 @@
 - Search tolerates typos and Taglish (see the search indexes in [Part 3](03-data-model.md#indexes))
 
 ### 4.2 Accounts and Profile
-- Google sign-in
+- Google sign-in for students (M4); curators and admins can also sign in with a one-time email link (`/sign-in`)
 - Quick profile, all pick-from-a-list so the "For you" filter works later: school (searchable list + "Other"), course group (fixed list) + course name, year level, interests (categories), and an "I am 18 or older" checkbox
 - Account deletion (removes profile, saved items, push subscriptions, notifications, and in Phase 2 documents)
-- Roles: everyone is a `student`; `curator` and `admin` are granted only by an admin and stored in `user_roles`, never in the editable profile
+- Roles: everyone is a `student`; `curator` and `admin` are granted only by an admin and stored in `user_roles`, never in the editable profile. The first admin is created with `npm run grant-role -- <email> admin`; after that, admins manage roles in the admin panel
 
 ### 4.3 Saved Opportunities
 - Save/unsave a listing (prompts sign-in the first time)

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { categoryLabel } from "@/lib/opportunities/categories";
-import { deadlineInfo, formatLongDate } from "@/lib/opportunities/dates";
+import { closedLabel, deadlineInfo, formatLongDate } from "@/lib/opportunities/dates";
 import { getListingBySlug, getToday } from "@/lib/opportunities/queries";
 
 // Link preview for Messenger/Facebook (docs/design/stitch-prompts.md, Prompt 5).
@@ -17,7 +17,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   if (listing) {
     const deadline = deadlineInfo(listing, today);
     if (deadline.daysLeft === null) deadlineLine = deadline.detail;
-    else if (deadline.tone === "closed") deadlineLine = `Closed ${formatLongDate(listing.deadline!)}`;
+    else if (deadline.tone === "closed") deadlineLine = closedLabel(listing.deadline, today);
     else deadlineLine = `Deadline ${formatLongDate(listing.deadline!)}`;
   }
 

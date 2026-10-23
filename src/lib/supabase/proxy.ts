@@ -1,8 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-// Refreshes the auth session cookie before the page renders.
-// Called from src/proxy.ts on every matched request.
+export const SIGN_IN_NEXT_COOKIE = "sign_in_next";
+
+// Refreshes the auth session cookie before the page renders, and finishes
+// email sign-in links. Called from src/proxy.ts on every matched request.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -30,6 +32,30 @@ export async function updateSession(request: NextRequest) {
       },
     },
   );
+
+  // Email sign-in links come back with ?code=. Supabase may send them to the
+  // Site URL instead of the requested page if that page isn't on its redirect
+  // allow-list, so handle the code on any path, then continue to ?next=.
+  const code = request.nextUrl.searchParams.get("code");
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const target = request.nextUrl.clone();
+    target.searchParams.delete("code");
+    // ?next= survives only when the redirect URL is allow-listed; the sign-in
+    // action also saves it in a short-lived cookie.
+    const next = target.searchParams.get("next") ?? request.cookies.get(SIGN_IN_NEXT_COOKIE)?.value;
+    target.searchParams.delete("next");
+    if (error) {
+      target.pathname = "/sign-in";
+      target.search = "?error=link-expired";
+    } else if (next?.startsWith("/") && !next.startsWith("//")) {
+      target.pathname = next;
+    }
+    const redirect = NextResponse.redirect(target);
+    response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+    redirect.cookies.delete(SIGN_IN_NEXT_COOKIE);
+    return redirect;
+  }
 
   // Don't put code between createServerClient and this call: it triggers the
   // token refresh, and skipping it randomly signs users out.

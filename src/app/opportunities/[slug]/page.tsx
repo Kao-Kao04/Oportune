@@ -6,9 +6,10 @@ import { TONE_TEXT } from "@/components/listing-row";
 import { OfficialBadge } from "@/components/official-badge";
 import { ShareButton } from "@/components/share-button";
 import { categoryLabel } from "@/lib/opportunities/categories";
-import { deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
+import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
 import { getListingBySlug, getToday } from "@/lib/opportunities/queries";
+import { ReportForm } from "./report-form";
 
 export async function generateMetadata({ params }: PageProps<"/opportunities/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<"/opportunities/[sl
     deadline.daysLeft === null
       ? deadline.detail
       : deadline.tone === "closed"
-        ? `Closed ${formatLongDate(listing.deadline!)}`
+        ? closedLabel(listing.deadline, today)
         : `Deadline ${formatLongDate(listing.deadline!)}`;
   const description = `${listing.organization} · ${when}. ${listing.summary ?? ""}`.trim().slice(0, 200);
 
@@ -61,9 +62,11 @@ async function OpportunityDetail({ slug }: { slug: string }) {
           <span aria-hidden="true">←</span> All opportunities
         </Link>
 
-        {closed && listing.deadline && (
+        {closed && (
           <p className="mt-4 rounded-ui bg-ink/5 px-3 py-2 text-sm text-ink">
-            This opportunity closed on {formatLongDate(listing.deadline)}.
+            {listing.deadline && listing.deadline < today
+              ? `This opportunity closed on ${formatLongDate(listing.deadline)}.`
+              : "This opportunity is closed."}
           </p>
         )}
 
@@ -102,6 +105,7 @@ async function OpportunityDetail({ slug }: { slug: string }) {
           <p className="mt-3 text-sm text-muted">
             We summarize official sources in our own words. Always confirm details on the official site before applying.
           </p>
+          <ReportForm opportunityId={listing.id} />
         </section>
       </article>
 
@@ -146,7 +150,7 @@ function DeadlineBlock({ listing, today }: { listing: Listing; today: string }) 
   const deadline = deadlineInfo(listing, today);
   let text: string;
   if (deadline.daysLeft === null) text = deadline.detail;
-  else if (deadline.tone === "closed") text = `Closed ${formatLongDate(listing.deadline!)}`;
+  else if (deadline.tone === "closed") text = closedLabel(listing.deadline, today);
   else text = `Closes ${formatLongDate(listing.deadline!)} · ${deadline.detail}`;
 
   return (

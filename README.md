@@ -4,7 +4,7 @@ A free, phone-first platform where college students in the Philippines (any publ
 
 Payments are deferred — the platform is free for students.
 
-> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog (browse, closing soon, search, detail pages, link previews) built.
+> Status: Phase 0 (curating and posting opportunities) and Phase 1: M1 Setup done; M2 Catalog and M3 Admin panel built.
 
 ## Project structure
 
@@ -71,3 +71,15 @@ npm run import:opportunities -- --apply  # write
 Re-running is safe: drafts are updated by their `OPP-###` id, slugs never change, and published listings are never touched.
 
 See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.
+
+### Admin panel
+
+Curators and admins sign in at `/sign-in` with a one-time email link, then use `/admin` (listings, re-check queue, reports, CSV import with diffs, users & roles).
+
+Create the first admin once (the account must have signed in at least once):
+
+```bash
+npm run grant-role -- you@example.com admin
+```
+
+Before going live, set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` (Cloudflare Turnstile). In production, the report form refuses submissions without them.

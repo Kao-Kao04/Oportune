@@ -273,7 +273,10 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "is_admin":
+            "hit_rate_limit":
+{ Args: { "limit_key": string,"max_hits": number,"window_seconds": number }; Returns: boolean
+                           },
+"is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "is_curator":

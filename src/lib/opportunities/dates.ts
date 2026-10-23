@@ -34,6 +34,12 @@ export function formatLongDate(date: string): string {
   }).format(new Date(`${date}T00:00:00Z`));
 }
 
+// "Closed Oct 23, 2026" when the deadline passed; just "Closed" when a curator
+// closed it early (the deadline date would be misleading).
+export function closedLabel(deadline: string | null, today: string): string {
+  return deadline && deadline < today ? `Closed ${formatLongDate(deadline)}` : "Closed";
+}
+
 export type DeadlineTone = "urgent" | "soon" | "normal" | "none" | "closed";
 
 export type DeadlineInfo = {
@@ -53,6 +59,10 @@ type DeadlineFields = {
 
 // Red only for 3 days or less, amber for this week (docs/design/stitch-prompts.md).
 export function deadlineInfo(listing: DeadlineFields, today: string): DeadlineInfo {
+  // A curator can close any listing early, including rolling/TBA ones.
+  if (listing.status === "expired" && (listing.deadline_type !== "date" || !listing.deadline)) {
+    return { label: "Closed", detail: "Closed", tone: "closed", daysLeft: null };
+  }
   if (listing.deadline_type === "rolling") {
     return { label: "Rolling", detail: "Open, no deadline posted", tone: "none", daysLeft: null };
   }

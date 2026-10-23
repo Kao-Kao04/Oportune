@@ -17,6 +17,9 @@
 - Enable HTTPS with automatic certificate renewal (required for service workers and push).
 - Set the canonical app URL and allowed origins per environment.
 - Add the Google OAuth redirect URLs for each environment in Google Cloud and Supabase.
+- In Supabase → Authentication → URL Configuration, set the Site URL to the app URL and add `<app URL>/**` to the redirect allow-list for each environment.
+- Change the **Magic Link** email template link to `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/admin`, so sign-in links also work when opened in another browser or device.
+- Supabase's built-in email sender is for testing only (low hourly limit). Before launch, set custom SMTP (the same provider as reminders).
 - Configure SPF, DKIM, and DMARC for the email domain so reminders don't land in spam.
 
 Don't guess DNS records or callback URLs.
