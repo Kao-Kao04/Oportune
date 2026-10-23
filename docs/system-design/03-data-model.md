@@ -7,7 +7,7 @@
 - [ ] Turn the MVP tables into PostgreSQL migrations.
 - [ ] Add Row-Level Security so students can only read/write their own rows.
 - [ ] Implement the [CSV → `opportunities` mapping](#csv--opportunities-mapping) in the importer, and seed `categories` from `data/categories.csv`.
-- [ ] Don't add columns for sensitive data (IDs, documents, home address, income).
+- [ ] Don't add columns for sensitive data (ID numbers, home address, income). Documents go only in the private storage bucket (Phase 2), never in table columns.
 
 ---
 
@@ -84,7 +84,14 @@ Allowed CSV values: `status` ∈ {`ready`, `needs-check`, `closed`}; `delivery_m
 - `ojt_checklist_template_items` (`id`, `template_id`, `label`, `description`, `sort_order`)
 - `ojt_checklists` (`id`, `user_id`, `template_id`, `company_name`, `start_date`, `end_date`, `required_hours`)
 - `ojt_checklist_items` (`id`, `checklist_id`, `label`, `status` (`not_started`/`in_progress`/`submitted`/`approved`), `due_at`, `completed_at`, `notes`)
+- `documents` (`id`, `user_id`, `storage_path`, `file_name`, `mime_type`, `size_bytes`, `checklist_item_id` (nullable), `saved_opportunity_id` (nullable)). The file itself lives in the private storage bucket under `<user_id>/`
+- `ai_requests` (`id`, `user_id`, `opportunity_id` (nullable), `feature` (`explain` / `eligibility_check` / `writing_help`), `tokens_used`, `created_at`). Used for daily limits and cost tracking; prompts and answers are **not** stored
+
+### Phase 3 tables
+- `source_pages` (`id`, `platform` (`facebook` / `linkedin`), `page_url` (unique), `organization`, `is_active`, `added_by`)
+- `inbox_items` (`id`, `source_page_id`, `post_url` (unique), `post_text`, `posted_at`, `collected_at`, `status` (`new` / `converted` / `ignored`), `opportunity_id` (nullable)). No names, comments, or photos of people
+- `push_subscriptions` gains `platform` (`web` / `android` / `ios`) and `fcm_token` (nullable) for the mobile app
 
 ### Not planned now
 - Scholarship / Return of Service tables (deferred)
-- Payments, subscriptions, organizations, file storage
+- Payments, subscriptions, organizations

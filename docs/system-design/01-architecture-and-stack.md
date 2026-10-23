@@ -21,7 +21,7 @@ The MVP prioritizes:
 - save + reminders (email and push)
 - privacy and low running costs
 
-**Not in scope:** payments, student-facing AI, social-media scraping, document uploads. Compliance tools (OJT checklist) arrive in Phase 2; the DOST ROS tracker is deferred.
+**Not in scope:** payments. Phase 2 adds the OJT checklist, document uploads, and the AI helper; Phase 3 adds the Android/iPhone app and social media sourcing. The DOST ROS tracker is deferred.
 
 ## 2. Architecture Overview
 
@@ -44,9 +44,10 @@ flowchart TD
 ### How listings get in
 1. **Human curation:** curators research official sources and enter listings in the admin panel or the spreadsheet.
 2. **Spreadsheet import:** the admin panel imports `data/opportunities.csv`.
-3. **Later:** official RSS feeds, organizer submissions, AI-assisted entry.
+3. **Phase 3 — social media sourcing:** a job collects public posts from an allow-list of organization pages on Facebook and LinkedIn (official APIs first) into a **curator inbox** as drafts. Nothing from it is published without a curator.
+4. **Later:** official RSS feeds, organizer submissions, AI-assisted entry.
 
-No scraping of Facebook, LinkedIn, or other platforms.
+Never collect from personal profiles or private groups, and never store personal data from posts.
 
 ## 3. Technology Stack
 
@@ -60,6 +61,9 @@ No scraping of Facebook, LinkedIn, or other platforms.
 | Email | Resend | Reminder emails |
 | Push notifications | Web Push (VAPID) via a service worker | Phone notifications without a native app |
 | Installable app | Web app manifest + service worker | "Add to home screen" |
+| File storage (Phase 2) | Supabase Storage, private bucket | Same access rules as the database; owner-only |
+| AI helper (Phase 2) | An LLM API (e.g., Claude) called only from the server | Key never reaches the browser; per-student daily limits |
+| Mobile app (Phase 3) | Capacitor wrapper around the web app | One codebase; Google Play first, then App Store |
 | Analytics | Privacy-friendly product analytics (e.g., PostHog or Plausible) | Measure the feature signals in the idea doc |
 | Monitoring | Error tracking + uptime checks | Catch problems early |
 
@@ -73,6 +77,8 @@ Use **one** backend: Next.js server routes/server actions.
 | Email | $0–20 |
 | Analytics + monitoring | $0 on free tiers |
 | Domain | ~$10–15 per year |
+| AI helper + file storage (Phase 2) | Depends on usage; set a hard monthly cap with the provider |
+| App store accounts (Phase 3) | One-time Google Play fee; yearly Apple fee (check current prices) |
 | **Total** | **About $0–75/month** during the pilot |
 
 Check current provider pricing; free-tier limits change.

@@ -20,8 +20,10 @@
 - Validate all inputs; use parameterized queries/ORM.
 - Rate-limit reports, analytics events, and sign-in.
 - Sanitize listing text to prevent stored XSS.
-- **Data minimization:** only school, course, year level, interests, name, and email from Google. No IDs, documents, or financial info.
-- **Sourcing:** no scraping of social platforms; store short factual summaries in our own words with a link to the source; no personal contact info of organizers (Data Privacy Act; NPC Advisory No. 2026-01; RA 10175; RA 8293).
+- **Data minimization:** only school, course, year level, interests, name, and email from Google. No ID numbers or financial info in the database.
+- **Documents (Phase 2):** treated as sensitive personal information; private bucket, owner-only access, short-lived links, no admin access, deleted with the account.
+- **AI (Phase 2):** server-side key; send the provider only what each request needs; no prompts/answers stored; choose a provider that doesn't train on API data.
+- **Sourcing:** social media sourcing (Phase 3) only from allow-listed public organization pages, official APIs first; never personal profiles or private groups; store short factual summaries in our own words with a link to the source; no personal contact info of organizers (Data Privacy Act; NPC Advisory No. 2026-01; RA 10175; RA 8293).
 - **Breach response:** for qualifying breaches of personal data, notify the NPC and affected users within **72 hours**. Write the plan now.
 - Privacy notice, account deletion, and a contact for privacy questions.
 
@@ -40,6 +42,8 @@
 - **Integration:** Row-Level Security (a student can't read another student's saved items), Google sign-in, push subscription storage.
 - **End-to-end:** open a shared link logged out → view → share → save (sign-in) → reminder scheduled → delete account.
 - **Security:** admin routes blocked for students, input validation, XSS in listing text.
+- **Phase 2:** a student can't read another student's files or a curator any student's files; wrong file types and oversized files are rejected; the AI never states a deadline or requirement missing from the listing.
+- **Phase 3:** the sourcing job stores no names or comments; push reaches the Android app.
 - **Device:** a low-end Android phone on a slow connection; link preview in Messenger.
 
 Use only synthetic data in tests.
@@ -50,13 +54,14 @@ Use only synthetic data in tests.
 |---|---|
 | **0 — Curate & post** | Channel + spreadsheet (`data/opportunities.csv`); no code |
 | **1 — MVP** | Public listings, closing soon, search/filters, badge, report, share, Google sign-in + profile, save, email + push reminders, admin + CSV import, auto-expire, delete account, analytics |
-| **2 — Track & prepare** | Application tracker statuses, OJT checklist, "for you" filter |
-| **3 — Grow** | Messenger/Telegram reminders, offline saved items, AI-assisted admin entry, RSS feeds, DOST ROS info page |
-| **Later / maybe** | ROS tracker, organizer submissions, school/employer features, monetization |
+| **2 — Track & prepare** | Application tracker statuses, OJT checklist, "for you" filter, document uploads, AI helper |
+| **3 — Grow** | Android app (then iPhone), social media sourcing into the curator inbox, Messenger/Telegram reminders, offline saved items, AI-assisted admin entry, RSS feeds, DOST ROS info page |
+| **Later / maybe** | ROS tracker, organizer submissions, school/employer features, payments/monetization |
 
 ## 12. What We Won't Build
 
-- Payments, student-facing AI, social-media scraping, loan referrals, document uploads, native apps, microservices
+- Payments (not needed now), loan referrals, microservices
+- Collecting from personal profiles or private groups, or storing people's personal data from social media
 
 ## 13. Architecture Decisions to Record
 
@@ -67,6 +72,9 @@ Use only synthetic data in tests.
 - Web push setup (VAPID keys, service worker)
 - Analytics tool and what's tracked
 - Backup and breach-response plan
-- Listing sourcing policy
+- Listing sourcing policy, including which social platforms and pages (Phase 3)
+- AI provider, model, daily limits, and monthly cap (Phase 2)
+- File storage limits and retention (Phase 2)
+- Mobile app wrapper and store accounts (Phase 3)
 
-Payment provider: **not needed**.
+Payment provider: **not needed now**.

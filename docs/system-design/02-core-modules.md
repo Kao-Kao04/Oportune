@@ -7,7 +7,7 @@
 - [ ] Create one folder per module in `src/` (catalog, accounts, saved, notifications, admin).
 - [ ] Build in this order: 4.1 → 4.5 → 4.2 → 4.3 → 4.4.
 - [ ] Enforce authorization on the server for every protected action.
-- [ ] Don't start the Phase 2 modules (4.6) until the MVP is live.
+- [ ] Don't start the Phase 2 modules (4.6) until the MVP is live, or Phase 3 (4.7) until Phase 2 is live.
 
 ---
 
@@ -49,10 +49,30 @@
 
 ### 4.6 Phase 2 modules (after the MVP)
 - **Simple application tracker:** status on saved items: `saved` → `applying` → `applied` → `result` (`accepted` / `not_accepted`)
-- **OJT requirements checklist:** admin-managed template (verified against CMO 104) copied to the student's own editable checklist; status and dates only, no files
+- **OJT requirements checklist:** admin-managed template (verified against CMO 104) copied to the student's own editable checklist
 - **"For you" filter:** listings matching profile course, year level, and interests
+- **Documents:** upload files and attach them to OJT checklist items or saved listings
+  - Private storage bucket; only the owner can read their files; downloads use links that expire in minutes
+  - PDF, JPG, PNG only; 5 MB per file; 100 MB per student
+  - Curators and admins can't open student files
+  - Deleted with the account; the student can delete any file at any time
+- **AI helper** (server-side only):
+  - "Explain in Taglish": a plain-language summary of a listing
+  - "Pasok ba ako?": compares the listing's eligibility with the student's profile and answers *possible match* / *check this requirement*, never "you qualify"
+  - Writing help: drafts for essays, cover letters, and resumes, which the student edits
+  - Daily limit per student; every answer labeled "AI-generated — check the official link"
+  - Student documents are sent to the AI only when the student explicitly picks one
+
+### 4.7 Phase 3 modules
+- **Mobile app:** Capacitor wrapper around the web app for Google Play (then the App Store), with native push through Firebase Cloud Messaging alongside web push
+- **Social media sourcing:**
+  - Curators keep an allow-list of public organization pages (schools, agencies, companies) on Facebook and LinkedIn
+  - A scheduled job collects new posts (official APIs first) into a **curator inbox**
+  - Stored: post link, organization, post text, collected date. Not stored: commenters, names, photos of people, contact details
+  - A curator turns a post into a draft listing in our own words; nothing is auto-published
 
 ### Deferred
 - DOST ROS tracker and penalty calculator
 - AI-assisted admin entry, RSS feeds, organizer submissions
 - Messenger/Telegram reminders, offline mode
+- Payments

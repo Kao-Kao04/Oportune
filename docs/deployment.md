@@ -1,6 +1,6 @@
 # Student Opportunity Hub — Deployment Guide
 
-How to run the app locally, ship it safely to production, and keep it running: Vercel + Supabase, Google sign-in, daily jobs for reminders and auto-expiry, email + web push. No payment or AI setup needed.
+How to run the app locally, ship it safely to production, and keep it running: Vercel + Supabase, Google sign-in, daily jobs for reminders and auto-expiry, email + web push. No payment setup needed; the AI provider and file storage come in Phase 2, the app stores in Phase 3.
 
 The full document is split into 5 parts — read them in order:
 

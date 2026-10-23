@@ -1,6 +1,6 @@
 # Student Opportunity Hub — System Design
 
-How the platform is built: one Next.js + PostgreSQL (Supabase) app with public listing pages, Google sign-in, save + email/push reminders, an admin panel with spreadsheet import, and automatic expiry. No payments, no student-facing AI.
+How the platform is built: one Next.js + PostgreSQL (Supabase) app with public listing pages, Google sign-in, save + email/push reminders, an admin panel with spreadsheet import, and automatic expiry. Phase 2 adds private document uploads and an AI helper; Phase 3 adds an Android/iPhone app and social media sourcing. No payments for now.
 
 The full document is split into 5 parts — read them in order:
 

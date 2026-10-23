@@ -95,7 +95,10 @@ Before launch:
 | Error monitoring | — | TBD |
 | Domain and DNS | — | TBD |
 | Backup retention | — | TBD |
-| Payment provider | **Not needed** | — |
-| AI provider | **Not needed for MVP** | — |
+| Payment provider | **Not needed now** | — |
+| AI provider (Phase 2) | An LLM API that doesn't train on API data (e.g., Claude) | TBD |
+| File storage (Phase 2) | Supabase Storage, private bucket | TBD |
+| Mobile app (Phase 3) | Capacitor + Firebase Cloud Messaging | TBD |
+| Social media sourcing (Phase 3) | Official platform APIs, allow-listed pages | TBD |
 
 Start with the smallest secure deployment that supports the MVP.

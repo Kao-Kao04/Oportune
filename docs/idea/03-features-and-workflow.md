@@ -6,7 +6,8 @@
 
 - [ ] Turn each **Must have** feature (§6.1) into a screen or wireframe.
 - [ ] Don't start **Should have** (§6.2) until the Must haves are live.
-- [ ] Don't build anything in **Not now** (§6.3).
+- [ ] Don't start **Phase 3** (§6.3) until Phase 2 is live.
+- [ ] Don't build anything in **Not now** (§6.4).
 - [ ] After launch, check each feature's "How we'll know" signal (see [Part 5 §13](05-validation-metrics-risks.md#13-how-well-know-each-feature-is-needed)).
 
 ---
@@ -33,10 +34,19 @@
 | Feature | Notes |
 |---|---|
 | **Simple application tracker** | Statuses: Saved → Applying → Applied → Result (Accepted / Not accepted). No more than that. |
-| **OJT requirements checklist** | Editable checklist based on CMO 104 plus the student's own school items. Status and dates only, **no document uploads**. Verify items against the official CMO 104 text first. |
+| **OJT requirements checklist** | Editable checklist based on CMO 104 plus the student's own school items. Verify items against the official CMO 104 text first. |
 | **"For you" filter** | Show listings matching the student's course, year level, and interests. Simple rules, no algorithm. |
+| **Document uploads** | Attach files (resume, MOA, medical certificate, parent's consent) to OJT checklist items and saved listings. Private to the student; PDF/JPG/PNG up to 5 MB; delete anytime. |
+| **AI helper** | On a listing: "Explain in Taglish", "Pasok ba ako?" (compares the listing's eligibility with the profile and says *possible match / check this*), and drafts for essays, cover letters, and resumes. Always labeled as AI, always links the official source. |
 
-### 6.3 Not now (deferred or dropped)
+### 6.3 Phase 3
+
+| Feature | Notes |
+|---|---|
+| **Android app** (iPhone later) | Wraps the same web app so there is one codebase; native push notifications. Publish on Google Play first since most students use Android. |
+| **Social media sourcing** | Collect public posts from **organization** pages (schools, agencies, companies) on Facebook and LinkedIn into a curator inbox as drafts. Never personal profiles or private groups; no personal data stored; a curator checks every post before it is published. Requires the legal check in [Part 5 §16](05-validation-metrics-risks.md#16-facts-to-verify) first. |
+
+### 6.4 Not now (deferred or dropped)
 
 | Feature | Why |
 |---|---|
@@ -46,8 +56,7 @@
 | Messenger/Telegram reminders | Later, if email + push isn't enough |
 | Employer portal, school dashboard | Users are students, not companies or schools |
 | Stipend forecaster, ghost-job detector, peer forum | Complex; needs lots of data or moderation |
-| Document uploads | Privacy and security risk |
-| Payments, student-facing AI, scraping | Dropped |
+| Payments | Not needed now; students use everything for free |
 
 ## 7. Student Workflow
 

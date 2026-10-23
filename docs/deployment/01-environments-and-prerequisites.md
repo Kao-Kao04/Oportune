@@ -45,7 +45,7 @@ Before deployment, confirm:
 - Privacy policy, terms, support contact, and account deletion process
 - Breach response plan (NPC 72-hour notification) and a named privacy contact
 
-Payments are out of scope; there is no payment provider to set up.
+Payments are out of scope for now; there is no payment provider to set up.
 
-No AI provider is needed for the MVP.
+No AI provider is needed for the MVP. Phase 2 adds an AI provider API key (server-side only, with a spending cap) and a private Supabase Storage bucket. Phase 3 adds Google Play and Apple developer accounts and a Firebase project for native push.
 

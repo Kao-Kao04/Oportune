@@ -247,4 +247,4 @@ Use one at a time on the screen that needs it:
 
 ## Phase 2 screens (later)
 
-When Phase 2 starts, add prompts for: the application tracker (statuses Saved → Applying → Applied → Result on each saved item) and the OJT requirements checklist (editable items with Not started / In progress / Submitted / Approved, no file uploads).
+When Phase 2 starts, add prompts for: the application tracker (statuses Saved → Applying → Applied → Result on each saved item) and the OJT requirements checklist (editable items with Not started / In progress / Submitted / Approved, each with an "Attach file" button), a "My documents" list, and the AI helper on the listing detail ("Explain in Taglish", "Pasok ba ako?", writing help, each answer labeled "AI-generated — check the official link"). Phase 3: the admin curator inbox for collected social media posts.

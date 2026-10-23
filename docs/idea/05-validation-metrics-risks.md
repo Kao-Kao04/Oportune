@@ -48,13 +48,20 @@ These targets are starting points, not industry rules. Adjust them once you see 
 | Students don't come back after one visit | Save + reminders; measure the 7/30-day return rate |
 | Email reminders go unread | Push notifications in MVP; Messenger/Telegram later |
 | Curation takes too much time | Track curator hours; add AI-assisted entry in Phase 3 |
-| Legal issues with sources | No scraping of social platforms; short summaries in our own words with a link to the source; no personal data (Data Privacy Act, NPC Advisory No. 2026-01, RA 10175, RA 8293) |
+| Legal issues with sources | Social media sourcing only from public organization pages, through official APIs where available; never personal profiles or private groups; short summaries in our own words with a link to the source; no personal data (Data Privacy Act, NPC Advisory No. 2026-01, RA 10175, RA 8293) |
+| Facebook/LinkedIn block us or take legal action | Both platforms' terms restrict automated collection. Use their official APIs and approvals first; keep sourcing in the curator inbox so the app still works if it stops |
+| AI gives a wrong deadline or eligibility answer | AI only reads the checked listing; it never states a deadline that isn't in the listing; every answer is labeled and links the official source; students can report a bad answer |
 | Student data leak | Collect minimal data; Row-Level Security; breach plan (notify NPC within 72 hours for qualifying breaches) |
+| Uploaded documents leak | Private storage, owner-only access, short-lived download links, no curator access, delete on account deletion; documents count as sensitive personal information |
+| Costs grow with AI and storage | Daily AI limit per student; file size limits; monthly budget alerts |
 | No money to run the platform | Keep costs low (free tiers where possible); revisit monetization later |
 
 ## 16. Facts to Verify
 
 - [ ] Full text of NPC Advisory No. 2026-01 on scraping public personal data (before any automated collection)
+- [ ] Facebook (Meta) and LinkedIn terms and API access rules for collecting public page posts (before social media sourcing, Phase 3)
+- [ ] NPC rules for storing students' documents (sensitive personal information) and whether NPC registration is needed (before uploads, Phase 2)
+- [ ] Google Play and Apple App Store requirements and fees (before the Phase 3 app)
 - [ ] NPC breach-notification rules and whether the app needs NPC registration
 - [ ] CMO 104 s. 2017 requirements and any amendments ([CHED PDF](https://legacy.ched.gov.ph/wp-content/uploads/2018/03/CMO-NO.-104-S.-2017.pdf)) before building the OJT checklist (Phase 2)
 - [ ] Official DOST-SEI Return of Service rules before writing the ROS info page (Phase 3)
