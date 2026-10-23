@@ -25,7 +25,7 @@ The MVP prioritizes:
 
 ## 2. Architecture Overview
 
-A **modular monolith**: one Next.js app with one PostgreSQL database, scheduled jobs, an email provider, and web push.
+A **modular monolith**: one Next.js app with one PostgreSQL database, scheduled jobs, an email provider, and web push. The diagram shows the MVP; Phase 2 adds file storage and an AI provider called from the server, and Phase 3 adds the mobile app and the curator inbox, all in the same app and database.
 
 ```mermaid
 flowchart TD

@@ -45,6 +45,6 @@
 4. **No fabricated or unchecked listings.** Every listing has a traceable source and is reviewed by a person before publishing.
 5. **Deadline first.** The most urgent opportunities are the easiest to see.
 6. **Phone first and data-lite.** Fast on cheap phones and slow connections.
-7. **Privacy by default.** The profile collects only school, course, year level, and interests. Uploaded documents are private to the student, never visible to curators, and deletable at any time. No financial info.
+7. **Privacy by default.** The profile collects only school, course, year level, interests, and an "18 or older" confirmation. Uploaded documents are private to the student, never visible to curators, and deletable at any time. No financial info.
 8. **AI helps, people verify.** The AI helper explains and drafts; it never publishes listings or decides eligibility. Deadlines and requirements come from the checked listing and its official link, and AI answers are clearly labeled.
 9. **Simple beats complete.** Ship the smallest useful version, then improve based on what students actually use.

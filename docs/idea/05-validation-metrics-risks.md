@@ -7,7 +7,7 @@
 - [ ] Set up analytics so every signal in §13 can be measured from day one.
 - [ ] Review the numbers every 2 weeks after launch; drop or simplify features nobody uses.
 - [ ] Assign an owner to each risk (§15).
-- [ ] Verify the facts in §16 before building Phase 2 features.
+- [ ] Verify each fact in §16 by the point it names (before launch, before Phase 2, or before Phase 3).
 
 ---
 
@@ -25,6 +25,10 @@ We validate by **launching small and measuring what students actually do**, not 
 | Save + reminders | % of signed-up users who save; % of reminders opened | ≥ 40% save something; ≥ 30% of reminders opened | Try a different reminder channel (Messenger/Telegram) |
 | Quick sign-up | Sign-up completion rate | ≥ 70% of started sign-ups finish | Remove profile questions |
 | Installable app | Installs | Some students install it | — (keep; low cost) |
+| AI helper (Phase 2) | % of detail views that use it; "Report this answer" rate | Used on ≥ 10% of detail views; < 2% of answers reported | Fix prompts or narrow it to "Explain" only |
+| Document uploads (Phase 2) | % of OJT checklist users who upload | ≥ 30% upload at least one file | Keep the checklist, drop uploads |
+| Share to Oportune (Phase 3) | Inbox items per week; % turned into listings | ≥ 20 items/week; ≥ 25% converted | Promote the submission form instead |
+| Android app (Phase 3) | Installs; 30-day retention vs. web | App users return more often than web users | Keep the web app as the main channel |
 
 These targets are starting points, not industry rules. Adjust them once you see real numbers, and write down why.
 
@@ -62,11 +66,11 @@ These targets are starting points, not industry rules. Adjust them once you see 
 
 - [ ] Full text of NPC Advisory No. 2026-01 on scraping public personal data (before any automated collection)
 - [ ] Facebook (Meta) and LinkedIn API rules for reading posts of pages whose admins connect them (before connected pages, Phase 3)
-- [ ] NPC rules for storing students' documents (sensitive personal information) and whether NPC registration is needed (before uploads, Phase 2)
+- [ ] NPC rules for storing students' documents (sensitive personal information) (before uploads, Phase 2)
 - [ ] Google Play and Apple App Store requirements and fees, including Apple's minimum-functionality rule for wrapped web apps (before the Phase 3 app)
 - [ ] Data Privacy Act rules for users under 18 (some first-year students are 17): what consent is needed and which features they can use (before launch)
 - [ ] Current free-tier limits of Vercel, Supabase, and the email provider (before launch)
-- [ ] NPC breach-notification rules and whether the app needs NPC registration
+- [ ] NPC breach-notification rules and whether the app needs NPC registration (before launch; check again before uploads)
 - [ ] CMO 104 s. 2017 requirements and any amendments ([CHED PDF](https://legacy.ched.gov.ph/wp-content/uploads/2018/03/CMO-NO.-104-S.-2017.pdf)) before building the OJT checklist (Phase 2)
 - [ ] Official DOST-SEI Return of Service rules before writing the ROS info page (Phase 3)
 

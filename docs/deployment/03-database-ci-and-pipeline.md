@@ -17,7 +17,7 @@
 - Require encrypted connections where supported.
 - Create separate databases or isolated schemas for staging and production.
 - Configure a restricted application database user.
-- Enable Row-Level Security on all student-owned tables and test the policies.
+- Enable Row-Level Security on **every** table and test the policies; the public reads listings only through the `public_opportunities` view ([System Design Part 3](../system-design/03-data-model.md)).
 - Apply versioned migrations during deployment.
 - Add indexes for commonly queried fields, including opportunity status, category, deadline, and user-to-opportunity relationships.
 - Enable automated backups and define retention.

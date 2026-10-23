@@ -45,15 +45,15 @@ After each production release, verify:
 8. A test push notification arrives on a test device.
 9. Report button creates a report visible in the admin panel.
 10. Curators can import the CSV, publish, and expire listings.
-11. Students cannot access admin pages or other students' saved items.
+11. Students cannot access admin pages or other students' saved items, and a request with the public anon key can't read draft listings or internal notes.
 12. Account deletion works for a test account.
 
 ## 15. Monitoring and Operations
 
 Monitor:
 - Availability, error rate, page speed on mobile
-- Daily job runs (expire, reminders): success/failure counts
-- Email delivery, bounce, and unsubscribe rates
+- Daily job runs (expire, reminders, cleanup) from `job_runs`: success/failure counts, missed days
+- Email delivery, bounce, and unsubscribe rates, and daily sends vs. the provider's cap
 - Push delivery failures and expired subscriptions
 - Listing freshness: expired, rolling/TBA not checked in 30+ days, open reports
 - Product signals: views, official-link clicks, saves, shares, reminders opened, 7/30-day return
@@ -92,6 +92,7 @@ Before launch:
 | Database + auth | Supabase (Google sign-in) | TBD |
 | Scheduled jobs | Vercel Cron or Supabase scheduled functions | TBD |
 | Email | Resend | TBD |
+| Rate limiting + captcha | Upstash Redis (or Postgres table) + Cloudflare Turnstile | TBD |
 | Push | Web Push (VAPID) | TBD |
 | Analytics | PostHog or Plausible | TBD |
 | Error monitoring | — | TBD |

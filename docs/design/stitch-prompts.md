@@ -204,7 +204,7 @@ Then a second small frame showing the confirmation toast: "Thanks — we'll chec
 ```
 Design a desktop admin panel for "Oportune", used by a small team that curates student opportunities. Same visual style: off-white background, near-black text, deep teal accent (#0F5257), Public Sans, thin dividers, no gradients or decorative illustrations. It should feel like a practical internal tool.
 
-Left sidebar: Listings, Import, Reports (with a count badge "3"), Settings.
+Left sidebar: Listings, Import, Reports (with a count badge "3"), Re-check (with a count badge), Users & roles, Settings.
 
 Main screen — Listings:
 - A data table with columns: Status (Draft / Published / Expired as small text labels), Title, Organization, Category, Deadline, Source trust (Official .gov.ph / Official .edu.ph / Other), Confidence (High / Medium / Low), Last checked.
@@ -217,8 +217,8 @@ Main screen — Listings:
 
 ```
 Same admin style. Create three more desktop screens:
-1. Edit listing form: fields for title, organization, category, summary (with a 300-character counter), eligibility, location, delivery mode, opens date, deadline (with options Date / Rolling / TBA), source URL (shows the detected badge "Official .gov.ph" under it), application URL, confidence, internal notes, last checked. Buttons: "Save draft", "Publish".
-2. Import: an upload area for a CSV file, then a preview table showing rows marked "New", "Duplicate – will skip", or "Missing deadline – check", with the button "Import 61 rows as drafts".
+1. Edit listing form: fields for title, organization, category, summary (with a 300-character counter), eligibility, requirements, location, delivery mode (Online / In-person / Hybrid), opens date (Date / Open now / Rolling / TBA), deadline (Date / Rolling / TBA), source URL (shows the detected badge "Official .gov.ph" under it), application URL, confidence, a "Needs check" toggle, internal notes, last checked. The page URL (slug) is shown read-only once published. Buttons: "Save draft", "Publish" (disabled while "Needs check" is on).
+2. Import: an upload area for a CSV file, then a preview table showing rows marked "New", "Updated draft", "Changed – published" (expandable to a field-by-field diff with a checkbox per change, e.g., "Deadline: Oct 25 → Nov 8"), "Rejected" (with the reason, e.g., "Unknown category"), or "Closed – will skip", with the button "Import 61 rows".
 3. Reports queue: a list of student reports with reason, listing title, date, optional message, and actions "Mark fixed", "Dismiss", "Open listing".
 ```
 

@@ -37,6 +37,7 @@ Before deployment, confirm:
 - Authentication configuration (Supabase Auth with Google sign-in; OAuth client per environment)
 - Web push VAPID key pair per environment
 - Transactional email provider and verified sender domain
+- Rate-limit store (Upstash Redis or the Postgres table) and a Cloudflare Turnstile site key
 - Domain name and DNS access
 - Secret management for production credentials
 - Database migration process

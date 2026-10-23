@@ -53,6 +53,7 @@ Auth credentials are managed by Supabase Auth. **The role is not in `profiles`**
 - `opportunities` has **no** policy for `anon` or `authenticated`; only curators/admins (via `user_roles`) can read or write it.
 - `public_opportunities` is a view with only the public columns (no `notes`, `confidence`, `needs_check`, `recheck_due`, `external_id`, `created_by`, `reviewed_by`) and only `status in ('published', 'expired')`. `anon` and `authenticated` get `select` on the view only.
 - Expired listings stay in the view so old shared links show "Closed"; `draft` and `archived` never appear.
+- The view must run with its owner's rights (Postgres default, `security_invoker = false`) so it can read the locked table. Never add `security_invoker = true` to it, and never select `*` in it, so a new internal column can't appear publicly by accident.
 
 **`opportunity_reports`**: `id`, `opportunity_id`, `user_id` (nullable, so logged-out students can report; `on delete set null`), `reason` (`wrong_info` / `expired` / `scam` / `other`), `details`, `status` (`open` / `fixed` / `dismissed`)
 - Inserted only by the server (after the rate limit and captcha check), never directly with the anon key. Only curators can read reports.
@@ -71,6 +72,10 @@ Auth credentials are managed by Supabase Auth. **The role is not in `profiles`**
 **Account deletion:** every FK to a user is either `on delete cascade` (the student's own data) or `on delete set null` (records that must survive, like listings a curator created, audit logs, and reports). A test deletes a user who has data in every table.
 
 **`analytics_events`** (optional if using an analytics tool): `event` (`view`, `official_click`, `save`, `share`, `reminder_open`), `opportunity_id`, `anonymous_id`, `created_at`
+- Inserted only by the server after the rate limit, never directly with the anon key; no one reads it through the public API.
+
+**`job_runs`**: `id`, `job` (`auto_expire` / `send_reminders` / `cleanup`), `run_for_date` (Philippine date), `started_at`, `finished_at`, `status` (`running` / `ok` / `failed`), `sent_count`, `failed_count`, `error`
+- Lets the reminder job catch up after a missed day and powers the "failed twice in a row" alert.
 
 ### CSV → `opportunities` mapping
 

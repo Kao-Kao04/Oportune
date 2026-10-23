@@ -35,7 +35,7 @@
 |---|---|
 | **Simple application tracker** | Statuses: Saved → Applying → Applied → Result (Accepted / Not accepted). No more than that. |
 | **OJT requirements checklist** | Editable checklist based on CMO 104 plus the student's own school items. Verify items against the official CMO 104 text first. |
-| **"For you" filter** | Show listings matching the student's course, year level, and interests. Simple rules, no algorithm. |
+| **"For you" filter** | Show listings matching the student's course group, year level, and interests. Simple rules, no algorithm. Works because the profile uses fixed lists from day one. |
 | **Document uploads** | Attach files (resume, MOA, medical certificate, parent's consent) to OJT checklist items and saved listings. Private to the student; PDF/JPG/PNG up to 5 MB; delete anytime. |
 | **AI helper** | On a listing: "Explain in Taglish", "Pasok ba ako?" (compares the listing's eligibility with the profile and says *possible match / check this*), and drafts for essays, cover letters, and resumes. Always labeled as AI, always links the official source. |
 
@@ -55,8 +55,8 @@ Everything in the inbox is published only after a curator checks the official so
 | Feature | Why |
 |---|---|
 | DOST Return of Service tracker + penalty calculator | Main users are graduates, not students; wrong numbers could cause financial harm. Use a simple info page linking to official DOST rules instead. |
-| Full offline mode | A fast app is enough for now |
-| AI in the admin panel | Not needed at the current listing volume |
+| Full offline mode | A fast app is enough for now; Phase 3 adds offline viewing of saved listings only |
+| AI-assisted admin entry | Not needed at the current listing volume; Phase 3 at the earliest, only if curator time becomes a problem |
 | Messenger/Telegram reminders | Later, if email + push isn't enough |
 | Employer portal, school dashboard | Users are students, not companies or schools |
 | Stipend forecaster, ghost-job detector, peer forum | Complex; needs lots of data or moderation |
@@ -76,15 +76,17 @@ The platform never applies on the student's behalf and never marks anything as "
 
 ## 8. Opportunity Categories
 
-The canonical list (names and URL slugs) lives in [`data/categories.csv`](../../data/categories.csv); every row in [`data/opportunities.csv`](../../data/opportunities.csv) must use one of these names exactly:
+The canonical list lives in [`data/categories.csv`](../../data/categories.csv). Every row in [`data/opportunities.csv`](../../data/opportunities.csv) must use a **name** from this table exactly:
 
-- Scholarship and financial aid
-- Internship and OJT
-- Entry-level jobs — graduate and trainee programs
-- Hackathons and technical competitions
-- Cybersecurity CTFs
-- Courses, certifications, and TESDA programs
-- Student leadership and ambassador programs
-- Events and conferences
-- Research grants and innovation programs
-- Hardware, gadget, and connectivity grants
+| Name | Slug | Covers |
+|---|---|---|
+| Scholarship and financial aid | `scholarships` | Scholarships, grants, government and LGU financial aid |
+| Internship and OJT | `internships` | Internships, OJT placements, summer programs |
+| Entry-level jobs | `entry-level-jobs` | Graduate and trainee programs, first jobs |
+| Hackathons and technical competitions | `hackathons` | Hackathons, programming and engineering contests |
+| Cybersecurity CTFs | `ctfs` | Capture-the-flag competitions |
+| Courses, certifications, and TESDA programs | `courses` | Free courses, certification programs, TESDA |
+| Student leadership and ambassador programs | `leadership` | Ambassador, campus lead, and leadership programs |
+| Events and conferences | `events` | Conferences, summits, job fairs, workshops |
+| Research grants and innovation programs | `research-grants` | Thesis and research grants, innovation challenges |
+| Hardware, gadget, and connectivity grants | `hardware-grants` | Laptop, device, and internet grants |

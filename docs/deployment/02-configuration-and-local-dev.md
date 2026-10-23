@@ -13,40 +13,13 @@
 
 ## 4. Configuration and Environment Variables
 
-Create an `.env.example` containing names and safe placeholders only. Never commit real secrets.
+The root [`.env.example`](../../.env.example) is the single list of variables, with names and safe placeholders only. Keep it up to date whenever code needs a new variable; don't copy the list into the docs.
 
-Example variables (adapt to the selected stack):
-
-```dotenv
-NODE_ENV=development
-APP_BASE_URL=http://localhost:3000
-
-# Supabase (URL and anon key are public by design; RLS protects the data)
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-DATABASE_URL=
-
-# Google sign-in is configured in the Supabase dashboard (OAuth client ID/secret)
-
-# Reminder emails
-EMAIL_PROVIDER_API_KEY=
-EMAIL_FROM_ADDRESS=
-
-# Web push notifications (generate with: npx web-push generate-vapid-keys)
-NEXT_PUBLIC_VAPID_PUBLIC_KEY=
-VAPID_PRIVATE_KEY=
-VAPID_SUBJECT=mailto:
-
-# Protects the scheduled-job endpoints (reminders, auto-expire)
-CRON_SECRET=
-
-ERROR_TRACKING_DSN=
-```
+It covers: app URL; Supabase (URL, anon key, service role key, database URL); reminder emails; web push (VAPID keys); `CRON_SECRET` for job endpoints; rate limiting (Upstash Redis, IP-hash salt); captcha (Cloudflare Turnstile); and error tracking. Google sign-in is configured in the Supabase dashboard (OAuth client ID/secret), not in env vars. Phase 2 adds an AI provider key; Phase 3 adds Firebase and Facebook/LinkedIn app credentials.
 
 Important:
 - Use only the variables required by the actual implementation.
-- Only `NEXT_PUBLIC_*` values reach the browser. Never put the service role key, VAPID private key, or email key there.
+- Only `NEXT_PUBLIC_*` values reach the browser. Never put the service role key, VAPID private key, email key, Turnstile secret, or AI key there.
 - Keep production values in the host's secret manager.
 - Rotate any secret accidentally committed or included in a build artifact.
 - Use different credentials for local, staging, and production.

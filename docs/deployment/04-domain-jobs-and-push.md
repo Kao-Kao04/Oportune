@@ -33,15 +33,15 @@ Rules:
 - Store timestamps in UTC; calculate "today" in Philippine time (UTC+8). Cron schedules are in UTC: midnight PH = 16:00 UTC, 8:00 AM PH = 00:00 UTC.
 - Jobs must be idempotent (unique deduplication key per reminder, including the deadline date).
 - Send in batches and resume on the next call, so a big day never hits the function time limit.
+- Protect job endpoints with `CRON_SECRET`.
+- Log each run in `job_runs` (count sent, count failed); alert someone if a job fails twice in a row.
+- Respect each student's reminder settings and email unsubscribes.
 
 ### Free-tier limits to plan around
 Check current limits before launch; they change.
 - **Vercel Hobby:** for personal, non-commercial projects (fine while the app is free; move to Pro before any monetization). Cron jobs on Hobby run once a day and may fire anytime within the scheduled hour; functions have a time limit, hence batching.
 - **Supabase Free:** projects are paused after a period of inactivity, and database/storage sizes are capped. Daily jobs keep it active; upgrade before launch if pausing is still possible.
 - **Email provider free tier:** has a daily and monthly sending cap. Estimate reminders per day (saves × 2 reminders) and upgrade before you reach it; push reminders don't count against it.
-- Protect job endpoints with `CRON_SECRET`.
-- Log each run (count sent, count failed); alert someone if a job fails twice in a row.
-- Respect each student's reminder settings and email unsubscribes.
 
 ## 11. Push Notifications and Installable App
 

@@ -22,7 +22,7 @@
 - Rate-limit reports, analytics events, sign-in, AI, and shares using a shared store (Upstash Redis or the `rate_limits` table); captcha on logged-out forms.
 - **Minors:** some first-year students are 17. Ask "I am 18 or older" at sign-up. Until the legal check in [idea Part 5 §16](../idea/05-validation-metrics-risks.md#16-facts-to-verify) is done, under-18 users can browse and save, but don't get the AI helper or document uploads, and nothing beyond the basic profile is collected from them.
 - Sanitize listing text to prevent stored XSS.
-- **Data minimization:** only school, course, year level, interests, name, and email from Google. No ID numbers or financial info in the database.
+- **Data minimization:** only school, course, year level, interests, the 18-or-older answer, and name and email from Google. No ID numbers or financial info in the database.
 - **Documents (Phase 2):** treated as sensitive personal information; private bucket, owner-only access, short-lived links, no admin access, deleted with the account. Launch only after the NPC registration check.
 - **AI (Phase 2):** server-side key; send the provider only what each request needs; no prompts/answers stored; choose a provider that doesn't train on API data; separate, revocable consent before any document is sent.
 - **Sourcing:** no scraping of social platforms; Phase 3 inbox items come from student shares, submissions, and pages connected by their own admins through official APIs; connected-page tokens encrypted; store short factual summaries in our own words with a link to the source; no personal contact info of organizers (Data Privacy Act; NPC Advisory No. 2026-01; RA 10175; RA 8293).
@@ -34,13 +34,14 @@
 - Database migrations in version control.
 - Automated backups; test a restore at least once before launch.
 - Error tracking and uptime checks.
-- Daily jobs: auto-expire, schedule/send reminders. Log each run; alert on repeated failures.
-- Weekly curator routine: check reports, re-check rolling/TBA listings older than 30 days, import new listings.
+- Daily jobs: auto-expire, send reminders, cleanup. Log each run in `job_runs`; alert if a job fails twice in a row.
+- Weekly curator routine: check reports, clear the "Re-check due" queue, import new listings (Phase 3: clear the inbox).
+- Watch the email provider's daily send count against its cap.
 - Separate staging and production.
 
 ## 10. Testing Strategy
 
-- **Unit (highest priority):** official-site badge (including lookalike URLs), closing-soon and expiry in Philippine time, reminders (a TBA deadline that later gets a date, an extended deadline, an earlier deadline, a save 3 days before the deadline, running the job twice), CSV import mapping (including the published-row diff), slug generation (`ñ`, long titles, collisions).
+- **Unit (highest priority):** official-site badge (including lookalike URLs), closing-soon and expiry in Philippine time, reminders (a TBA deadline that later gets a date, an extended deadline, an earlier deadline, a save 3 days before the deadline, running the job twice, catching up after a missed day), CSV import mapping (including the published-row diff), slug generation (`ñ`, long titles, collisions).
 - **Integration:** Row-Level Security (a student can't read another student's saved items), the anon key can't read `opportunities` or any internal column, Google sign-in, push subscription storage, deleting a user who has rows in every table.
 - **End-to-end:** open a shared link logged out → view → share → save (sign-in) → reminder sent on the right day → delete account.
 - **Security:** a student can't change their own role (direct API call to `profiles` and `user_roles`), admin routes blocked for students, rate limits hold across parallel requests, input validation, XSS in listing text.
@@ -70,6 +71,7 @@ Use only synthetic data in tests.
 - Hosting and database (Vercel + Supabase?)
 - Auth (Supabase Auth + Google?)
 - Scheduled jobs provider
+- Rate-limit store (Upstash Redis or Postgres) and captcha (Turnstile)
 - Email provider
 - Web push setup (VAPID keys, service worker)
 - Analytics tool and what's tracked

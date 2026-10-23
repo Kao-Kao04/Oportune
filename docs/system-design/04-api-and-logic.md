@@ -4,7 +4,7 @@
 
 ## ✅ What to do with this file
 
-- [ ] Build public pages first, then accounts/saved/reminders, then admin.
+- [ ] Build in the module order from [Part 2](02-core-modules.md): public pages, then admin + import (so there is real data), then accounts, saved, and reminders.
 - [ ] Add input validation, authorization, and rate limiting to every endpoint.
 - [ ] Implement the badge, closing-soon, expiry, and reminder logic exactly as described, with unit tests.
 - [ ] Test link previews by pasting a listing URL into Messenger.
@@ -18,8 +18,9 @@ Illustrative paths (these may become Next.js pages, route handlers, or server ac
 ### Public (no login)
 - `GET /opportunities?category=&q=&sort=deadline`
 - `GET /opportunities/closing-soon`
-- `GET /opportunities/{slug}`
+- `GET /opportunities/{slug}` (an old slug in `opportunity_slug_redirects` returns a permanent redirect)
 - `GET /categories`
+- `GET /unsubscribe?token=` (turns off email reminders without signing in)
 - `POST /opportunities/{id}/report` (rate-limited)
 - `POST /events`: analytics events such as official-link clicks and shares (rate-limited)
 
@@ -37,6 +38,8 @@ Illustrative paths (these may become Next.js pages, route handlers, or server ac
 - `POST /admin/opportunities/{id}/publish`, `POST /admin/opportunities/{id}/expire`
 - `POST /admin/import` (CSV upload → preview → confirm)
 - `GET /admin/reports`, `PATCH /admin/reports/{id}`
+- `GET /admin/recheck` (listings with `needs_check` or `recheck_due`), `POST /admin/opportunities/{id}/mark-checked`
+- Admin only: `GET /admin/roles`, `POST /admin/roles` (grant curator/admin), `DELETE /admin/roles/{userId}`
 - Phase 3: `GET /admin/inbox`, `POST /admin/inbox/{id}/convert` (creates a draft listing), `POST /admin/inbox/{id}/ignore`
 - Phase 3 (logged in, rate-limited): `POST /share` (Web Share Target / app share), `POST /submit-opportunity`, `POST /connected-pages` (OAuth with Facebook/LinkedIn), `DELETE /connected-pages/{id}`
 - Phase 3 job: `POST /jobs/sync-connected-pages` (protected by `CRON_SECRET`)
@@ -68,6 +71,7 @@ Reminders are **not** scheduled when a student saves. Instead, the daily job (8:
 4. Insert the `notifications` row first with `on conflict (deduplication_key) do nothing`; send only if the insert succeeded. Running the job twice never sends twice, and a changed deadline gets new reminders because the key changes.
 5. Send in batches (e.g., 50 at a time) and continue in the next invocation if time runs out, so the job never hits the function time limit. Respect the email provider's daily limit; push goes first, email after.
 6. Mark each row `sent` or `failed`; retry `failed` once on the next run.
+7. **Catch-up:** the job records each run in `job_runs`. If any date since the last successful run was missed (e.g., cron didn't fire), it also processes those dates, still skipping reminders whose deadline has already passed. The dedup key keeps this safe.
 
 Other rules:
 - If a student saves a listing less than 7 days before its deadline, they get only the 1-day reminder; saving the day before or on the deadline sends none (the "Closing soon" label already shows it).

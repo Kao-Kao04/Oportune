@@ -40,19 +40,19 @@ Every listing shows its **official source**, **last-checked date**, and an **off
 
 ## 3. What We Kept and What We Changed from the Research
 
-The deep research recommended making compliance tools (CMO 104 OJT checklist, DOST Return of Service tracker) the core. After reviewing every feature from a **student's point of view**, we decided:
+The deep research recommended making compliance tools (CMO 104 OJT checklist, DOST Return of Service tracker) the core. After reviewing every feature from a **student's point of view**, we decided the following. The last rows are later changes to our own first plan.
 
-| Research recommendation | Our decision | Why |
+| Research recommendation or earlier plan | Our decision | Why |
 |---|---|---|
 | Compliance tools as the core | **Listings + reminders are the core**; compliance tools come later | Every student needs opportunities; only some need compliance tools, and only at certain times |
 | CMO 104 OJT checklist in MVP | **Phase 2**, as an editable checklist | Only for 3rd/4th years during OJT season; each school's requirements differ |
 | DOST ROS tracker + penalty calculator in MVP | **Deferred.** A simple info page linking to official DOST rules for now | The main users are **graduates** serving ROS, not current students; wrong numbers could cause real harm |
 | Offline-first PWA | **Fast + installable now**, full offline later | Speed matters most on prepaid data; offline is extra work |
-| AI extraction in admin panel | **Later** | Not needed while we curate dozens, not thousands, of listings |
+| AI extraction in admin panel | **Phase 3 at the earliest** | Not needed while we curate dozens, not thousands, of listings |
 | Hyper-local launch (Olongapo) | **All schools nationwide** | Start with opportunities open to everyone (national scholarships, online events, free courses) |
+| Official-domain badge, scam protection | **Kept, MVP** | Cheap to build, high trust value |
 | Human curation, no scraping | **Kept, with help.** No scraping; in Phase 3 students share posts to the app ("Share to Oportune"), organizations submit their own, and a curator reviews everything | Many PH opportunities are only posted on FB pages, but scraping breaks Facebook's and LinkedIn's terms (see [Part 5 §15](05-validation-metrics-risks.md#15-risks-and-mitigations)) |
 | No AI for students | **Changed.** AI helper in Phase 2: explain a listing in Taglish, "pasok ba ako?" check, application/essay help | Students need help with long requirements and with writing applications. Facts still come from the checked listing |
 | No document uploads | **Changed.** Private uploads for OJT requirements and application files in Phase 2 | Students need one place for requirements instead of chats and drives |
 | Web app only | **Changed.** Android app in Phase 3, iPhone after | A store app is easier to find and keep than "add to home screen" |
 | No payments | **Kept.** Not needed now | Students have little money; revisit later |
-| Official-domain badge, scam protection | **Kept, MVP** | Cheap to build, high trust value |
