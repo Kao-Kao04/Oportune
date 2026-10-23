@@ -24,3 +24,11 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Next.js extras
+*.tsbuildinfo
+next-env.d.ts
+.pnp
+.pnp.*
+/coverage
+*.pem

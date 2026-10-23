@@ -15,11 +15,11 @@
 
 The root [`.env.example`](../../.env.example) is the single list of variables, with names and safe placeholders only. Keep it up to date whenever code needs a new variable; don't copy the list into the docs.
 
-It covers: app URL; Supabase (URL, anon key, service role key, database URL); reminder emails; web push (VAPID keys); `CRON_SECRET` for job endpoints; rate limiting (Upstash Redis, IP-hash salt); captcha (Cloudflare Turnstile); and error tracking. Google sign-in is configured in the Supabase dashboard (OAuth client ID/secret), not in env vars. Phase 2 adds an AI provider key; Phase 3 adds Firebase and Facebook/LinkedIn app credentials.
+It covers: app URL; Supabase (URL, publishable key, secret key, database URL); reminder emails; web push (VAPID keys); `CRON_SECRET` for job endpoints; rate limiting (Upstash Redis, IP-hash salt); captcha (Cloudflare Turnstile); and error tracking. Google sign-in is configured in the Supabase dashboard (OAuth client ID/secret), not in env vars. Phase 2 adds an AI provider key; Phase 3 adds Firebase and Facebook/LinkedIn app credentials.
 
 Important:
 - Use only the variables required by the actual implementation.
-- Only `NEXT_PUBLIC_*` values reach the browser. Never put the service role key, VAPID private key, email key, Turnstile secret, or AI key there.
+- Only `NEXT_PUBLIC_*` values reach the browser. Never put the secret key, VAPID private key, email key, Turnstile secret, or AI key there.
 - Keep production values in the host's secret manager.
 - Rotate any secret accidentally committed or included in a build artifact.
 - Use different credentials for local, staging, and production.

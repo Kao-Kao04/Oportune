@@ -4,7 +4,7 @@ A free, phone-first platform where college students in the Philippines (any publ
 
 Payments are deferred — the platform is free for students.
 
-> Status: Phase 0 (curating and posting opportunities). No app code exists yet.
+> Status: Phase 0 (curating and posting opportunities) and Phase 1, M1 Setup: Next.js app connected to Supabase; no features yet.
 
 ## Project structure
 
@@ -18,7 +18,10 @@ Payments are deferred — the platform is free for students.
 ├── data/
 │   ├── opportunities.csv    # Curated opportunity list (seed data for the app)
 │   └── categories.csv       # Canonical category names + slugs
-├── src/                     # Application source code
+├── src/
+│   ├── app/                 # Next.js pages (App Router)
+│   ├── lib/supabase/        # Supabase clients: server, browser, session refresh
+│   └── proxy.ts             # Refreshes the Supabase session on each request
 ├── tests/                   # Automated tests
 ├── .env.example             # Environment variable template (no real secrets)
 └── README.md
@@ -36,8 +39,14 @@ Each part starts with a **"✅ What to do with this file"** checklist.
 
 ## Local setup
 
+Needs Node.js 20 or newer.
+
 ```bash
+npm install
 cp .env.example .env.local   # fill in local values — never commit real secrets
+npm run dev                  # http://localhost:3000
 ```
+
+Checks: `npm run lint`, `npm run typecheck`, `npm run build`.
 
 See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.

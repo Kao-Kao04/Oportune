@@ -16,7 +16,7 @@
 
 - HTTPS everywhere; secrets only on the server or in the host's secret manager.
 - **Row-Level Security**: students can only access their own profile, saved items, push subscriptions, and notifications.
-- **Public data only through views:** the public reads listings through `public_opportunities`, never the `opportunities` table, so internal columns can't leak through the public anon key.
+- **Public data only through views:** the public reads listings through `public_opportunities`, never the `opportunities` table, so internal columns can't leak through the public publishable key.
 - **Roles live in `user_roles`**, which no student can write; role checks on curator/admin routes and in RLS read from it; audit-log admin actions and role changes.
 - Validate all inputs; use parameterized queries/ORM.
 - Rate-limit reports, analytics events, sign-in, AI, and shares using a shared store (Upstash Redis or the `rate_limits` table); captcha on logged-out forms.
@@ -42,7 +42,7 @@
 ## 10. Testing Strategy
 
 - **Unit (highest priority):** official-site badge (including lookalike URLs), closing-soon and expiry in Philippine time, reminders (a TBA deadline that later gets a date, an extended deadline, an earlier deadline, a save 3 days before the deadline, running the job twice, catching up after a missed day), CSV import mapping (including the published-row diff), slug generation (`ñ`, long titles, collisions).
-- **Integration:** Row-Level Security (a student can't read another student's saved items), the anon key can't read `opportunities` or any internal column, Google sign-in, push subscription storage, deleting a user who has rows in every table.
+- **Integration:** Row-Level Security (a student can't read another student's saved items), the publishable key can't read `opportunities` or any internal column, Google sign-in, push subscription storage, deleting a user who has rows in every table.
 - **End-to-end:** open a shared link logged out → view → share → save (sign-in) → reminder sent on the right day → delete account.
 - **Security:** a student can't change their own role (direct API call to `profiles` and `user_roles`), admin routes blocked for students, rate limits hold across parallel requests, input validation, XSS in listing text.
 - **Phase 2:** a student can't read another student's files or a curator any student's files; wrong file types and oversized files are rejected; the AI never states a deadline or requirement missing from the listing.

@@ -45,7 +45,7 @@ After each production release, verify:
 8. A test push notification arrives on a test device.
 9. Report button creates a report visible in the admin panel.
 10. Curators can import the CSV, publish, and expire listings.
-11. Students cannot access admin pages or other students' saved items, and a request with the public anon key can't read draft listings or internal notes.
+11. Students cannot access admin pages or other students' saved items, and a request with the public publishable key can't read draft listings or internal notes.
 12. Account deletion works for a test account.
 
 ## 15. Monitoring and Operations
