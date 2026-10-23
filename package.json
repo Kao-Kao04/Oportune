@@ -10,7 +10,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "db": "node scripts/supabase-db.mjs",
     "import:opportunities": "tsx scripts/import-opportunities.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "publish:drafts": "tsx scripts/publish-drafts.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
