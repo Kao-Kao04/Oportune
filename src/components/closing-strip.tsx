@@ -23,16 +23,16 @@ export function ClosingStrip({
           <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full border-2 border-ink bg-tomato" />
           Closing this week
         </h2>
-        <Link href={seeAllHref} className="inline-flex min-h-11 items-center text-sm font-bold text-ink underline underline-offset-4">
+        <Link href={seeAllHref} scroll={false} className="inline-flex min-h-11 items-center text-sm font-bold text-ink underline underline-offset-4">
           See all {listings.length}
         </Link>
       </div>
-      <ul className="flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-3 pt-1 [scrollbar-width:none]">
+      <ul className="flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 pt-1 [scrollbar-width:none] md:grid md:grid-cols-2 md:overflow-visible">
         {listings.map((listing) => {
           const deadline = deadlineInfo(listing, today);
           const urgent = deadline.tone === "urgent";
           return (
-            <li key={listing.id} className="w-64 shrink-0 snap-start">
+            <li key={listing.id} className="w-64 shrink-0 snap-start md:w-auto">
               <Link
                 href={`/opportunities/${listing.slug}`}
                 className={`sticker press flex h-full flex-col p-4 ${urgent ? "bg-tomato" : "bg-sun"}`}

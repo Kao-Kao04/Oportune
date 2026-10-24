@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useCallback, useEffect, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useOptimistic, useRef, useState } from "react";
 import { toggleSave, type SaveResult } from "@/app/saved/actions";
 import { PushPrompt } from "./push-prompt";
 
@@ -37,12 +37,21 @@ export function SaveButton({
     // Drop ?save=1 so a refresh doesn't save again after an unsave.
     const url = new URL(window.location.href);
     url.searchParams.delete("save");
-    window.history.replaceState(null, "", url);
+    // Keep the router's history state, or Back/Forward stop restoring pages.
+    window.history.replaceState(window.history.state, "", url);
   }, [autoSave, initialSaved]);
 
-  const saved = state.saved;
+  // Flip the bookmark right away; the server result replaces it when it arrives
+  // (and reverts it if saving failed). The button stays disabled meanwhile, so
+  // repeated taps can't send duplicate requests.
+  const [saved, setOptimisticSaved] = useOptimistic(state.saved);
+  function submit(formData: FormData) {
+    setOptimisticSaved(formData.get("intent") === "save");
+    action(formData);
+  }
+
   return (
-    <form ref={formRef} action={action}>
+    <form ref={formRef} action={submit}>
       <input type="hidden" name="opportunity_id" value={opportunityId} />
       <input type="hidden" name="back" value={back} />
       <input type="hidden" name="intent" value={saved ? "unsave" : "save"} />
@@ -60,6 +69,9 @@ export function SaveButton({
         </svg>
         {!compact && (saved ? "Saved" : "Save")}
       </button>
+      <span className="sr-only" aria-live="polite">
+        {pending ? "" : state.error ? "" : state.saved ? "Saved" : ""}
+      </span>
       {state.error && (
         <p role="alert" className="mt-1 text-xs text-urgent">
           {state.error}

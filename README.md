@@ -54,6 +54,8 @@ npm run dev                  # http://localhost:3000
 
 Checks (also run by GitHub Actions on every PR): `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
+Browser UX checks (scrolling, filters, search, Back, overflow at 360–1440px) against a running build: `npm run ux:check -- http://localhost:3000` (needs Chrome; set `CHROME_PATH` if it is elsewhere).
+
 Database (uses `DATABASE_URL` from `.env.local`; use the Supabase **session pooler** URL):
 
 ```bash

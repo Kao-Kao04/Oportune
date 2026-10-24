@@ -1,13 +1,19 @@
 import { cookies } from "next/headers";
+import Form from "next/form";
 import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { Suspense } from "react";
 import { ClosingStrip } from "@/components/closing-strip";
+import { RememberBrowse } from "@/components/back-link";
+import { ChipRow } from "@/components/chip-row";
 import { FeedPost } from "@/components/feed-post";
+import { FilterLink } from "@/components/filter-link";
+import { SearchFocus } from "@/components/search-focus";
 import { WelcomeNote } from "@/components/welcome-note";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { WELCOME_COOKIE } from "@/lib/welcome";
+import { browseHref, readFilters, type Filters, type View } from "@/lib/browse-filters";
 import { categoryBg, categoryChipLabel } from "@/lib/opportunities/categories";
 import { groupByDeadline, isClosingSoon, isOpen, type Listing } from "@/lib/opportunities/listing";
 import {
@@ -17,34 +23,6 @@ import {
   searchListings,
   type Category,
 } from "@/lib/opportunities/queries";
-
-type View = "all" | "closing-soon";
-
-type Filters = { view: View; category: string | null; q: string };
-
-function first(value: string | string[] | undefined): string | undefined {
-  return Array.isArray(value) ? value[0] : value;
-}
-
-function readFilters(params: Record<string, string | string[] | undefined>): Filters {
-  const q = (first(params.q) ?? "").trim().slice(0, 100);
-  return {
-    view: first(params.view) === "closing-soon" ? "closing-soon" : "all",
-    category: first(params.category) || null,
-    q,
-  };
-}
-
-// Builds a Browse URL, keeping the other filters.
-function browseHref(filters: Filters, change: Partial<Filters>): string {
-  const next = { ...filters, ...change };
-  const params = new URLSearchParams();
-  if (next.view !== "all") params.set("view", next.view);
-  if (next.category) params.set("category", next.category);
-  if (next.q) params.set("q", next.q);
-  const query = params.toString();
-  return query ? `/?${query}` : "/";
-}
 
 export default function BrowsePage({ searchParams }: PageProps<"/">) {
   return (
@@ -67,8 +45,9 @@ async function Browse({ filters }: { filters: Filters }) {
     cookies(),
     getSavedIds(),
   ]);
-  const isHome = !filters.q && !filters.category && filters.view === "all";
-  const showWelcome = isHome && !cookieStore.has(WELCOME_COOKIE);
+  // The hero and welcome note stay put when filters change, so the content
+  // below them doesn't jump.
+  const showWelcome = !cookieStore.has(WELCOME_COOKIE);
 
   const visible = listings.filter(
     (l) =>
@@ -81,8 +60,10 @@ async function Browse({ filters }: { filters: Filters }) {
 
   return (
     <>
-      {isHome ? <Hero openCount={openCount} /> : <h1 className="sr-only">Browse opportunities</h1>}
+      <Hero openCount={openCount} />
       {showWelcome && <WelcomeNote />}
+      <RememberBrowse />
+      <SearchFocus />
       <SearchForm filters={filters} />
       {!filters.q && <SearchSuggestions filters={filters} />}
       <Tabs filters={filters} />
@@ -92,7 +73,7 @@ async function Browse({ filters }: { filters: Filters }) {
   );
 }
 
-// Big friendly headline on the home screen only.
+// Big friendly headline at the top of Browse.
 function Hero({ openCount }: { openCount: number }) {
   return (
     <section className="px-4 pt-6">
@@ -114,7 +95,7 @@ function Hero({ openCount }: { openCount: number }) {
 
 function SearchForm({ filters }: { filters: Filters }) {
   return (
-    <form action="/" className="px-4 pt-4" role="search">
+    <Form action="/" scroll={false} className="px-4 pt-4" role="search">
       {filters.view !== "all" && <input type="hidden" name="view" value={filters.view} />}
       {filters.category && <input type="hidden" name="category" value={filters.category} />}
       <label htmlFor="search" className="sr-only">
@@ -131,7 +112,7 @@ function SearchForm({ filters }: { filters: Filters }) {
           type="search"
           defaultValue={filters.q}
           placeholder="Search DOST, OJT, hackathon…"
-          className="h-12 min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-muted"
+          className="h-12 min-w-0 flex-1 scroll-mt-24 bg-transparent text-base text-ink outline-none placeholder:text-muted"
           style={{ border: 0 }}
           enterKeyHint="search"
         />
@@ -139,7 +120,7 @@ function SearchForm({ filters }: { filters: Filters }) {
           Go
         </button>
       </div>
-    </form>
+    </Form>
   );
 }
 
@@ -148,18 +129,18 @@ const SUGGESTIONS = ["DOST", "CHED", "OJT", "CTF", "TESDA"];
 
 function SearchSuggestions({ filters }: { filters: Filters }) {
   return (
-    <nav aria-label="Popular searches" className="flex items-center gap-2 overflow-x-auto px-4 pb-1 pt-3 [scrollbar-width:none]">
+    <ChipRow label="Popular searches" className="items-center px-4 pb-1 pt-3">
       <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-muted">Try</span>
       {SUGGESTIONS.map((q) => (
-        <Link
+        <FilterLink
           key={q}
           href={browseHref(filters, { q })}
           className="inline-flex min-h-11 shrink-0 items-center rounded-pill border-2 border-dashed border-ink bg-card px-3 text-sm font-bold text-ink hover:bg-sun"
         >
           #{q}
-        </Link>
+        </FilterLink>
       ))}
-    </nav>
+    </ChipRow>
   );
 }
 
@@ -173,16 +154,16 @@ function Tabs({ filters }: { filters: Filters }) {
       {tabs.map((tab) => {
         const active = filters.view === tab.view;
         return (
-          <Link
+          <FilterLink
             key={tab.view}
             href={browseHref(filters, { view: tab.view })}
-            aria-current={active ? "page" : undefined}
+            current={active}
             className={`flex min-h-11 items-center justify-center rounded-[8px] text-sm font-bold ${
               active ? "bg-ink text-white" : "text-ink hover:bg-paper"
             }`}
           >
             {tab.label}
-          </Link>
+          </FilterLink>
         );
       })}
     </nav>
@@ -194,23 +175,23 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
     categories.map((c) => ({ slug: c.slug, label: categoryChipLabel(c.slug, c.name) })),
   );
   return (
-    <nav aria-label="Categories" className="flex gap-2 overflow-x-auto px-4 pb-4 pt-3 [scrollbar-width:none]">
+    <ChipRow label="Categories" className="px-4 pb-4 pt-3">
       {chips.map((chip) => {
         const active = filters.category === chip.slug;
         return (
-          <Link
+          <FilterLink
             key={chip.slug ?? "all"}
             href={browseHref(filters, { category: chip.slug })}
-            aria-current={active ? "page" : undefined}
+            current={active}
             className={`inline-flex min-h-11 shrink-0 items-center rounded-pill border-2 border-ink px-4 text-sm font-bold text-ink ${
               active ? `${chip.slug ? categoryBg(chip.slug) : "bg-sun"} shadow-[2px_2px_0_0_#111]` : "bg-card hover:bg-paper"
             }`}
           >
             {chip.label}
-          </Link>
+          </FilterLink>
         );
       })}
-    </nav>
+    </ChipRow>
   );
 }
 

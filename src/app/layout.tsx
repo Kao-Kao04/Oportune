@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Public_Sans } from "next/font/google";
 import Link from "next/link";
+import { HeaderSearch } from "@/components/header-search";
 import "./globals.css";
 
 const publicSans = Public_Sans({
@@ -40,18 +41,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <LogoMark />
               <span className="font-display text-2xl font-extrabold tracking-tight text-ink">oportune</span>
             </Link>
-            <Link
-              href="/?view=all#search"
-              className="sticker press flex h-11 w-11 items-center justify-center"
-              aria-label="Search opportunities"
-            >
-              <SearchIcon />
-            </Link>
+            <HeaderSearch />
           </div>
         </header>
         <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col">{children}</div>
         {/* Bottom padding leaves room for the fixed bottom nav on main screens. */}
-        <footer className="mx-auto w-full max-w-2xl px-4 pb-24 pt-10 text-sm text-muted">
+        <footer className="mx-auto w-full max-w-2xl px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-10 text-sm text-muted">
           <p>
             <span className="font-display font-extrabold text-ink">oportune</span> · Checked by our team. Always confirm
             on the official site.
@@ -79,15 +74,6 @@ function LogoMark() {
         <path d="M11 7v18" stroke="#111" strokeWidth="2" strokeDasharray="2.5 2.5" />
         <circle cx="20" cy="16" r="3.5" fill="#111" />
       </g>
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" strokeLinecap="round" />
     </svg>
   );
 }

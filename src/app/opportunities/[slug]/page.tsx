@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
+import { BackLink } from "@/components/back-link";
 import { OfficialBadge } from "@/components/official-badge";
 import { ShareButton } from "@/components/share-button";
 import { OfficialLink, ViewTracker } from "@/components/tracking";
@@ -69,9 +70,9 @@ async function OpportunityDetail({
     <main className="flex flex-1 flex-col">
       <article className="flex-1 pb-8">
         <div className={`border-b-2 border-ink px-4 pb-6 pt-3 ${closed ? "bg-line" : categoryBg(listing.categorySlug)}`}>
-          <Link href="/" className="-ml-1 inline-flex min-h-11 items-center gap-1 px-1 text-sm font-bold text-ink">
-            <span aria-hidden="true">←</span> All opportunities
-          </Link>
+          <BackLink className="-ml-1 inline-flex min-h-11 items-center gap-1 px-1 text-sm font-bold text-ink">
+            <span aria-hidden="true">←</span> Back
+          </BackLink>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
             <span className="tag bg-card">{categoryLabel(listing.categorySlug, listing.categoryName)}</span>
             <OfficialBadge trust={listing.source_trust} />
