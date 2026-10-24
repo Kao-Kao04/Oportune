@@ -67,8 +67,8 @@ async function OpportunityDetail({
 
   return (
     <main className="flex flex-1 flex-col">
-      <article className="flex-1 px-4 pb-28 pt-4">
-        <Link href="/" className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
+      <article className="flex-1 px-4 pb-8 pt-4">
+        <Link href="/" className="-ml-1 inline-flex min-h-11 items-center gap-1 px-1 text-sm text-muted hover:text-ink">
           <span aria-hidden="true">←</span> All opportunities
         </Link>
 
@@ -91,42 +91,56 @@ async function OpportunityDetail({
 
         {listing.summary && <p className="mt-5 whitespace-pre-line leading-relaxed text-ink">{listing.summary}</p>}
 
-        <Section title="Who can apply" body={listing.eligibility} />
-        <Section title="What you need" body={listing.requirements} />
-        <Section
-          title="Where"
-          body={[listing.location, deliveryModeLabel(listing.delivery_mode)].filter(Boolean).join(" · ") || null}
-        />
-        <Section title="Applications open" body={closed ? null : opensText(listing)} />
+        <AtAGlance listing={listing} closed={closed} />
 
-        <section className="mt-6 border-t border-line pt-4">
-          <h2 className="text-sm font-semibold text-ink">Source</h2>
-          <a
-            href={listing.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 inline-block break-all text-teal underline"
-          >
-            {sourceHost(listing.source_url)}
-          </a>
-          {listing.last_checked_at && (
-            <p className="tabular mt-1 text-sm text-muted">Last checked {formatLongDate(todayInManila(new Date(listing.last_checked_at)))}</p>
-          )}
-          <p className="mt-3 text-sm text-muted">
-            We summarize official sources in our own words. Always confirm details on the official site before applying.
+        <Section title="What you need" body={listing.requirements} />
+
+        <section aria-labelledby="trust" className="mt-6 rounded-ui border border-line bg-white p-4">
+          <h2 id="trust" className="text-sm font-semibold text-ink">
+            Why you can trust this
+          </h2>
+          <ul className="mt-2 space-y-1.5 text-sm text-ink">
+            <li>
+              Source:{" "}
+              <a
+                href={listing.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="break-all font-semibold text-teal underline"
+              >
+                {sourceHost(listing.source_url)}
+              </a>
+              {listing.source_trust !== "other" && <span className="text-muted"> (official website)</span>}
+            </li>
+            {listing.last_checked_at && (
+              <li className="tabular">
+                Last checked by our team on {formatLongDate(todayInManila(new Date(listing.last_checked_at)))}
+              </li>
+            )}
+            <li className="text-muted">We summarize it in our own words. Always confirm on the official site.</li>
+          </ul>
+          <p className="mt-3 rounded-ui bg-soon/10 px-3 py-2 text-sm text-ink">
+            <span className="font-semibold">Scam tip:</span> real scholarships and internships never ask you to pay a fee
+            to apply.
           </p>
-          <ReportForm opportunityId={listing.id} />
         </section>
+        <ReportForm opportunityId={listing.id} />
       </article>
 
-      <div className="sticky bottom-0 z-10 border-t border-line bg-paper/95 px-4 py-3 backdrop-blur">
+      <div className="sticky bottom-0 z-10 border-t border-line bg-paper/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur">
         <div className="flex gap-3">
           {!closed && (
             <Suspense fallback={<SaveButtonPlaceholder />}>
               <SaveSlot opportunityId={listing.id} slug={listing.slug} searchParams={searchParams} />
             </Suspense>
           )}
-          <ShareButton title={listing.title} path={`/opportunities/${listing.slug}`} opportunityId={listing.id} compact={!closed} />
+          <ShareButton
+            title={listing.title}
+            path={`/opportunities/${listing.slug}`}
+            message={shareMessage(listing, closed)}
+            opportunityId={listing.id}
+            compact={!closed}
+          />
           {closed ? (
             <Link
               href={`/?category=${listing.categorySlug}`}
@@ -179,6 +193,35 @@ function DeadlineBlock({ listing, today }: { listing: Listing; today: string }) 
   );
 }
 
+// The facts students check first, in one scannable box.
+function AtAGlance({ listing, closed }: { listing: Listing; closed: boolean }) {
+  const rows = [
+    { label: "Who can apply", value: listing.eligibility },
+    {
+      label: "Where",
+      value: [listing.location, deliveryModeLabel(listing.delivery_mode)].filter(Boolean).join(" · ") || null,
+    },
+    { label: "Applications open", value: closed ? null : opensText(listing) },
+  ].filter((r) => r.value);
+  if (rows.length === 0) return null;
+
+  return (
+    <section aria-labelledby="at-a-glance" className="mt-6">
+      <h2 id="at-a-glance" className="text-sm font-semibold text-ink">
+        At a glance
+      </h2>
+      <dl className="mt-2 divide-y divide-line rounded-ui border border-line bg-white">
+        {rows.map((row) => (
+          <div key={row.label} className="px-3 py-2.5">
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{row.label}</dt>
+            <dd className="mt-0.5 whitespace-pre-line leading-relaxed text-ink">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
 function Section({ title, body }: { title: string; body: string | null }) {
   if (!body) return null;
   return (
@@ -187,6 +230,18 @@ function Section({ title, body }: { title: string; body: string | null }) {
       <p className="mt-1 whitespace-pre-line leading-relaxed text-ink">{body}</p>
     </section>
   );
+}
+
+// A line students can send as-is to a group chat.
+function shareMessage(listing: Listing, closed: boolean): string {
+  const when = closed
+    ? "Closed na, pero baka may next round."
+    : listing.deadline_type === "date" && listing.deadline
+      ? `Deadline: ${formatLongDate(listing.deadline)}.`
+      : listing.deadline_type === "rolling"
+        ? "Open pa, walang fixed deadline."
+        : "Deadline: TBA.";
+  return `Uy, baka interested ka: ${listing.title} (${listing.organization}). ${when}`;
 }
 
 function opensText(listing: Listing): string | null {
@@ -204,7 +259,7 @@ function opensText(listing: Listing): string | null {
 
 function DetailSkeleton() {
   return (
-    <div aria-hidden="true" className="animate-pulse px-4 pt-4">
+    <div aria-hidden="true" className="motion-safe:animate-pulse px-4 pt-4">
       <div className="h-4 w-32 rounded-ui bg-line/60" />
       <div className="mt-6 h-7 rounded-ui bg-line/60" />
       <div className="mt-2 h-4 w-1/2 rounded-ui bg-line/60" />

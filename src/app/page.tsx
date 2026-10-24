@@ -1,8 +1,11 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { Suspense } from "react";
 import { ClosingStrip } from "@/components/closing-strip";
 import { ListingRow } from "@/components/listing-row";
+import { WelcomeNote } from "@/components/welcome-note";
+import { WELCOME_COOKIE } from "@/lib/welcome";
 import { categoryChipLabel } from "@/lib/opportunities/categories";
 import { groupByDeadline, isClosingSoon, isOpen, type Listing } from "@/lib/opportunities/listing";
 import {
@@ -56,11 +59,14 @@ export default function BrowsePage({ searchParams }: PageProps<"/">) {
 }
 
 async function Browse({ filters }: { filters: Filters }) {
-  const [today, categories, listings] = await Promise.all([
+  const [today, categories, listings, cookieStore] = await Promise.all([
     getToday(),
     getActiveCategories(),
     filters.q ? searchListings(filters.q) : getPublishedListings(),
+    cookies(),
   ]);
+  const isHome = !filters.q && !filters.category && filters.view === "all";
+  const showWelcome = isHome && !cookieStore.has(WELCOME_COOKIE);
 
   const visible = listings.filter(
     (l) =>
@@ -71,7 +77,9 @@ async function Browse({ filters }: { filters: Filters }) {
 
   return (
     <>
+      {showWelcome && <WelcomeNote />}
       <SearchForm filters={filters} />
+      {!filters.q && <SearchSuggestions filters={filters} />}
       <Tabs filters={filters} />
       <CategoryChips filters={filters} categories={categories} />
       <Results filters={filters} listings={visible} today={today} />
@@ -97,6 +105,26 @@ function SearchForm({ filters }: { filters: Filters }) {
         enterKeyHint="search"
       />
     </form>
+  );
+}
+
+// Common searches, so students don't have to type on a small keyboard.
+const SUGGESTIONS = ["DOST", "CHED", "OJT", "CTF", "TESDA"];
+
+function SearchSuggestions({ filters }: { filters: Filters }) {
+  return (
+    <nav aria-label="Popular searches" className="flex items-center gap-2 overflow-x-auto px-4 pt-2 [scrollbar-width:none]">
+      <span className="shrink-0 text-xs text-muted">Try:</span>
+      {SUGGESTIONS.map((q) => (
+        <Link
+          key={q}
+          href={browseHref(filters, { q })}
+          className="inline-flex min-h-11 shrink-0 items-center rounded-ui px-2 text-sm font-semibold text-teal underline-offset-2 hover:underline"
+        >
+          {q}
+        </Link>
+      ))}
+    </nav>
   );
 }
 
@@ -139,7 +167,7 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
             key={chip.slug ?? "all"}
             href={browseHref(filters, { category: chip.slug })}
             aria-current={active ? "page" : undefined}
-            className={`shrink-0 rounded-ui border px-3 py-1.5 text-sm ${
+            className={`inline-flex min-h-11 shrink-0 items-center rounded-ui border px-3.5 text-sm ${
               active ? "border-teal bg-teal text-white" : "border-line bg-white text-ink hover:border-muted"
             }`}
           >
@@ -219,7 +247,7 @@ function Results({ filters, listings, today }: { filters: Filters; listings: Lis
 
 function BrowseSkeleton() {
   return (
-    <div aria-hidden="true" className="animate-pulse px-4 pt-4">
+    <div aria-hidden="true" className="motion-safe:animate-pulse px-4 pt-4">
       <div className="h-11 rounded-ui bg-line/60" />
       <div className="mt-4 h-6 w-40 rounded-ui bg-line/60" />
       {Array.from({ length: 6 }, (_, i) => (

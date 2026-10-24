@@ -57,7 +57,8 @@ export default async function WelcomePage({ searchParams }: PageProps<"/welcome"
       <ProfileForm
         values={values}
         next={next}
-        submitLabel={editing ? "Save" : "Done"}
+        submitLabel={editing ? "Save" : "Done — show my opportunities"}
+        stepped={!editing}
         categories={(categories ?? []).map((c) => ({ slug: c.slug, label: categoryChipLabel(c.slug, c.name) }))}
       />
     </main>

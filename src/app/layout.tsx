@@ -34,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
             <Link
               href="/?view=all#search"
-              className="rounded-ui p-2 text-ink hover:bg-ink/5"
+              className="-mr-2 flex h-11 w-11 items-center justify-center rounded-ui text-ink hover:bg-ink/5"
               aria-label="Search opportunities"
             >
               <SearchIcon />
@@ -45,11 +45,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Bottom padding leaves room for the fixed bottom nav on main screens. */}
         <footer className="mx-auto w-full max-w-2xl px-4 pb-24 pt-8 text-sm text-muted">
           <p>Checked by our team. Always confirm on the official site.</p>
-          <p className="mt-2 flex gap-4">
-            <Link href="/privacy" className="underline">
+          <p className="mt-1 flex gap-4">
+            <Link href="/privacy" className="inline-block py-2 underline">
               Privacy
             </Link>
-            <Link href="/terms" className="underline">
+            <Link href="/terms" className="inline-block py-2 underline">
               Terms
             </Link>
           </p>

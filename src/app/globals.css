@@ -11,7 +11,10 @@
   --color-urgent: #b3261e;
   --color-soon: #9a6700;
   --color-official: #2e6b3f;
-  --color-closed: #8a857b;
+  /* 4.6:1 on paper; the old #8a857b (3.5:1) failed text contrast. */
+  --color-closed: #74706a;
+  /* Form field borders: 3.2:1, enough for a control boundary (WCAG 1.4.11). */
+  --color-field: #8f8a80;
 
   --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
 
@@ -35,4 +38,44 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-teal);
   outline-offset: 2px;
+}
+
+/* Form fields need a visible boundary; the divider color (#e4e0d6) is too faint.
+   Unlayered, so it wins over border-line utilities on fields. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+select,
+textarea {
+  border-color: var(--color-field);
+}
+
+/* Tailwind v4 resets buttons to the default cursor. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label:has(> input[type="checkbox"], > input[type="radio"]) {
+  cursor: pointer;
+}
+
+/* Quick, layout-safe feedback on hover and tap. */
+a,
+button {
+  transition:
+    background-color 150ms ease-out,
+    border-color 150ms ease-out,
+    color 150ms ease-out,
+    opacity 100ms ease-out;
+}
+a:active,
+button:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

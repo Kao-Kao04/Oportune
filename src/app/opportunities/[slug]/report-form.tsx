@@ -23,7 +23,7 @@ export function ReportForm({ opportunityId }: { opportunityId: string }) {
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="mt-6 text-sm text-muted underline">
+      <button type="button" onClick={() => setOpen(true)} className="mt-4 min-h-11 text-sm text-muted underline">
         Something wrong? Report this listing
       </button>
     );

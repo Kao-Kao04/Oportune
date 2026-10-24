@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { categoryLabel } from "@/lib/opportunities/categories";
 import { deadlineInfo, type DeadlineTone } from "@/lib/opportunities/dates";
-import type { Listing } from "@/lib/opportunities/listing";
+import { deliveryModeLabel, type Listing } from "@/lib/opportunities/listing";
 import { OfficialBadge } from "./official-badge";
 
 export const TONE_TEXT: Record<DeadlineTone, string> = {
@@ -23,6 +23,7 @@ export function ListingRow({
   trailing?: React.ReactNode;
 }) {
   const deadline = deadlineInfo(listing, today);
+  const delivery = deliveryModeLabel(listing.delivery_mode);
 
   return (
     <li className="relative border-b border-line last:border-b-0">
@@ -37,10 +38,14 @@ export function ListingRow({
           </div>
         </div>
         <div className="min-w-0 flex-1">
-          <div className="font-semibold leading-snug text-ink">{listing.title}</div>
+          <div className="line-clamp-3 font-semibold leading-snug text-ink">{listing.title}</div>
           <div className="mt-0.5 text-sm text-muted">{listing.organization}</div>
-          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-            <span className="text-muted">{categoryLabel(listing.categorySlug, listing.categoryName)}</span>
+          {/* Quick facts students scan for: what it is and whether they must travel. */}
+          <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
+            <span className="rounded-ui border border-line px-1.5 py-0.5 text-muted">
+              {categoryLabel(listing.categorySlug, listing.categoryName)}
+            </span>
+            {delivery && <span className="rounded-ui border border-line px-1.5 py-0.5 text-muted">{delivery}</span>}
             <OfficialBadge trust={listing.source_trust} />
           </div>
         </div>
