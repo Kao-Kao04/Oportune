@@ -9,6 +9,7 @@ import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
 import { getListingBySlug, getToday } from "@/lib/opportunities/queries";
+import { shareMessage } from "@/lib/opportunities/share";
 import { SaveButton } from "@/components/save-button";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -242,18 +243,6 @@ function Section({ title, body }: { title: string; body: string | null }) {
       <p className="mt-1 whitespace-pre-line leading-relaxed text-ink">{body}</p>
     </section>
   );
-}
-
-// A line students can send as-is to a group chat.
-function shareMessage(listing: Listing, closed: boolean): string {
-  const when = closed
-    ? "Closed na, pero baka may next round."
-    : listing.deadline_type === "date" && listing.deadline
-      ? `Deadline: ${formatLongDate(listing.deadline)}.`
-      : listing.deadline_type === "rolling"
-        ? "Open pa, walang fixed deadline."
-        : "Deadline: TBA.";
-  return `Uy, baka interested ka: ${listing.title} (${listing.organization}). ${when}`;
 }
 
 function opensText(listing: Listing): string | null {

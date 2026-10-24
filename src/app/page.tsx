@@ -3,8 +3,10 @@ import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { Suspense } from "react";
 import { ClosingStrip } from "@/components/closing-strip";
-import { ListingRow } from "@/components/listing-row";
+import { FeedPost } from "@/components/feed-post";
 import { WelcomeNote } from "@/components/welcome-note";
+import { getCurrentUser } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { WELCOME_COOKIE } from "@/lib/welcome";
 import { categoryBg, categoryChipLabel } from "@/lib/opportunities/categories";
 import { groupByDeadline, isClosingSoon, isOpen, type Listing } from "@/lib/opportunities/listing";
@@ -58,11 +60,12 @@ export default function BrowsePage({ searchParams }: PageProps<"/">) {
 }
 
 async function Browse({ filters }: { filters: Filters }) {
-  const [today, categories, listings, cookieStore] = await Promise.all([
+  const [today, categories, listings, cookieStore, savedIds] = await Promise.all([
     getToday(),
     getActiveCategories(),
     filters.q ? searchListings(filters.q) : getPublishedListings(),
     cookies(),
+    getSavedIds(),
   ]);
   const isHome = !filters.q && !filters.category && filters.view === "all";
   const showWelcome = isHome && !cookieStore.has(WELCOME_COOKIE);
@@ -84,7 +87,7 @@ async function Browse({ filters }: { filters: Filters }) {
       {!filters.q && <SearchSuggestions filters={filters} />}
       <Tabs filters={filters} />
       <CategoryChips filters={filters} categories={categories} />
-      <Results filters={filters} listings={visible} today={today} />
+      <Results filters={filters} listings={visible} today={today} savedIds={savedIds} />
     </>
   );
 }
@@ -211,7 +214,17 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
   );
 }
 
-function Results({ filters, listings, today }: { filters: Filters; listings: Listing[]; today: string }) {
+function Results({
+  filters,
+  listings,
+  today,
+  savedIds,
+}: {
+  filters: Filters;
+  listings: Listing[];
+  today: string;
+  savedIds: Set<string>;
+}) {
   if (listings.length === 0) {
     return (
       <div className="sticker mx-4 px-4 py-10 text-center">
@@ -240,11 +253,11 @@ function Results({ filters, listings, today }: { filters: Filters; listings: Lis
     return (
       <>
         {count}
-        <ul className="flex flex-col gap-3 px-4">
+        <div className="flex flex-col gap-5 px-4">
           {listings.map((l) => (
-            <ListingRow key={l.id} listing={l} today={today} />
+            <FeedPost key={l.id} listing={l} today={today} saved={savedIds.has(l.id)} />
           ))}
-        </ul>
+        </div>
       </>
     );
   }
@@ -264,11 +277,11 @@ function Results({ filters, listings, today }: { filters: Filters; listings: Lis
             <h2 id={`group-${group.label}`} className="px-4 pb-2 font-display text-lg font-extrabold text-ink">
               {group.label}
             </h2>
-            <ul className="flex flex-col gap-3 px-4">
+            <div className="flex flex-col gap-5 px-4">
               {group.listings.map((l) => (
-                <ListingRow key={l.id} listing={l} today={today} />
+                <FeedPost key={l.id} listing={l} today={today} saved={savedIds.has(l.id)} />
               ))}
-            </ul>
+            </div>
           </section>
         ))}
     </>
@@ -287,4 +300,13 @@ function BrowseSkeleton() {
       ))}
     </div>
   );
+}
+
+// Which listings the signed-in student already saved (empty when signed out).
+async function getSavedIds(): Promise<Set<string>> {
+  const user = await getCurrentUser();
+  if (!user) return new Set();
+  const supabase = await createClient();
+  const { data } = await supabase.from("saved_opportunities").select("opportunity_id").eq("user_id", user.id);
+  return new Set((data ?? []).map((r) => r.opportunity_id));
 }
