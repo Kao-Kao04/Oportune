@@ -17,7 +17,8 @@ Payments are deferred — the platform is free for students.
 │   ├── design/stitch-student-friendly.md  # v2: student-friendly redesign prompts
 │   ├── design/adjust-prompts.md  # Tweak designs in Stitch; build them with Claude Code
 │   ├── validation.md        # Optional interview kit → docs/validation/
-│   └── launch-checklist.md  # What is left before launch
+│   ├── launch-checklist.md  # What is left before launch
+│   └── research/deep-research-prompt.md  # Final validation prompt for deep-research tools
 ├── data/
 │   ├── opportunities.csv    # Curated opportunity list (seed data for the app)
 │   └── categories.csv       # Canonical category names + slugs
