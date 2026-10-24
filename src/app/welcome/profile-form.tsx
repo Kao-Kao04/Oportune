@@ -4,9 +4,9 @@ import { useActionState, useRef, useState } from "react";
 import { COURSE_GROUPS, SCHOOL_SUGGESTIONS, YEAR_LEVELS, type ProfileFields } from "@/lib/profile";
 import { saveProfile, type ProfileState } from "./actions";
 
-const input = "h-12 w-full rounded-ui border bg-white px-3 text-base";
+const input = "h-12 w-full rounded-ui border-2 bg-card px-3 text-base";
 const option =
-  "flex min-h-12 cursor-pointer items-center justify-center rounded-ui border border-field bg-white px-3 text-sm has-checked:border-teal has-checked:bg-teal has-checked:font-semibold has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-teal";
+  "flex min-h-12 cursor-pointer items-center justify-center rounded-ui border-2 border-ink bg-card px-3 text-sm font-semibold has-checked:bg-sun has-checked:font-extrabold has-checked:shadow-[3px_3px_0_0_#111] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-teal";
 
 // Which step each field lives on (server errors jump back to that step).
 const STEP_OF: Record<string, number> = { school: 0, course_group: 1, year_level: 1 };
@@ -83,16 +83,16 @@ export function ProfileForm({
             </span>
           </div>
           <div
-            className="mt-2 h-1.5 overflow-hidden rounded-full bg-line"
+            className="mt-2 h-3 overflow-hidden rounded-full border-2 border-ink bg-card"
             role="progressbar"
             aria-label="Quick setup progress"
             aria-valuemin={1}
             aria-valuemax={STEPS.length}
             aria-valuenow={step + 1}
           >
-            <div className="h-full rounded-full bg-teal transition-[width]" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+            <div className="h-full bg-sun transition-[width]" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
           </div>
-          <h2 ref={headingRef} tabIndex={-1} className="mt-5 text-xl font-bold text-ink outline-none">
+          <h2 ref={headingRef} tabIndex={-1} className="mt-5 font-display text-2xl font-extrabold text-ink outline-none">
             {STEPS[step]}
           </h2>
         </div>
@@ -236,7 +236,7 @@ export function ProfileForm({
           <button
             type="button"
             onClick={goBack}
-            className="h-12 rounded-ui border border-ink/20 bg-white px-5 font-semibold text-ink"
+            className="btn-plain press px-5"
           >
             Back
           </button>
@@ -245,7 +245,7 @@ export function ProfileForm({
           <button
             type="submit"
             disabled={pending}
-            className="h-12 flex-1 rounded-ui bg-teal px-4 font-semibold text-white hover:bg-teal-dark disabled:opacity-60"
+            className="btn-pop press flex-1 disabled:opacity-60"
           >
             {pending ? "Saving…" : submitLabel}
           </button>
@@ -253,7 +253,7 @@ export function ProfileForm({
           <button
             type="button"
             onClick={goNext}
-            className="h-12 flex-1 rounded-ui bg-teal px-4 font-semibold text-white hover:bg-teal-dark"
+            className="btn-pop press flex-1"
           >
             Next
           </button>

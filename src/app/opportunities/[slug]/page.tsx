@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
-import { TONE_TEXT } from "@/components/listing-row";
 import { OfficialBadge } from "@/components/official-badge";
 import { ShareButton } from "@/components/share-button";
 import { OfficialLink, ViewTracker } from "@/components/tracking";
-import { categoryLabel } from "@/lib/opportunities/categories";
+import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
 import { getListingBySlug, getToday } from "@/lib/opportunities/queries";
@@ -67,36 +66,45 @@ async function OpportunityDetail({
 
   return (
     <main className="flex flex-1 flex-col">
-      <article className="flex-1 px-4 pb-8 pt-4">
-        <Link href="/" className="-ml-1 inline-flex min-h-11 items-center gap-1 px-1 text-sm text-muted hover:text-ink">
-          <span aria-hidden="true">←</span> All opportunities
-        </Link>
-
-        {closed && (
-          <p className="mt-4 rounded-ui bg-ink/5 px-3 py-2 text-sm text-ink">
-            {listing.deadline && listing.deadline < today
-              ? `This opportunity closed on ${formatLongDate(listing.deadline)}.`
-              : "This opportunity is closed."}
-          </p>
-        )}
-
-        <h1 className="mt-4 text-2xl font-bold leading-tight text-ink">{listing.title}</h1>
-        <p className="mt-1 text-muted">{listing.organization}</p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <span className="text-muted">{categoryLabel(listing.categorySlug, listing.categoryName)}</span>
-          <OfficialBadge trust={listing.source_trust} />
+      <article className="flex-1 pb-8">
+        <div className={`border-b-2 border-ink px-4 pb-6 pt-3 ${closed ? "bg-line" : categoryBg(listing.categorySlug)}`}>
+          <Link href="/" className="-ml-1 inline-flex min-h-11 items-center gap-1 px-1 text-sm font-bold text-ink">
+            <span aria-hidden="true">←</span> All opportunities
+          </Link>
+          <div className="mt-1 flex flex-wrap items-center gap-1.5">
+            <span className="tag bg-card">{categoryLabel(listing.categorySlug, listing.categoryName)}</span>
+            <OfficialBadge trust={listing.source_trust} />
+          </div>
+          <h1 className="mt-3 font-display text-[28px] font-extrabold leading-[1.1] tracking-tight text-ink">
+            {listing.title}
+          </h1>
+          <p className="mt-2 font-semibold text-ink">{listing.organization}</p>
         </div>
 
-        <DeadlineBlock listing={listing} today={today} />
+        <div className="px-4">
+          {closed && (
+            <p className="sticker mt-5 bg-line px-3 py-2 text-sm font-semibold text-ink">
+              {listing.deadline && listing.deadline < today
+                ? `This opportunity closed on ${formatLongDate(listing.deadline)}.`
+                : "This opportunity is closed."}
+            </p>
+          )}
 
-        {listing.summary && <p className="mt-5 whitespace-pre-line leading-relaxed text-ink">{listing.summary}</p>}
+          <DeadlineBlock listing={listing} today={today} />
+
+          {listing.summary && <p className="mt-5 whitespace-pre-line text-[17px] leading-relaxed text-ink">{listing.summary}</p>}
 
         <AtAGlance listing={listing} closed={closed} />
 
         <Section title="What you need" body={listing.requirements} />
 
-        <section aria-labelledby="trust" className="mt-6 rounded-ui border border-line bg-white p-4">
-          <h2 id="trust" className="text-sm font-semibold text-ink">
+        <section aria-labelledby="trust" className="sticker mt-6 p-4">
+          <h2 id="trust" className="flex items-center gap-2 font-display text-lg font-extrabold text-ink">
+            <span aria-hidden="true" className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-ink bg-mint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4">
+                <path d="m5 12 5 5 9-10" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
             Why you can trust this
           </h2>
           <ul className="mt-2 space-y-1.5 text-sm text-ink">
@@ -119,15 +127,16 @@ async function OpportunityDetail({
             )}
             <li className="text-muted">We summarize it in our own words. Always confirm on the official site.</li>
           </ul>
-          <p className="mt-3 rounded-ui bg-soon/10 px-3 py-2 text-sm text-ink">
-            <span className="font-semibold">Scam tip:</span> real scholarships and internships never ask you to pay a fee
-            to apply.
+          <p className="mt-3 rounded-ui border-2 border-dashed border-ink bg-sun px-3 py-2 text-sm text-ink">
+            <span className="font-bold">Scam tip:</span> walang totoong scholarship o internship na maniningil ng bayad
+            para mag-apply.
           </p>
         </section>
         <ReportForm opportunityId={listing.id} />
+        </div>
       </article>
 
-      <div className="sticky bottom-0 z-10 border-t border-line bg-paper/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur">
+      <div className="sticky bottom-0 z-10 border-t-2 border-ink bg-card px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3">
         <div className="flex gap-3">
           {!closed && (
             <Suspense fallback={<SaveButtonPlaceholder />}>
@@ -144,7 +153,7 @@ async function OpportunityDetail({
           {closed ? (
             <Link
               href={`/?category=${listing.categorySlug}`}
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-ui bg-teal px-4 text-sm font-semibold text-white hover:bg-teal-dark"
+              className="btn-pop press h-12 flex-1 text-sm"
             >
               Find similar opportunities
             </Link>
@@ -152,7 +161,7 @@ async function OpportunityDetail({
             <OfficialLink
               href={listing.application_url}
               opportunityId={listing.id}
-              className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-ui bg-teal px-4 text-sm font-semibold text-white hover:bg-teal-dark"
+              className="btn-pop press h-12 flex-1 whitespace-nowrap text-sm"
             >
               Apply on official site
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -167,12 +176,13 @@ async function OpportunityDetail({
   );
 }
 
-const BORDER: Record<string, string> = {
-  urgent: "border-urgent",
-  soon: "border-soon",
-  normal: "border-teal",
-  none: "border-line",
-  closed: "border-closed",
+// Countdown color: tomato for 3 days or less, sun for this week.
+const DEADLINE_BG: Record<string, string> = {
+  urgent: "bg-tomato",
+  soon: "bg-sun",
+  normal: "bg-card",
+  none: "bg-card",
+  closed: "bg-line",
 };
 
 function DeadlineBlock({ listing, today }: { listing: Listing; today: string }) {
@@ -183,13 +193,15 @@ function DeadlineBlock({ listing, today }: { listing: Listing; today: string }) 
   else text = `Closes ${formatLongDate(listing.deadline!)} · ${deadline.detail}`;
 
   return (
-    <p
-      className={`tabular mt-5 border-l-4 bg-white py-3 pl-3 pr-2 font-semibold ${BORDER[deadline.tone]} ${
-        TONE_TEXT[deadline.tone]
-      }`}
-    >
-      {text}
-    </p>
+    <div className={`sticker mt-5 flex items-center gap-3 p-3 ${DEADLINE_BG[deadline.tone]}`}>
+      <span aria-hidden="true" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25">
+          <circle cx="12" cy="13" r="8" />
+          <path d="M12 9v4l2.5 2M9 2h6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      <p className="tabular font-display text-lg font-extrabold leading-tight text-ink">{text}</p>
+    </div>
   );
 }
 
@@ -207,13 +219,13 @@ function AtAGlance({ listing, closed }: { listing: Listing; closed: boolean }) {
 
   return (
     <section aria-labelledby="at-a-glance" className="mt-6">
-      <h2 id="at-a-glance" className="text-sm font-semibold text-ink">
+      <h2 id="at-a-glance" className="font-display text-lg font-extrabold text-ink">
         At a glance
       </h2>
-      <dl className="mt-2 divide-y divide-line rounded-ui border border-line bg-white">
+      <dl className="sticker mt-2 divide-y-2 divide-dashed divide-line">
         {rows.map((row) => (
-          <div key={row.label} className="px-3 py-2.5">
-            <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{row.label}</dt>
+          <div key={row.label} className="px-4 py-3">
+            <dt className="text-xs font-bold uppercase tracking-wide text-muted">{row.label}</dt>
             <dd className="mt-0.5 whitespace-pre-line leading-relaxed text-ink">{row.value}</dd>
           </div>
         ))}
@@ -226,7 +238,7 @@ function Section({ title, body }: { title: string; body: string | null }) {
   if (!body) return null;
   return (
     <section className="mt-6">
-      <h2 className="text-sm font-semibold text-ink">{title}</h2>
+      <h2 className="font-display text-lg font-extrabold text-ink">{title}</h2>
       <p className="mt-1 whitespace-pre-line leading-relaxed text-ink">{body}</p>
     </section>
   );
@@ -307,5 +319,5 @@ async function SaveSlot({
 }
 
 function SaveButtonPlaceholder() {
-  return <div aria-hidden="true" className="h-11 w-11 rounded-ui border border-line bg-white" />;
+  return <div aria-hidden="true" className="h-12 w-12 rounded-ui border-2 border-ink bg-card" />;
 }

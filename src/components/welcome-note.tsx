@@ -15,16 +15,16 @@ export function WelcomeNote() {
   }
 
   return (
-    <div className="mx-4 mt-4 flex items-start gap-2 rounded-ui border border-line bg-white py-2 pl-3 pr-1">
+    <div className="sticker mx-4 mt-4 flex items-start gap-2 bg-sky py-2 pl-3 pr-1">
       <p className="flex-1 py-1 text-sm text-ink">
-        Scholarships, internships, and contests for PH college students, sorted by deadline.{" "}
-        <span className="text-muted">Checked by our team.</span>
+        <span className="font-bold">Bago ka dito?</span> Browse without an account. Save a listing and we&apos;ll remind you
+        before it closes. Every listing is checked by our team.
       </p>
       <button
         type="button"
         onClick={dismiss}
         aria-label="Hide this message"
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-ui text-muted hover:bg-ink/5 hover:text-ink"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-ui text-ink hover:bg-ink/10"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <path d="M6 6l12 12M18 6 6 18" strokeLinecap="round" />

@@ -59,30 +59,30 @@ export function PushPrompt({ onClose }: { onClose: () => void }) {
   if (!support) return null;
 
   return (
-    <div role="dialog" aria-label="Phone notifications" className="fixed inset-x-4 bottom-24 z-40 mx-auto max-w-md rounded-ui border border-line bg-white p-4 shadow-lg">
+    <div role="dialog" aria-label="Phone notifications" className="sticker fixed inset-x-4 bottom-24 z-40 mx-auto max-w-md bg-sky p-4">
       {status === "done" ? (
         <>
           <p className="font-semibold text-ink">Notifications are on</p>
-          <p className="mt-1 text-sm text-muted">We&apos;ll notify this phone 7 days and 1 day before the deadline.</p>
-          <button type="button" onClick={onClose} className="mt-3 text-sm font-semibold text-teal">
+          <p className="mt-1 text-sm text-ink">We&apos;ll notify this phone 7 days and 1 day before the deadline.</p>
+          <button type="button" onClick={onClose} className="btn-plain press mt-3 text-sm">
             OK
           </button>
         </>
       ) : support === "ios-needs-install" ? (
         <>
           <p className="font-semibold text-ink">Get a reminder on your iPhone</p>
-          <p className="mt-1 text-sm text-muted">
+          <p className="mt-1 text-sm text-ink">
             Tap Share, then <span className="font-semibold">Add to Home Screen</span>. Open Oportune from your home screen to
             turn on notifications. We&apos;ll still email you.
           </p>
-          <button type="button" onClick={dismiss} className="mt-3 text-sm font-semibold text-teal">
+          <button type="button" onClick={dismiss} className="btn-plain press mt-3 text-sm">
             Got it
           </button>
         </>
       ) : (
         <>
           <p className="font-semibold text-ink">Saved. Want a phone notification too?</p>
-          <p className="mt-1 text-sm text-muted">
+          <p className="mt-1 text-sm text-ink">
             {status === "denied"
               ? "Notifications are blocked for this site. You can allow them in your browser settings. We'll still email you."
               : "We'll notify you 7 days and 1 day before the deadline."}
@@ -93,12 +93,12 @@ export function PushPrompt({ onClose }: { onClose: () => void }) {
                 type="button"
                 onClick={turnOn}
                 disabled={status === "working"}
-                className="h-10 rounded-ui bg-teal px-4 text-sm font-semibold text-white disabled:opacity-60"
+                className="btn-pop press text-sm disabled:opacity-60"
               >
                 {status === "working" ? "Turning on…" : "Turn on"}
               </button>
             )}
-            <button type="button" onClick={dismiss} className="h-10 px-2 text-sm text-muted">
+            <button type="button" onClick={dismiss} className="min-h-12 px-2 text-sm font-semibold text-ink underline">
               {status === "denied" ? "OK" : "Not now"}
             </button>
           </div>

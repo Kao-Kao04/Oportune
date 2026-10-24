@@ -17,7 +17,7 @@ const ERRORS: Record<string, string> = {
 export default function SignInPage({ searchParams }: PageProps<"/sign-in">) {
   return (
     <main className="px-4 py-10">
-      <h1 className="text-2xl font-bold text-ink">Sign in</h1>
+      <h1 className="font-display text-[32px] font-extrabold leading-tight tracking-tight text-ink">Sign in</h1>
       <p className="mt-1 text-muted">Save opportunities and get reminded before deadlines. Free, no password.</p>
       <Suspense fallback={null}>
         {Promise.all([searchParams, getEnabledProviders()]).then(([params, providers]) => {
@@ -39,7 +39,7 @@ export default function SignInPage({ searchParams }: PageProps<"/sign-in">) {
                     <input type="hidden" name="next" value={afterSignIn} />
                     <button
                       type="submit"
-                      className="flex h-12 w-full items-center justify-center gap-3 rounded-ui border border-ink/20 bg-white font-semibold text-ink hover:border-ink/40"
+                      className="btn-plain press w-full gap-3"
                     >
                       <GoogleIcon />
                       Continue with Google

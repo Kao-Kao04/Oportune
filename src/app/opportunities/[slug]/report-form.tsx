@@ -30,7 +30,7 @@ export function ReportForm({ opportunityId }: { opportunityId: string }) {
   }
 
   return (
-    <form action={action} className="mt-6 rounded-ui border border-line bg-white p-4">
+    <form action={action} className="sticker mt-6 p-4">
       {SITE_KEY && <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
       <input type="hidden" name="opportunity_id" value={opportunityId} />
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
@@ -66,14 +66,14 @@ export function ReportForm({ opportunityId }: { opportunityId: string }) {
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="h-10 rounded-ui border border-line px-3 text-sm text-ink"
+          className="btn-plain press text-sm"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={pending}
-          className="h-10 flex-1 rounded-ui bg-teal px-3 text-sm font-semibold text-white disabled:opacity-60"
+          className="btn-pop press flex-1 text-sm disabled:opacity-60"
         >
           {pending ? "Sending…" : "Send report"}
         </button>

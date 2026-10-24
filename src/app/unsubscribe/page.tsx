@@ -21,7 +21,7 @@ export default async function UnsubscribePage({ searchParams }: PageProps<"/unsu
 
   return (
     <main className="px-4 py-12">
-      <h1 className="text-2xl font-bold text-ink">Reminder emails</h1>
+      <h1 className="font-display text-[32px] font-extrabold leading-tight tracking-tight text-ink">Reminder emails</h1>
       {params.done ? (
         <p className="mt-3 text-ink">
           Done. You won&apos;t get reminder emails anymore. You can turn them back on in{" "}
@@ -42,7 +42,7 @@ export default async function UnsubscribePage({ searchParams }: PageProps<"/unsu
         <form action={unsubscribe} className="mt-4">
           <input type="hidden" name="token" value={token} />
           <p className="text-ink">Stop getting deadline reminder emails for your saved listings?</p>
-          <button type="submit" className="mt-4 h-11 rounded-ui bg-teal px-5 font-semibold text-white">
+          <button type="submit" className="btn-pop press mt-4">
             Stop reminder emails
           </button>
         </form>

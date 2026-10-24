@@ -63,7 +63,7 @@ export function PushDevice() {
           type="button"
           onClick={state === "on" ? turnOff : turnOn}
           disabled={busy}
-          className="mt-2 h-9 rounded-ui border border-line bg-white px-3 font-semibold text-ink disabled:opacity-60"
+          className="btn-plain press mt-2 text-sm disabled:opacity-60"
         >
           {state === "on" ? "Turn off on this device" : "Turn on for this device"}
         </button>

@@ -6,7 +6,7 @@ import { ClosingStrip } from "@/components/closing-strip";
 import { ListingRow } from "@/components/listing-row";
 import { WelcomeNote } from "@/components/welcome-note";
 import { WELCOME_COOKIE } from "@/lib/welcome";
-import { categoryChipLabel } from "@/lib/opportunities/categories";
+import { categoryBg, categoryChipLabel } from "@/lib/opportunities/categories";
 import { groupByDeadline, isClosingSoon, isOpen, type Listing } from "@/lib/opportunities/listing";
 import {
   getActiveCategories,
@@ -47,7 +47,6 @@ function browseHref(filters: Filters, change: Partial<Filters>): string {
 export default function BrowsePage({ searchParams }: PageProps<"/">) {
   return (
     <main className="flex flex-col">
-      <h1 className="sr-only">Browse opportunities</h1>
       <Suspense fallback={<BrowseSkeleton />}>
         {searchParams.then((params) => (
           <Browse filters={readFilters(params)} />
@@ -75,8 +74,11 @@ async function Browse({ filters }: { filters: Filters }) {
       (filters.view !== "closing-soon" || isClosingSoon(l, today)),
   );
 
+  const openCount = listings.filter((l) => isOpen(l, today)).length;
+
   return (
     <>
+      {isHome ? <Hero openCount={openCount} /> : <h1 className="sr-only">Browse opportunities</h1>}
       {showWelcome && <WelcomeNote />}
       <SearchForm filters={filters} />
       {!filters.q && <SearchSuggestions filters={filters} />}
@@ -84,6 +86,26 @@ async function Browse({ filters }: { filters: Filters }) {
       <CategoryChips filters={filters} categories={categories} />
       <Results filters={filters} listings={visible} today={today} />
     </>
+  );
+}
+
+// Big friendly headline on the home screen only.
+function Hero({ openCount }: { openCount: number }) {
+  return (
+    <section className="px-4 pt-6">
+      <p className="tag bg-lime">
+        <span className="tabular">{openCount}</span> open now · free for students
+      </p>
+      <h1 className="mt-3 font-display text-[34px] font-extrabold leading-[1.05] tracking-tight text-ink">
+        Huwag ma-late sa next{" "}
+        <span className="relative inline-block">
+          <span aria-hidden="true" className="absolute inset-x-0 bottom-1 h-3 -rotate-1 rounded-sm bg-sun" />
+          <span className="relative">opportunity</span>
+        </span>{" "}
+        mo.
+      </h1>
+      <p className="mt-2 text-muted">Scholarships, internships, hackathons, and free courses, sorted by deadline.</p>
+    </section>
   );
 }
 
@@ -95,15 +117,25 @@ function SearchForm({ filters }: { filters: Filters }) {
       <label htmlFor="search" className="sr-only">
         Search
       </label>
-      <input
-        id="search"
-        name="q"
-        type="search"
-        defaultValue={filters.q}
-        placeholder="Search scholarships, internships, contests…"
-        className="h-11 w-full rounded-ui border border-line bg-white px-3 text-base text-ink placeholder:text-muted"
-        enterKeyHint="search"
-      />
+      <div className="sticker flex items-center gap-2 pl-3 focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-teal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+        </svg>
+        <input
+          id="search"
+          name="q"
+          type="search"
+          defaultValue={filters.q}
+          placeholder="Search DOST, OJT, hackathon…"
+          className="h-12 min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-muted"
+          style={{ border: 0 }}
+          enterKeyHint="search"
+        />
+        <button type="submit" className="m-1 h-10 rounded-[8px] bg-ink px-4 text-sm font-bold text-white">
+          Go
+        </button>
+      </div>
     </form>
   );
 }
@@ -113,15 +145,15 @@ const SUGGESTIONS = ["DOST", "CHED", "OJT", "CTF", "TESDA"];
 
 function SearchSuggestions({ filters }: { filters: Filters }) {
   return (
-    <nav aria-label="Popular searches" className="flex items-center gap-2 overflow-x-auto px-4 pt-2 [scrollbar-width:none]">
-      <span className="shrink-0 text-xs text-muted">Try:</span>
+    <nav aria-label="Popular searches" className="flex items-center gap-2 overflow-x-auto px-4 pb-1 pt-3 [scrollbar-width:none]">
+      <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-muted">Try</span>
       {SUGGESTIONS.map((q) => (
         <Link
           key={q}
           href={browseHref(filters, { q })}
-          className="inline-flex min-h-11 shrink-0 items-center rounded-ui px-2 text-sm font-semibold text-teal underline-offset-2 hover:underline"
+          className="inline-flex min-h-11 shrink-0 items-center rounded-pill border-2 border-dashed border-ink bg-card px-3 text-sm font-bold text-ink hover:bg-sun"
         >
-          {q}
+          #{q}
         </Link>
       ))}
     </nav>
@@ -134,7 +166,7 @@ function Tabs({ filters }: { filters: Filters }) {
     { view: "closing-soon", label: "Closing soon" },
   ];
   return (
-    <nav aria-label="Views" className="mt-3 flex gap-6 border-b border-line px-4">
+    <nav aria-label="Views" className="mx-4 mt-4 grid grid-cols-2 rounded-ui border-2 border-ink bg-card p-1">
       {tabs.map((tab) => {
         const active = filters.view === tab.view;
         return (
@@ -142,8 +174,8 @@ function Tabs({ filters }: { filters: Filters }) {
             key={tab.view}
             href={browseHref(filters, { view: tab.view })}
             aria-current={active ? "page" : undefined}
-            className={`-mb-px border-b-2 py-3 text-sm font-semibold ${
-              active ? "border-teal text-ink" : "border-transparent text-muted hover:text-ink"
+            className={`flex min-h-11 items-center justify-center rounded-[8px] text-sm font-bold ${
+              active ? "bg-ink text-white" : "text-ink hover:bg-paper"
             }`}
           >
             {tab.label}
@@ -159,7 +191,7 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
     categories.map((c) => ({ slug: c.slug, label: categoryChipLabel(c.slug, c.name) })),
   );
   return (
-    <nav aria-label="Categories" className="flex gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none]">
+    <nav aria-label="Categories" className="flex gap-2 overflow-x-auto px-4 pb-4 pt-3 [scrollbar-width:none]">
       {chips.map((chip) => {
         const active = filters.category === chip.slug;
         return (
@@ -167,8 +199,8 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
             key={chip.slug ?? "all"}
             href={browseHref(filters, { category: chip.slug })}
             aria-current={active ? "page" : undefined}
-            className={`inline-flex min-h-11 shrink-0 items-center rounded-ui border px-3.5 text-sm ${
-              active ? "border-teal bg-teal text-white" : "border-line bg-white text-ink hover:border-muted"
+            className={`inline-flex min-h-11 shrink-0 items-center rounded-pill border-2 border-ink px-4 text-sm font-bold text-ink ${
+              active ? `${chip.slug ? categoryBg(chip.slug) : "bg-sun"} shadow-[2px_2px_0_0_#111]` : "bg-card hover:bg-paper"
             }`}
           >
             {chip.label}
@@ -182,22 +214,22 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
 function Results({ filters, listings, today }: { filters: Filters; listings: Listing[]; today: string }) {
   if (listings.length === 0) {
     return (
-      <div className="px-4 py-12 text-center">
-        <p className="font-semibold text-ink">
-          {filters.q ? `Nothing matches "${filters.q}" yet.` : "Nothing here right now."}
+      <div className="sticker mx-4 px-4 py-10 text-center">
+        <p className="font-display text-xl font-extrabold text-ink">
+          {filters.q ? `Walang "${filters.q}" pa.` : "Wala pa dito ngayon."}
         </p>
         <p className="mt-1 text-sm text-muted">
-          {filters.view === "closing-soon" ? "No deadlines in the next 7 days. " : ""}
-          <Link href={browseHref(filters, { view: "all", category: null, q: "" })} className="text-teal underline">
-            See all opportunities
-          </Link>
+          {filters.view === "closing-soon" ? "No deadlines in the next 7 days." : "Try another word or category."}
         </p>
+        <Link href={browseHref(filters, { view: "all", category: null, q: "" })} className="btn-plain press mt-4">
+          See all opportunities
+        </Link>
       </div>
     );
   }
 
   const count = (
-    <p className="tabular px-4 pb-2 text-xs text-muted">
+    <p className="tabular px-4 pb-2 text-sm font-semibold text-muted">
       {listings.length} {listings.length === 1 ? "opportunity" : "opportunities"}
       {filters.q ? ` for "${filters.q}"` : ""}
     </p>
@@ -208,7 +240,7 @@ function Results({ filters, listings, today }: { filters: Filters; listings: Lis
     return (
       <>
         {count}
-        <ul className="border-t border-line">
+        <ul className="flex flex-col gap-3 px-4">
           {listings.map((l) => (
             <ListingRow key={l.id} listing={l} today={today} />
           ))}
@@ -224,40 +256,34 @@ function Results({ filters, listings, today }: { filters: Filters; listings: Lis
   return (
     <>
       {count}
-      <ClosingStrip
-        listings={thisWeek}
-        today={today}
-        seeAllHref={browseHref(filters, { view: "closing-soon" })}
-      />
-      {groups.filter((g) => g.label !== "This week").map((group) => (
-        <section key={group.label} aria-label={group.label}>
-          <h2 className="border-t border-line bg-paper px-4 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-muted">
-            {group.label}
-          </h2>
-          <ul>
-            {group.listings.map((l) => (
-              <ListingRow key={l.id} listing={l} today={today} />
-            ))}
-          </ul>
-        </section>
-      ))}
+      <ClosingStrip listings={thisWeek} today={today} seeAllHref={browseHref(filters, { view: "closing-soon" })} />
+      {groups
+        .filter((g) => g.label !== "This week")
+        .map((group) => (
+          <section key={group.label} aria-labelledby={`group-${group.label}`} className="pt-4">
+            <h2 id={`group-${group.label}`} className="px-4 pb-2 font-display text-lg font-extrabold text-ink">
+              {group.label}
+            </h2>
+            <ul className="flex flex-col gap-3 px-4">
+              {group.listings.map((l) => (
+                <ListingRow key={l.id} listing={l} today={today} />
+              ))}
+            </ul>
+          </section>
+        ))}
     </>
   );
 }
 
 function BrowseSkeleton() {
   return (
-    <div aria-hidden="true" className="motion-safe:animate-pulse px-4 pt-4">
-      <div className="h-11 rounded-ui bg-line/60" />
-      <div className="mt-4 h-6 w-40 rounded-ui bg-line/60" />
-      {Array.from({ length: 6 }, (_, i) => (
-        <div key={i} className="mt-6 flex gap-4">
-          <div className="h-10 w-20 rounded-ui bg-line/60" />
-          <div className="flex-1 space-y-2">
-            <div className="h-4 rounded-ui bg-line/60" />
-            <div className="h-3 w-2/3 rounded-ui bg-line/60" />
-          </div>
-        </div>
+    <div aria-hidden="true" className="px-4 pt-6 motion-safe:animate-pulse">
+      <div className="h-6 w-40 rounded-pill bg-line" />
+      <div className="mt-3 h-9 w-11/12 rounded-ui bg-line" />
+      <div className="mt-2 h-9 w-2/3 rounded-ui bg-line" />
+      <div className="mt-5 h-14 rounded-ui bg-line" />
+      {Array.from({ length: 4 }, (_, i) => (
+        <div key={i} className="mt-4 h-28 rounded-ui bg-line" />
       ))}
     </div>
   );

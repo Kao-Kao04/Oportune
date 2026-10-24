@@ -44,7 +44,7 @@ export default async function WelcomePage({ searchParams }: PageProps<"/welcome"
 
   return (
     <main className="px-4 py-8">
-      <h1 className="text-2xl font-bold text-ink">{editing ? "Edit profile" : "Quick setup"}</h1>
+      <h1 className="font-display text-[32px] font-extrabold leading-tight tracking-tight text-ink">{editing ? "Edit profile" : "Quick setup"}</h1>
       <p className="mb-6 mt-1 text-muted">
         {editing ? "Used only to show what fits you." : "So we can show what fits you. Takes 20 seconds."}
       </p>

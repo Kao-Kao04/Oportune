@@ -51,11 +51,11 @@ export function SaveButton({
         disabled={pending}
         aria-pressed={saved}
         aria-label={compact ? (saved ? "Remove from saved" : "Save") : undefined}
-        className={`inline-flex h-11 items-center gap-2 rounded-ui border px-4 text-sm font-semibold disabled:opacity-60 ${
-          saved ? "border-teal bg-teal/10 text-teal" : "border-ink/20 bg-white text-ink hover:border-ink/40"
-        } ${compact ? "px-3" : ""}`}
+        className={`press inline-flex h-12 items-center justify-center gap-2 rounded-ui border-2 border-ink text-sm font-bold text-ink shadow-[3px_3px_0_0_#111] disabled:opacity-60 ${
+          saved ? "bg-sun" : "bg-card"
+        } ${compact ? "w-12" : "px-4"}`}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
           <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" strokeLinejoin="round" />
         </svg>
         {!compact && (saved ? "Saved" : "Save")}

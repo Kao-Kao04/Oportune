@@ -8,9 +8,9 @@ export function SignInForm({ next }: { next: string }) {
 
   if (state.status === "sent") {
     return (
-      <div className="rounded-ui border border-line bg-white p-4">
+      <div className="sticker bg-mint p-4">
         <p className="font-semibold text-ink">Check your email</p>
-        <p className="mt-1 text-sm text-muted">
+        <p className="mt-1 text-sm text-ink">
           We sent a sign-in link to {state.email}. Open it on this device. The link works once and expires in an hour.
         </p>
       </div>
@@ -30,7 +30,7 @@ export function SignInForm({ next }: { next: string }) {
         required
         autoComplete="email"
         defaultValue={state.email}
-        className="h-11 rounded-ui border border-line bg-white px-3 text-base"
+        className="h-12 rounded-ui border-2 bg-card px-3 text-base"
       />
       {state.status === "error" && (
         <p role="alert" className="text-sm text-urgent">
@@ -40,7 +40,7 @@ export function SignInForm({ next }: { next: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="h-11 rounded-ui bg-teal px-4 font-semibold text-white hover:bg-teal-dark disabled:opacity-60"
+        className="btn-pop press disabled:opacity-60"
       >
         {pending ? "Sending…" : "Email me a sign-in link"}
       </button>

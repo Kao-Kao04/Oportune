@@ -38,13 +38,13 @@ export default async function DeleteAccountPage({ searchParams }: PageProps<"/me
       <form action={deleteAccount} className="mt-6 flex flex-col gap-3">
         <label className="block">
           <span className="mb-1 block text-sm font-semibold text-ink">Type DELETE to confirm</span>
-          <input name="confirm" autoComplete="off" className="h-11 w-full rounded-ui border border-line bg-white px-3 text-base" />
+          <input name="confirm" autoComplete="off" className="h-12 w-full rounded-ui border-2 bg-card px-3 text-base" />
         </label>
         <div className="flex gap-3">
-          <Link href="/me" className="inline-flex h-11 items-center rounded-ui border border-line bg-white px-4 font-semibold text-ink">
+          <Link href="/me" className="btn-plain press">
             Cancel
           </Link>
-          <button type="submit" className="h-11 flex-1 rounded-ui bg-urgent px-4 font-semibold text-white">
+          <button type="submit" className="press inline-flex min-h-12 flex-1 items-center justify-center rounded-ui border-2 border-ink bg-tomato px-4 font-bold text-ink shadow-[3px_3px_0_0_#111]">
             Delete
           </button>
         </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { redirect } from "next/navigation";
-import { ListingRow, TONE_TEXT } from "@/components/listing-row";
+import { ListingRow } from "@/components/listing-row";
 import { SaveButton } from "@/components/save-button";
 import { getCurrentUser } from "@/lib/auth";
 import { compareByDeadline, isOpen, toListing, type Listing } from "@/lib/opportunities/listing";
@@ -48,48 +48,44 @@ export default async function SavedPage() {
 
   return (
     <main className="flex flex-col">
-      <h1 className="px-4 pt-6 text-2xl font-bold text-ink">Saved</h1>
+      <h1 className="px-4 pt-6 font-display text-[32px] font-extrabold tracking-tight text-ink">Saved</h1>
       {listings.length === 0 ? (
-        <div className="px-4 py-12 text-center">
+        <div className="sticker mx-4 mt-6 px-4 py-10 text-center">
           <p className="font-semibold text-ink">Nothing saved yet.</p>
           <p className="mt-1 text-sm text-muted">Tap the bookmark on a listing to keep it here and get deadline reminders.</p>
-          <Link href="/" className="mt-4 inline-block font-semibold text-teal underline">
+          <Link href="/" className="btn-pop press mt-4">
             Browse opportunities
           </Link>
         </div>
       ) : (
         <>
-          <div className="mx-4 mt-3 rounded-ui border border-line bg-white p-4">
+          <div className="sticker mx-4 mt-4 bg-sun p-4">
             {nextUp ? (
               <Link href={`/opportunities/${nextUp.slug}`} className="block">
-                <span className="text-xs font-semibold uppercase tracking-wide text-muted">Next deadline</span>
-                <span className="mt-1 block font-semibold leading-snug text-ink">{nextUp.title}</span>
-                <span className={`tabular mt-0.5 block text-sm font-semibold ${TONE_TEXT[deadlineInfo(nextUp, today).tone]}`}>
+                <span className="text-xs font-bold uppercase tracking-wide text-ink">Next deadline</span>
+                <span className="mt-1 block font-display text-xl font-extrabold leading-snug text-ink">{nextUp.title}</span>
+                <span className="tabular mt-1 inline-block rounded-pill border-2 border-ink bg-card px-2 text-sm font-bold text-ink">
                   {formatLongDate(nextUp.deadline!)} · {deadlineInfo(nextUp, today).detail}
                 </span>
               </Link>
             ) : (
-              <span className="text-sm text-muted">None of your saved listings has a fixed deadline.</span>
+              <span className="text-sm text-ink">None of your saved listings has a fixed deadline.</span>
             )}
-            <p className="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3 text-sm">
+            <p className="mt-3 flex items-center justify-between gap-3 border-t-2 border-dashed border-ink pt-3 text-sm">
               <span className={channels.length ? "text-ink" : "text-urgent"}>
                 {channels.length ? `Reminders on: ${channels.join(" + ")}` : "Reminders are off"}
-                <span className="text-muted"> · 7 days and 1 day before</span>
+                <span> · 7 days and 1 day before</span>
               </span>
-              <Link href="/me" className="inline-flex min-h-11 shrink-0 items-center font-semibold text-teal">
+              <Link href="/me" className="inline-flex min-h-11 shrink-0 items-center font-bold text-ink underline underline-offset-4">
                 Change
               </Link>
             </p>
           </div>
-          <p className="px-4 pb-2 pt-4 text-xs font-semibold uppercase tracking-wide text-muted">
-            All saved · sorted by deadline
-          </p>
+          <h2 className="px-4 pb-2 pt-6 font-display text-lg font-extrabold text-ink">All saved</h2>
           <SavedList listings={open} today={today} />
           {closed.length > 0 && (
             <>
-              <h2 className="border-t border-line px-4 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-muted">
-                Closed
-              </h2>
+              <h2 className="px-4 pb-2 pt-6 font-display text-lg font-extrabold text-muted">Closed</h2>
               <SavedList listings={closed} today={today} />
             </>
           )}
@@ -102,7 +98,7 @@ export default async function SavedPage() {
 
 function SavedList({ listings, today }: { listings: Listing[]; today: string }) {
   return (
-    <ul className="border-t border-line">
+    <ul className="flex flex-col gap-3 px-4">
       {listings.map((l) => (
         <ListingRow
           key={l.id}

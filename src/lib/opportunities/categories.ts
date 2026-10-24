@@ -34,3 +34,22 @@ export function categoryLabel(slug: string, fallback: string): string {
 export function categoryChipLabel(slug: string, fallback: string): string {
   return CHIP_LABELS[slug] ?? fallback;
 }
+
+// Pop color per category (background, always with ink text). Full class names
+// so Tailwind keeps them.
+const CATEGORY_BG: Record<string, string> = {
+  scholarships: "bg-sun",
+  internships: "bg-sky",
+  "entry-level-jobs": "bg-mint",
+  hackathons: "bg-tomato",
+  ctfs: "bg-lilac",
+  courses: "bg-lime",
+  leadership: "bg-pink",
+  events: "bg-orange",
+  "research-grants": "bg-lilac",
+  "hardware-grants": "bg-sky",
+};
+
+export function categoryBg(slug: string): string {
+  return CATEGORY_BG[slug] ?? "bg-sun";
+}

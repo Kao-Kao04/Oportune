@@ -55,14 +55,14 @@ export function ShareButton({
     }
   }
 
-  const item = "flex min-h-11 w-full items-center px-4 text-left text-sm hover:bg-ink/5";
+  const item = "flex min-h-12 w-full items-center px-4 text-left text-sm font-semibold hover:bg-sun";
 
   return (
     <div className="relative">
       <button
         type="button"
         onClick={share}
-        className={`inline-flex h-11 items-center gap-2 rounded-ui border border-ink/20 bg-white text-sm font-semibold text-ink hover:border-ink/40 ${compact ? "w-11 justify-center" : "px-4"}`}
+        className={`press inline-flex h-12 items-center justify-center gap-2 rounded-ui border-2 border-ink bg-card text-sm font-bold text-ink shadow-[3px_3px_0_0_#111] ${compact ? "w-12" : "px-4"}`}
         aria-expanded={fallbackOpen || undefined}
         aria-label={compact ? "Share" : undefined}
       >
@@ -72,7 +72,7 @@ export function ShareButton({
         {!compact && "Share"}
       </button>
       {fallbackOpen && (
-        <div className="absolute bottom-full left-0 z-20 mb-2 w-56 rounded-ui border border-line bg-white py-1 shadow-lg">
+        <div className="sticker absolute bottom-full left-0 z-20 mb-3 w-60 overflow-hidden py-1">
           {isPhone() && (
             <a
               href={`fb-messenger://share/?link=${encodeURIComponent(url())}`}

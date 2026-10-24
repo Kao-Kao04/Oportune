@@ -1,24 +1,46 @@
 @import "tailwindcss";
 
-/* Design tokens from docs/design/stitch-prompts.md (Prompt 0). */
+/*
+ * Oportune visual system v2: "campus sticker board".
+ * Cream paper, ink outlines, hard offset shadows, and a pop color per
+ * category, inspired by bulletin boards and jeepney signage. Neubrutalist,
+ * but rounded and friendly. All text pairs meet WCAG AA (4.5:1).
+ */
 @theme {
-  --color-paper: #faf8f3;
-  --color-ink: #1c1b19;
-  --color-muted: #6b675f;
-  --color-line: #e4e0d6;
-  --color-teal: #0f5257;
-  --color-teal-dark: #0a3d41;
-  --color-urgent: #b3261e;
-  --color-soon: #9a6700;
-  --color-official: #2e6b3f;
-  /* 4.6:1 on paper; the old #8a857b (3.5:1) failed text contrast. */
-  --color-closed: #74706a;
-  /* Form field borders: 3.2:1, enough for a control boundary (WCAG 1.4.11). */
-  --color-field: #8f8a80;
+  /* Surfaces and text */
+  --color-paper: #fff6e5;
+  --color-card: #ffffff;
+  --color-ink: #111111;
+  --color-muted: #55524c;
+  --color-line: #e8dcc4;
+  --color-field: #8c857a;
+
+  /* Brand and states (names kept so admin screens follow along) */
+  --color-teal: #1746d1;
+  --color-teal-dark: #0f33a0;
+  --color-urgent: #c42a1f;
+  --color-soon: #8a5a00;
+  --color-official: #1d6b3a;
+  --color-closed: #6b665e;
+
+  /* Pop colors: backgrounds only, always with ink text (>= 6.7:1). */
+  --color-sun: #ffd23f;
+  --color-tomato: #ff6b57;
+  --color-sky: #7cc4ff;
+  --color-mint: #6ee7b7;
+  --color-lilac: #c4b5fd;
+  --color-pink: #ffa8d2;
+  --color-orange: #ffb25b;
+  --color-lime: #c6f26b;
 
   --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-public-sans), ui-sans-serif, sans-serif;
 
-  --radius-ui: 6px;
+  --radius-ui: 12px;
+  --radius-pill: 999px;
+
+  --shadow-pop: 3px 3px 0 0 #111111;
+  --shadow-pop-lg: 5px 5px 0 0 #111111;
 }
 
 html {
@@ -36,12 +58,82 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-teal);
+  outline: 3px solid var(--color-teal);
   outline-offset: 2px;
 }
 
-/* Form fields need a visible boundary; the divider color (#e4e0d6) is too faint.
-   Unlayered, so it wins over border-line utilities on fields. */
+/* ---------- Reusable pieces ---------- */
+
+/* A white card with an ink outline and a hard shadow. */
+@utility sticker {
+  background: var(--color-card);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-ui);
+  box-shadow: var(--shadow-pop);
+}
+
+/* Press feedback that doesn't move other content: the card "sinks". */
+@utility press {
+  transition:
+    transform 120ms ease-out,
+    box-shadow 120ms ease-out;
+  &:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-pop-lg);
+  }
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 var(--color-ink);
+  }
+}
+
+/* Primary action: sun yellow, ink outline. */
+@utility btn-pop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding-inline: 1.25rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-ui);
+  background: var(--color-sun);
+  color: var(--color-ink);
+  font-weight: 800;
+  box-shadow: var(--shadow-pop);
+}
+
+/* Secondary action: white, ink outline. */
+@utility btn-plain {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding-inline: 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-ui);
+  background: var(--color-card);
+  color: var(--color-ink);
+  font-weight: 700;
+  box-shadow: var(--shadow-pop);
+}
+
+/* Small rounded tag. */
+@utility tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  color: var(--color-ink);
+}
+
+/* Form fields need a visible boundary. Unlayered, so it wins over utilities. */
 input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
 select,
 textarea {
@@ -55,7 +147,6 @@ label:has(> input[type="checkbox"], > input[type="radio"]) {
   cursor: pointer;
 }
 
-/* Quick, layout-safe feedback on hover and tap. */
 a,
 button {
   transition:
@@ -63,10 +154,6 @@ button {
     border-color 150ms ease-out,
     color 150ms ease-out,
     opacity 100ms ease-out;
-}
-a:active,
-button:active:not(:disabled) {
-  opacity: 0.8;
 }
 
 @media (prefers-reduced-motion: reduce) {
