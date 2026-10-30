@@ -308,7 +308,21 @@ isOneToOne: false
                 }
           }
           Views: {
-            "public_opportunity_wins": {
+            "public_opportunities": {
+                  Row: {
+                    "application_opens": string | null,"application_opens_type": string | null,"application_url": string | null,"category_id": string | null,"category_name": string | null,"category_slug": string | null,"course_groups": (string)[] | null,"deadline": string | null,"deadline_type": string | null,"delivery_mode": string | null,"eligibility": string | null,"id": string | null,"last_checked_at": string | null,"location": string | null,"organization": string | null,"regions": (string)[] | null,"requirements": string | null,"search_vector": unknown,"slug": string | null,"source_trust": string | null,"source_url": string | null,"status": string | null,"summary": string | null,"title": string | null,"updated_at": string | null,"year_levels": (string)[] | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "opportunities_category_id_fkey"
+      columns: ["category_id"]
+isOneToOne: false
+      referencedRelation: "categories"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"public_opportunity_wins": {
                   Row: {
                     "headline": string | null,"id": string | null,"opportunity_id": string | null,"proof_url": string | null,"published_at": string | null,"result": string | null
                   }
@@ -325,21 +339,6 @@ isOneToOne: false
       columns: ["opportunity_id"]
 isOneToOne: false
       referencedRelation: "public_opportunities"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },
-            "public_opportunities": {
-                  Row: {
-                    "application_opens": string | null,"application_opens_type": string | null,"application_url": string | null,"category_id": string | null,"category_name": string | null,"category_slug": string | null,"course_groups": (string)[] | null,"deadline": string | null,"deadline_type": string | null,"delivery_mode": string | null,"eligibility": string | null,"id": string | null,"last_checked_at": string | null,"location": string | null,"organization": string | null,"regions": (string)[] | null,"requirements": string | null,"search_vector": unknown,"slug": string | null,"source_trust": string | null,"source_url": string | null,"status": string | null,"summary": string | null,"title": string | null,"updated_at": string | null,"year_levels": (string)[] | null
-                  }
-                  ComputedFields: never
-                  Relationships: [
-                    {
-      foreignKeyName: "opportunities_category_id_fkey"
-      columns: ["category_id"]
-isOneToOne: false
-      referencedRelation: "categories"
       referencedColumns: ["id"]
     }
                   ]
