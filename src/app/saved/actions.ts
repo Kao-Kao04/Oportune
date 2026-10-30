@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { UNDER_18_MESSAGE } from "@/lib/profile";
 import { safeNextPath } from "@/lib/safe-next";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -23,6 +24,9 @@ export async function toggleSave(_prev: SaveResult, form: FormData): Promise<Sav
 
   const supabase = await createClient();
   if (wantSaved) {
+    // Accounts stay 18+ (profile check), so saving does too.
+    const { data: profile } = await supabase.from("profiles").select("is_18_or_over").eq("user_id", user.id).maybeSingle();
+    if (profile?.is_18_or_over !== true) return { saved: false, error: UNDER_18_MESSAGE };
     // RLS only allows saving published listings, for yourself.
     const { error } = await supabase
       .from("saved_opportunities")

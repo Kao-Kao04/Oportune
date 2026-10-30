@@ -16,8 +16,8 @@ export default function PrivacyPage() {
       <section>
         <h2>1. Who we are</h2>
         <p className="mt-2">
-          Oportune (&quot;we&quot;) is a free website and app that lists verified scholarships, internships, competitions,
-          and courses for college students in the Philippines. [Legal name of the entity operating Oportune, its
+          Oportune (&quot;we&quot;) is a free website and app that lists scholarships, internships, competitions, and
+          courses for college students in the Philippines, each checked by a person against its source. [Legal name of the entity operating Oportune, its
           address] is the personal information controller for the information described here, under the Data Privacy
           Act of 2012 (Republic Act No. 10173) and its Implementing Rules and Regulations.
         </p>
@@ -49,8 +49,15 @@ export default function PrivacyPage() {
             signed in, the report is linked to your account.
           </li>
           <li>
-            <span className="font-semibold">Use the site:</span> anonymous usage events (for example, that a listing was
-            viewed or its official link was clicked), tied to a random ID stored in your browser, not to your name. To
+            <span className="font-semibold">Submit an opportunity:</span> the link and any details you write (title,
+            organizer, deadline, note, and whether you&apos;re a student or organizer), linked to your account so you can
+            see its status.
+          </li>
+          <li>
+            <span className="font-semibold">Use the site:</span> anonymous usage events (for example, that you visited
+            today, that a listing was viewed, or that its official link was clicked), tied to a random ID stored in your
+            browser, not to your name. If you opened a link shared by a student organization, we also note that
+            organization&apos;s short link tag (for example, &quot;gdg-pup&quot;) so we know which groups bring visitors. To
             stop abuse, we keep a one-way scrambled (hashed) version of your internet address for up to two days; we do
             not store the address itself.
           </li>
@@ -112,8 +119,8 @@ export default function PrivacyPage() {
           <li>Reminder records: until you delete your account, or the listing is removed.</li>
           <li>Hashed internet addresses used against abuse: up to two days.</li>
           <li>
-            Reports: kept to maintain listing quality. When you delete your account, your reports stay but are no longer
-            linked to you.
+            Reports and submissions: kept to maintain listing quality. When you delete your account, they stay but are
+            no longer linked to you.
           </li>
           <li>Anonymous usage events: 13 months, then deleted automatically.</li>
         </ul>

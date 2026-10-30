@@ -57,7 +57,8 @@ export async function sendReminders(): Promise<JobOutcome> {
     admin
       .from("profiles")
       .select("user_id, email_reminders_enabled, push_reminders_enabled, email_unsubscribe_token")
-      .in("user_id", userIds),
+      .in("user_id", userIds)
+      .eq("is_18_or_over", true),
     admin.from("push_subscriptions").select("id, user_id, endpoint, p256dh, auth").in("user_id", userIds),
   ]);
   if (profileError) throw profileError;

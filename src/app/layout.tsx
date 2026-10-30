@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Public_Sans } from "next/font/google";
 import Link from "next/link";
 import { HeaderSearch } from "@/components/header-search";
+import { VisitTracker } from "@/components/tracking";
 import "./globals.css";
 
 const publicSans = Public_Sans({
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s · Oportune",
   },
   description:
-    "Verified scholarships, internships, hackathons, and free courses for college students in the Philippines, sorted by deadline.",
+    "Never miss a deadline. Hackathons, CTFs, internships, and scholarships for college students in the Philippines, each checked by a person against its source.",
   openGraph: { siteName: "Oportune", type: "website", locale: "en_PH" },
 };
 
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${publicSans.variable} ${bricolage.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        <VisitTracker />
         <header className="sticky top-0 z-20 border-b-2 border-ink bg-paper">
           <div className="mx-auto flex h-16 w-full max-w-2xl items-center justify-between px-4">
             <Link href="/" className="flex items-center gap-2" aria-label="Oportune home">

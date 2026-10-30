@@ -1,7 +1,24 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { track } from "@/lib/analytics";
+import { track, trackDailyVisit } from "@/lib/analytics";
+import { todayInManila } from "@/lib/opportunities/dates";
+import { normalizeRef } from "@/lib/ref";
+
+// On every page: one daily "visit", tagged with the org's ?ref= if the
+// student came from a shared link. The tag is then removed from the address
+// bar so links the student shares stay clean.
+export function VisitTracker() {
+  useEffect(() => {
+    trackDailyVisit(todayInManila());
+    const url = new URL(window.location.href);
+    if (normalizeRef(url.searchParams.get("ref"))) {
+      url.searchParams.delete("ref");
+      window.history.replaceState(null, "", url);
+    }
+  }, []);
+  return null;
+}
 
 // Records a listing view, and a reminder open when the student arrived from a
 // reminder (?ref=reminder, then removed from the address bar).

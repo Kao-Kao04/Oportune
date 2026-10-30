@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isProfileComplete, parseProfileForm, yearLevelLabel } from "../src/lib/profile";
+import { isProfileComplete, parseProfileForm, UNDER_18_MESSAGE, yearLevelLabel } from "../src/lib/profile";
 import { safeNextPath } from "../src/lib/safe-next";
 
 describe("safeNextPath", () => {
@@ -33,14 +33,14 @@ describe("profile", () => {
     });
   });
 
-  it("records under-18 as false, not missing", () => {
+  it("turns away under-18s: accounts stay 18+ for now", () => {
     const result = parseProfileForm(form({ school: "X", course_group: "other", year_level: "1" }), new Set());
-    expect(result.ok && result.fields.is_18_or_over).toBe(false);
+    expect(result).toEqual({ ok: false, errors: { is_18_or_over: UNDER_18_MESSAGE } });
   });
 
-  it("requires school, field of study, and year level", () => {
+  it("requires school, field of study, year level, and the 18+ confirmation", () => {
     const result = parseProfileForm(form({}), new Set());
-    expect(result.ok ? [] : Object.keys(result.errors).sort()).toEqual(["course_group", "school", "year_level"]);
+    expect(result.ok ? [] : Object.keys(result.errors).sort()).toEqual(["course_group", "is_18_or_over", "school", "year_level"]);
   });
 
   it("is complete only when every question is answered", () => {

@@ -22,7 +22,7 @@ export default function Image() {
         <div style={{ width: 96, height: 8, background: "#0f5257" }} />
         <div style={{ marginTop: 24, fontSize: 30, fontWeight: 700, color: "#0f5257" }}>Oportune</div>
         <div style={{ marginTop: 64, fontSize: 72, fontWeight: 700, lineHeight: 1.1, display: "flex" }}>
-          Scholarships, internships, hackathons, and free courses
+          Hackathons, CTFs, internships, and scholarships
         </div>
         <div style={{ marginTop: 24, fontSize: 34, color: "#6b675f", display: "flex" }}>
           For college students in the Philippines, sorted by deadline

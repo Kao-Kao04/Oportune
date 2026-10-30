@@ -1,17 +1,18 @@
 import { allowRequest, hashedClientIp } from "@/lib/rate-limit";
+import { normalizeRef } from "@/lib/ref";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 // Anonymous product events (docs/idea/05-validation-metrics-risks.md §13).
 // No names, emails, or IPs are stored: just the event, the listing, and a
-// random ID the browser keeps.
-const EVENTS = new Set(["view", "official_click", "share", "reminder_open"]);
+// random ID the browser keeps, plus the org's ?ref= tag if there was one.
+const EVENTS = new Set(["view", "official_click", "share", "reminder_open", "visit"]);
 const UUID = /^[0-9a-f-]{36}$/i;
 const BOTS = /bot|crawl|spider|slurp|facebookexternalhit|preview|headless/i;
 
 export async function POST(request: Request) {
   if (BOTS.test(request.headers.get("user-agent") ?? "")) return new Response(null, { status: 204 });
 
-  let body: { event?: unknown; opportunityId?: unknown; anonymousId?: unknown };
+  let body: { event?: unknown; opportunityId?: unknown; anonymousId?: unknown; ref?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -21,13 +22,14 @@ export async function POST(request: Request) {
   const opportunityId = typeof body.opportunityId === "string" && UUID.test(body.opportunityId) ? body.opportunityId : null;
   const anonymousId =
     typeof body.anonymousId === "string" && /^[0-9a-z-]{8,40}$/i.test(body.anonymousId) ? body.anonymousId : null;
+  const ref = normalizeRef(body.ref);
   if (!EVENTS.has(event)) return new Response("Bad request", { status: 400 });
 
   try {
     if (!(await allowRequest(`events:${await hashedClientIp()}`, 120, 60 * 60))) {
       return new Response(null, { status: 429 });
     }
-    await createAdminClient().from("analytics_events").insert({ event, opportunity_id: opportunityId, anonymous_id: anonymousId });
+    await createAdminClient().from("analytics_events").insert({ event, opportunity_id: opportunityId, anonymous_id: anonymousId, ref });
   } catch (error) {
     // Analytics must never break the page; log and move on.
     console.warn("[events] not recorded", error);

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Oportune",
     short_name: "Oportune",
-    description: "Verified scholarships, internships, hackathons, and free courses for college students in the Philippines.",
+    description: "Never miss a deadline. Student opportunities in the Philippines, each checked by a person against its source.",
     start_url: "/",
     display: "standalone",
     background_color: "#faf8f3",

@@ -9,7 +9,7 @@ const option =
   "flex min-h-12 cursor-pointer items-center justify-center rounded-ui border-2 border-ink bg-card px-3 text-sm font-semibold has-checked:bg-sun has-checked:font-extrabold has-checked:shadow-[3px_3px_0_0_#111] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-teal";
 
 // Which step each field lives on (server errors jump back to that step).
-const STEP_OF: Record<string, number> = { school: 0, course_group: 1, year_level: 1 };
+const STEP_OF: Record<string, number> = { school: 0, course_group: 1, year_level: 1, is_18_or_over: 2 };
 const STEPS = ["Where do you study?", "What's your course and year?", "What are you looking for?"];
 
 // Quick profile. New students get 3 short steps with a progress bar; editing
@@ -225,10 +225,17 @@ export function ProfileForm({
             name="is_18_or_over"
             checked={adult}
             onChange={(e) => setAdult(e.target.checked)}
+            aria-invalid={Boolean(errors.is_18_or_over)}
+            aria-describedby={errors.is_18_or_over ? "adult-error" : undefined}
             className="h-5 w-5 accent-teal"
           />
           <span className="text-ink">I am 18 or older</span>
         </label>
+        {errors.is_18_or_over && (
+          <p id="adult-error" className="-mt-4 text-sm text-urgent">
+            {errors.is_18_or_over}
+          </p>
+        )}
       </div>
 
       <div className="flex gap-3">

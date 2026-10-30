@@ -18,9 +18,10 @@ export default async function StatsPage({ searchParams }: PageProps<"/admin/stat
   const since = daysAgo(days);
 
   const admin = createAdminClient();
-  const [totals, top, signups, saved, reminders, published] = await Promise.all([
+  const [totals, top, bySource, signups, saved, reminders, published] = await Promise.all([
     admin.rpc("analytics_totals", { since }),
     admin.rpc("analytics_top_listings", { since, max_rows: 10 }),
+    admin.rpc("analytics_by_ref", { since }),
     admin.from("profiles").select("user_id", { count: "exact", head: true }).gte("created_at", since),
     admin.from("saved_opportunities").select("user_id").gte("created_at", since).limit(1000),
     admin
@@ -30,7 +31,7 @@ export default async function StatsPage({ searchParams }: PageProps<"/admin/stat
       .gte("created_at", since),
     admin.from("opportunities").select("id", { count: "exact", head: true }).eq("status", "published"),
   ]);
-  for (const r of [totals, top, signups, saved, reminders, published]) if (r.error) throw r.error;
+  for (const r of [totals, top, bySource, signups, saved, reminders, published]) if (r.error) throw r.error;
 
   const byEvent = new Map((totals.data ?? []).map((t) => [t.event, t]));
   const count = (e: string) => Number(byEvent.get(e)?.events ?? 0);
@@ -39,14 +40,19 @@ export default async function StatsPage({ searchParams }: PageProps<"/admin/stat
   const remindersSent = reminders.count ?? 0;
   const savers = new Set((saved.data ?? []).map((s) => s.user_id)).size;
   const pct = (a: number, b: number) => (b > 0 ? `${Math.round((a / b) * 100)}%` : "—");
+  const sources = bySource.data ?? [];
+  const allVisitors = sources.reduce((n, s) => n + Number(s.visitors), 0);
+  const returning = sources.reduce((n, s) => n + Number(s.returning_visitors), 0);
 
   const tiles = [
-    { label: "Visitors", value: Number(byEvent.get("view")?.visitors ?? 0), note: "browsers that viewed a listing" },
+    { label: "Visitors", value: allVisitors, note: "browsers that opened any page" },
+    { label: "Came back another week", value: returning, note: `${pct(returning, allVisitors)} of visitors · target ≥ 20%` },
+    { label: "Listing viewers", value: Number(byEvent.get("view")?.visitors ?? 0), note: "browsers that viewed a listing" },
     { label: "Listing views", value: views },
     { label: "Official-link clicks", value: clicks, note: `${pct(clicks, views)} of views · target ≥ 10%` },
     { label: "Shares", value: count("share") },
     { label: "Saves", value: count("save"), note: `${savers} students saved something` },
-    { label: "New sign-ups", value: signups.count ?? 0, note: `${pct(savers, signups.count ?? 0)} saved · target ≥ 40%` },
+    { label: "New sign-ups", value: signups.count ?? 0, note: `${pct(savers, signups.count ?? 0)} saved · target ≥ 30%` },
     { label: "Reminders sent", value: remindersSent },
     {
       label: "Reminders opened",
@@ -84,6 +90,37 @@ export default async function StatsPage({ searchParams }: PageProps<"/admin/stat
           </div>
         ))}
       </dl>
+
+      <h2 className="mt-6 text-sm font-semibold text-ink">Where visitors came from</h2>
+      <p className="mt-1 text-xs text-muted">
+        Give each org its own link, e.g. <code>/?ref=gdg-pup</code> (lowercase letters, numbers, dashes).
+      </p>
+      {sources.length === 0 ? (
+        <p className="mt-2 text-sm text-muted">No visitors yet in this period.</p>
+      ) : (
+        <table className="tabular mt-2 w-full text-sm">
+          <thead>
+            <tr className="border-b border-line text-left text-xs text-muted">
+              <th className="py-2 font-normal">Source</th>
+              <th className="py-2 text-right font-normal">Visitors</th>
+              <th className="py-2 text-right font-normal">Came back</th>
+              <th className="py-2 text-right font-normal">Views</th>
+              <th className="py-2 text-right font-normal">Clicks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sources.map((s) => (
+              <tr key={s.ref} className="border-b border-line">
+                <td className="py-2 pr-2 text-ink">{s.ref}</td>
+                <td className="py-2 text-right">{Number(s.visitors)}</td>
+                <td className="py-2 text-right">{pct(Number(s.returning_visitors), Number(s.visitors))}</td>
+                <td className="py-2 text-right">{Number(s.views)}</td>
+                <td className="py-2 text-right">{Number(s.official_clicks)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
       <h2 className="mt-6 text-sm font-semibold text-ink">Top listings by views</h2>
       {(top.data ?? []).length === 0 ? (

@@ -8,7 +8,8 @@ import type { JobOutcome } from "./run";
 const RECHECK_AFTER_DAYS = 30;
 
 // Daily, just after midnight PH time (§7.2): close listings whose deadline
-// passed, and flag rolling/TBA listings nobody has checked for 30 days.
+// passed, and flag rolling/TBA listings nobody has checked for 30 days
+// (or ever).
 export async function autoExpire(): Promise<JobOutcome> {
   const admin = createAdminClient();
   const today = todayInManila();
@@ -29,7 +30,7 @@ export async function autoExpire(): Promise<JobOutcome> {
     .eq("status", "published")
     .in("deadline_type", ["rolling", "tba"])
     .eq("recheck_due", false)
-    .lt("last_checked_at", staleBefore)
+    .or(`last_checked_at.is.null,last_checked_at.lt.${staleBefore}`)
     .select("id");
   if (flagError) throw flagError;
 

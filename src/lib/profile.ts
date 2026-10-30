@@ -58,6 +58,9 @@ export type ProfileFields = {
   is_18_or_over: boolean | null;
 };
 
+export const UNDER_18_MESSAGE =
+  "Accounts are for 18 and older for now. You can still browse and share listings without one.";
+
 // Complete once the quick-profile questions are answered.
 export function isProfileComplete(p: Pick<ProfileFields, "school" | "course_group" | "year_level" | "is_18_or_over">) {
   return Boolean(p.school && p.course_group && p.year_level && p.is_18_or_over !== null);
@@ -90,6 +93,8 @@ export function parseProfileForm(form: FormData, categorySlugs: Set<string>): Pr
   if (!school) errors.school = "Type or pick your school.";
   if (!COURSE_GROUPS.some((g) => g.value === courseGroup)) errors.course_group = "Pick your field of study.";
   if (!YEAR_LEVELS.some((y) => y.value === yearLevel)) errors.year_level = "Pick your year level.";
+  // Accounts stay 18+ until a lawyer approves a guardian-consent flow.
+  if (form.get("is_18_or_over") !== "on") errors.is_18_or_over = UNDER_18_MESSAGE;
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
   return {
@@ -100,7 +105,7 @@ export function parseProfileForm(form: FormData, categorySlugs: Set<string>): Pr
       course: course || null,
       year_level: yearLevel,
       interests: [...new Set(interests)],
-      is_18_or_over: form.get("is_18_or_over") === "on",
+      is_18_or_over: true,
     },
   };
 }
