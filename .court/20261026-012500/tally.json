@@ -1,0 +1,92 @@
+{
+  "verdict": "GUILTY",
+  "guilty": 11,
+  "not_guilty": 1,
+  "no_vote": 0,
+  "jurors": [
+    {
+      "juror": "The Accountant",
+      "vote": "GUILTY",
+      "reason": "Nobody in this record has been asked to pay, the only price is lifted from a desk report, Year 1 runs on grants the team hasn't won, and spending more development hours on that ledger is spending with no income line at all; the next hours should go to deploying and asking buyers, not building.",
+      "fact": "\"No organizer, university, org or sponsor has been asked to pay or has agreed to anything,\" and the PHP 500-1,500 sponsored-listing price \"comes from a desk-research report, not from any organizer.\"",
+      "flip": "The case were restated as \"stop feature work, deploy, and spend the next 30 days testing demand and price,\" with at least a few organizers or orgs actually quoted a sponsored-listing price and some of them saying yes, or putting in a letter of intent."
+    },
+    {
+      "juror": "The First-Time Customer",
+      "vote": "GUILTY",
+      "reason": "I can't use it this week because there is no link to open, and even if there were, the main thing it promises me, never missing a deadline, wouldn't apply to most of what it lists, so I'd keep scrolling the free Facebook pages I already follow.",
+      "fact": "It is \"Not deployed; no public URL; no domain bought,\" and \"52 of 79 have no fixed date,\" while reminders only work on \"saved, dated listings.\"",
+      "flip": "The case were to stop adding features and put a live link in front of real students, with most listings carrying real deadlines that trigger working reminders, and some of those students actually saving listings and coming back."
+    },
+    {
+      "juror": "The Competitor",
+      "vote": "GUILTY",
+      "reason": "If I ran Scholarships PH I would simply ignore this, because it rewrites my own Facebook posts a day later for one user, and anything it adds that matters (a deadline line, a \"verified\" tag) I can copy into my posts tomorrow, so more development time buys it nothing I have to answer.",
+      "fact": "Oportune sources its listings from \"a public organizer post (mostly on Facebook)\" while Scholarships PH has \"~639K followers\" and Oportune has \"Users: 1 (the founder)\" and no deployment.",
+      "flip": "The case stopped feature work and committed only to deploying and running the 12-week kill test inside the IT/CS hackathon and CTF niche with the two campus orgs, where no Facebook scholarship page like mine competes."
+    },
+    {
+      "juror": "The Retired Judge",
+      "vote": "GUILTY",
+      "reason": "The case asks for more development time, but the record has no evidence of demand to support it, and the defense itself concedes the next hours must go to deploying and interviews rather than building, so the case as stated rests on hope rather than proof.",
+      "fact": "\"Users: 1 (the founder)\" and the interview log is empty, \"zero interviews recorded\", while four new features were built on 2026-10-25 against the team's own rule \"Don't build more features until steps 1-3 are done.\"",
+      "flip": "The case were restated as deploying the existing app and running the team's kill test with the two pilot orgs and recorded interviews, or if the interview log held real student interviews showing they miss opportunities they want."
+    },
+    {
+      "juror": "The Teenager",
+      "vote": "GUILTY",
+      "reason": "Literally nobody but the founder has seen this thing, I already follow a Facebook page with 639K people on it that posts the same stuff for free, and they keep adding features instead of just putting it online and asking even one student if they'd come back.",
+      "fact": "\"Users: 1 (the founder). Not deployed; no public URL\" while four more features were built on 2026-10-25 against the team's own \"Don't build more features\" rule.",
+      "flip": "The case was \"deploy it now and spend the time getting real students from the two IT orgs to use it,\" with even a handful of interviews showing students actually missed hackathons, CTFs or deadlines that Facebook didn't catch for them."
+    },
+    {
+      "juror": "The Engineer",
+      "vote": "GUILTY",
+      "reason": "The machine is already built and has never been switched on, and the first thing that breaks when it grows is the content pipeline (one person, a 15-minute daily routine, 52 of 79 listings undated so reminders cannot fire), which no amount of extra development time fixes.",
+      "fact": "Four new features were added on 2026-10-25 while the reminder jobs \"have never run\", no admin account exists, the leaked Supabase secret and database password are still unrotated, and the team's own rule says \"Don't build more features until steps 1-3 [admin/content/deploy] are done.\"",
+      "flip": "The case were restated as a feature freeze, with the next time going only to rotating the secrets, deploying, creating the admin account, dating or recurrence-tagging the listings, and running the 12-week kill test with two campus orgs."
+    },
+    {
+      "juror": "The Small-Business Owner",
+      "vote": "GUILTY",
+      "reason": "In twenty years I never made money by restocking shelves in a shop whose doors weren't open yet, and this case asks for more development time when the record shows one person, no customers, nobody even asked to pay, and a daily curating chore that nobody has shown they can keep up through a slow month.",
+      "fact": "The team's own status line says \"The app isn't the problem now. Content, a live link, and users are,\" yet four more features were built on 2026-10-25 while there was still no deployment, no admin account and zero interviews.",
+      "flip": "The case were restated so the next weeks go to deploying, curating and putting the app in front of the two pilot orgs, with features frozen, plus at least one organizer or org asked face to face whether they would pay before Year 2 relies on sponsored listings."
+    },
+    {
+      "juror": "The Statistician",
+      "vote": "GUILTY",
+      "reason": "The sample size behind this plan is zero: no interviews, one user who is the founder, and AI desk research in place of primary data. The defense's proof that this model works is one survivor, Opportunity Desk, while the record also shows Fastweb, Going Merry and Scholly ending in a sale or a shutdown. With no data, more development time cannot move the odds, and only a measured test can.",
+      "fact": "\"Customer interviews: an interview guide and an interview-log template exist; the log is empty (zero interviews recorded)\", while four more features were built on 2026-10-25 with \"Users: 1 (the founder).\"",
+      "flip": "The case were restated as \"deploy now and run a dated test with pre-set thresholds,\" and those thresholds included more than the 12-week usage rule: a minimum number of student interviews and a minimum number of org pilots signed. No new features would be built until those thresholds were met."
+    },
+    {
+      "juror": "The Parent",
+      "vote": "GUILTY",
+      "reason": "Before I let my child hand over their school, course and email to a site that calls itself \"verified,\" I want the basics of safety and honesty done, and this team keeps adding features while the database secrets are still unrotated, the lawyer/NPC review is undone, and most listings come from \"other\" sources with no fixed date, so more development time as described buys risk, not trust.",
+      "fact": "The launch checklist still lists rotating the Supabase secret key and resetting the database password, both \"pasted in chat,\" as open, alongside \"lawyer/DPO/NPC review not done,\" while four new features were built on 2026-10-25.",
+      "flip": "The keys were rotated, the privacy/legal review were completed before collecting student data, and the next block of time were committed to deploying with the two pilot orgs and running real student interviews instead of building new features."
+    },
+    {
+      "juror": "The Investor",
+      "vote": "GUILTY",
+      "reason": "I would not put my money into more development time when the record has one user, zero interviews, no organizer asked to pay, a price taken from desk research, and comparable products that were sold off or shut down, so the product is already ahead of the evidence and more code only adds to a bet nobody has tested.",
+      "fact": "\"No organizer, university, org or sponsor has been asked to pay or has agreed to anything,\" while the team's own status line says \"The app isn't the problem now. Content, a live link, and users are.\"",
+      "flip": "the case were changed from \"keep investing development time\" to a capped deploy-and-validate sprint that stops new features, with a kill date inside 30 days covering interviews, partner sign-ups and at least one organizer asked to pay, or if the record already showed even one org committed to the pilot."
+    },
+    {
+      "juror": "The Designer",
+      "vote": "GUILTY",
+      "reason": "\"Never miss a deadline for verified student opportunities\" is a promise a stranger gets in five seconds, but the first page they open breaks it, because most listings have no deadline and most sources are not verifiably official, and spending more development time on features does not fix what the user sees.",
+      "fact": "52 of the 79 listings have no fixed date and 63 of 79 sources are \"other\", so the headline promise (deadlines, verified) does not hold for most of the content.",
+      "flip": "the case were restated as \"deploy now and test with the two campus IT orgs\" with a promise the content can keep, for example a dated, mostly official-source set of hackathon/CTF/OJT listings so the tagline holds on the first screen."
+    },
+    {
+      "juror": "The Lawyer",
+      "vote": "NOT GUILTY",
+      "reason": "The legal traps I look for (student education data under RA 10173, DOLE recruitment licensing, Facebook's terms, leaked secrets) are already named in the team's own plan and checklist, and since nothing is deployed, no one is exposed yet; that makes them conditions on launch, not reasons to stop work, but the \"verified\" tagline over 63 \"other\" sources is a misrepresentation risk they need to fix before going public.",
+      "fact": "The launch checklist already lists \"rotate the Supabase secret key and reset the database password (both noted as 'pasted in chat')\" and \"lawyer/DPO/NPC review not done\", and the app is \"Not deployed; no public URL\", so no student's data or trust is at risk today.",
+      "flip": "The plan went live collecting student profiles (school, course, year level) before rotating the leaked keys and completing the privacy/DPO review, or started arranging OJT or job placements instead of only linking to the official page."
+    }
+  ]
+}

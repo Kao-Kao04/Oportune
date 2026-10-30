@@ -2,6 +2,8 @@
 
 Copy-paste prompts for designing the Student Opportunity Hub in [Google Stitch](https://stitch.withgoogle.com/).
 
+> **Feature freeze (2026-10-26):** these screens are already built. No new screens are designed for building until the [30-day validation sprint](../validation/06-30-day-validation-sprint.md) (2026-10-27 → 2026-11-25) passes ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)). Listing copy says "checked" (a person opened the source and confirmed the details on the date shown), not "verified".
+
 ## How to use
 
 1. Create **one Stitch project** in **Mobile** mode. Keep every student screen in the same project so the style stays consistent.
@@ -69,10 +71,10 @@ Using the same style and bottom navigation, create a second version of the Brows
 Show these listings, sorted by deadline, with a small gray section label above each group: "This month", "Later", "No fixed deadline":
 - "Students' Training Support Program" — DA-NFRDI — Dec 1 — Official .gov.ph
 - "2027 Asia Analyst Development Program – Summer Analyst" — JPMorganChase — Nov 30
-- "Cyber Security Summer Analyst Internship 2027" — Citi — "Open, no deadline posted"
-- "Disney Philippines Internships (Jan–Jun 2027)" — The Walt Disney Company — "Open, no deadline posted"
-- "On-the-Job Training Program" — Philippine Nuclear Research Institute — "Rolling" — Official .gov.ph
-Rows for listings without a date show "Rolling" or "Open" in the deadline column in gray.
+- "Cyber Security Summer Analyst Internship 2027" — Citi — "Rolling: apply any time"
+- "Disney Philippines Internships (Jan–Jun 2027)" — The Walt Disney Company — "Rolling: apply any time"
+- "On-the-Job Training Program" — Philippine Nuclear Research Institute — "Rolling: apply any time" — Official .gov.ph
+Rows for listings without a date say why in gray in the deadline column: "Rolling: apply any time" or "Usually opens in <month>". These rows never fill the top of the list.
 Also add, at the bottom of the list, a quiet line of text: "Checked by our team. Always confirm on the official site."
 ```
 
@@ -102,7 +104,7 @@ Layout from top to bottom:
 - A short summary: "Grant of up to ₱75,000 for undergraduate thesis projects on Philippine native plants with health uses."
 - Sections with simple headings: "Who can apply", "What you need", "Where", "Source".
 - "Who can apply": "Undergraduates in Pharmacy, Chemistry, Nursing, and allied health whose thesis hasn't started yet."
-- "Source": the source domain "pchrd.dost.gov.ph" and "Last checked Oct 23, 2026".
+- "Source": the source domain "pchrd.dost.gov.ph" and "Checked by our team on Oct 23, 2026".
 - A sticky bottom bar with two buttons: "Save" (outlined, bookmark icon) and "Apply on official site" (filled teal, external-link icon).
 - At the very bottom of the content, a small text link: "Something wrong? Report this listing".
 ```
@@ -171,7 +173,7 @@ Same style, with "Saved" selected in the bottom navigation. Create the Saved scr
 - Rows use the same layout as Browse (deadline column on the left), each with a filled bookmark icon.
   This week: "HKCERT CTF 2026 Qualifying Round" — Nov 4 — "Reminder set".
   Later: "NASA Space Apps Challenge 2026" — Nov 14; "Yenching Academy Scholars Program" — Nov 30.
-  No fixed deadline: "TESDA Online Program" — Rolling.
+  No fixed deadline: "TESDA Online Program" — "Rolling: apply any time".
   Closed (rows in gray): "DOST ASTHRDP Graduate Scholarship" — Closed Oct 23.
 - Also design the empty state on a second frame: a simple line icon of a bookmark, the text "Nothing saved yet. Tap the bookmark on any opportunity to get deadline reminders.", and a teal text button "Browse opportunities".
 ```
@@ -247,5 +249,7 @@ Use one at a time on the screen that needs it:
 - Placeholder text like "Lorem ipsum" or "Opportunity Title 1". Use the real listings from `data/opportunities.csv`
 
 ## Phase 2 screens (later)
+
+> **Frozen:** don't design these for building during the sprint. The AI helper, document uploads, and application tracker are deferred until the pilot proves demand ([final decisions §1](../research/final-decisions.md#1-decisions)); the "Submit an opportunity" form and OJT checklist are already built. AI may later help curators, but it never publishes.
 
 When Phase 2 starts, add prompts for: the application tracker (statuses Saved → Applying → Applied → Result on each saved item) and the OJT requirements checklist (editable items with Not started / In progress / Submitted / Approved, each with an "Attach file" button), a "My documents" list, and the AI helper on the listing detail ("Explain in Taglish", "Pasok ba ako?", writing help, each answer labeled "AI-generated — check the official link"). Phase 3: the "Share to Oportune" sheet (shared link preview, optional note, "Send to curators"), the "Submit an opportunity" form, and the admin curator inbox (New / Duplicate / Converted / Ignored, with "Make draft" and "Ignore").

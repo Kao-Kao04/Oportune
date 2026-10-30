@@ -1,6 +1,6 @@
-# Validation 5/5 — OJT Coordinator Checklist Review & Synthesis
+# Validation 5/6 — OJT Coordinator Checklist Review & Synthesis
 
-> Part of [validation](../validation.md) · ← [Previous](04-interview-guide-ojt-students.md)
+> Part of [validation](../validation.md) · ← [Previous](04-interview-guide-ojt-students.md) · [Next](06-30-day-validation-sprint.md) →
 
 ## ✅ What to do with this file
 
@@ -74,8 +74,8 @@ Starting thresholds (adjust with reason):
 |---|---|---|
 | ROS tracker + penalty calculator | ≥ 50% of segment B describe ROS tracking/rule difficulty **unprompted**, and ≥ 3 agree to try a beta | Make it a smaller "ROS info" page; drop from core |
 | OJT checklist | ≥ 50% of segments C+D describe requirement confusion/delays, **and** ≥ 2 coordinators accept the summary format | Redesign the format, or focus on student-only tracking |
-| Curated listings | Concierge channel click-through ≥ 10% on posted opportunities | Keep listings minimal; compliance tools are the product |
+| Curated listings | **Superseded:** decided by the [30-day sprint](06-30-day-validation-sprint.md#4-day-30-decision) (H1–H3) | See the sprint's day-30 decision |
 | Scam/official badge | Several unprompted scam stories | Keep it (cheap to build), but don't market it as the main feature |
 | Stipend tracking | Many unprompted stipend-delay stories with workarounds | Keep in "Later" |
 
-Record the decisions in `docs/idea/04-mvp-scope-and-roadmap.md`, then start coding.
+Record the decisions in [final decisions](../research/final-decisions.md) and [idea Part 4](../idea/04-mvp-scope-and-roadmap.md). Start coding only after the [30-day sprint](06-30-day-validation-sprint.md) has passed (feature freeze until then).

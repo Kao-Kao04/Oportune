@@ -1,4 +1,4 @@
-# Validation 2/5 — Recruitment, Consent & Interview Logistics
+# Validation 2/6 — Recruitment, Consent & Interview Logistics
 
 > Part of [validation](../validation.md) · ← [Previous](01-idea-validation-framework.md) · [Next](03-interview-guide-dost-scholars.md) →
 
@@ -20,14 +20,33 @@
 | **C. Students about to start OJT** | 5–8 | Current requirement process |
 | **D. Students who finished OJT in the last 12 months** | 5–8 | Can describe the whole process from memory |
 | **E. OJT coordinators** | 3–5, from different schools | Checklist review (see [Part 5](05-coordinator-checklist-review.md)) |
+| **F. 3rd/4th-year IT/CS/IS students** | **15+** (sprint) | **Current priority.** How they find hackathons, CTFs, OJT, and tech scholarships, and what they missed ([sprint §5](06-30-day-validation-sprint.md#5-interview-guide-itcs-students-segment-f-20-minutes)) |
 
-Start with about 8 per segment. If answers keep repeating, you've learned enough. If they disagree, go up to 15–20.
+During the [30-day sprint](06-30-day-validation-sprint.md), only segment F is required. Start with about 8 per segment. If answers keep repeating, you've learned enough. If they disagree, go up to 15–20.
 
 **Mix:** at least 3 schools, both public (SUC/LUC) and private, and more than one region where possible.
 
 ## 2. Recruitment Messages
 
-### For students (Taglish)
+### For campus IT org officers (Taglish)
+
+> Hi [Name]! Kami ay team ng students na gumawa ng **Oportune**, isang libreng site na naglilista ng **hackathons, CTFs, OJT, at tech scholarships** para sa college students, at bawat isa ay chine-check ng tao sa mismong source, may reminder bago ang deadline.
+>
+> Bago kami mag-offer ng kahit ano, gusto muna naming malaman: **ano ang kailangan ng org n'yo ngayong sem?** (content para sa page, attendees sa events, member perks?)
+>
+> Ang kaya naming ibigay, libre lahat: isang ready-to-post na **weekly "opportunity drop"**, libreng listing ng events n'yo, at talk tungkol sa scams o "paano namin ginawa." Ang hihilingin lang namin: isang post ng link (may sariling tag ang org n'yo para makita namin kung ilan ang dumating), at 5–10 members na pwedeng ma-interview nang 20 minutes.
+>
+> Walang bayad, walang member data na kukunin. Pwede ba tayong mag-usap this week?
+
+### For IT/CS students (segment F, Taglish)
+
+> Hi! Kami ay grupo ng IT/CS students na nag-aaral kung paano nakakahanap ang mga estudyante ng **hackathons, CTFs, OJT, at tech scholarships**, at kung bakit minsan nami-miss natin ang deadlines.
+>
+> Naghahanap kami ng makakausap for **20 minutes** (video call or chat). **Hindi ito sales pitch.** Gusto lang namin marinig ang experience mo. Confidential ang sagot mo, at hindi namin ilalabas ang pangalan mo.
+>
+> Pwede ka ba this week? 🙏 Kung may kilala kang 3rd/4th-year IT/CS student, pa-share na rin!
+
+### For DOST and OJT segments (A–D, Taglish)
 
 > Hi! Kami ay grupo ng mga estudyante na nag-aaral kung paano hina-handle ng mga students ang **OJT requirements** at **DOST scholarship requirements/Return of Service**.
 >

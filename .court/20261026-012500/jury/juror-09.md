@@ -1,0 +1,4 @@
+VOTE: GUILTY
+REASON: Before I let my child hand over their school, course and email to a site that calls itself "verified," I want the basics of safety and honesty done, and this team keeps adding features while the database secrets are still unrotated, the lawyer/NPC review is undone, and most listings come from "other" sources with no fixed date, so more development time as described buys risk, not trust.
+DECIDING FACT: The launch checklist still lists rotating the Supabase secret key and resetting the database password, both "pasted in chat," as open, alongside "lawyer/DPO/NPC review not done," while four new features were built on 2026-10-25.
+WOULD FLIP IF: The keys were rotated, the privacy/legal review were completed before collecting student data, and the next block of time were committed to deploying with the two pilot orgs and running real student interviews instead of building new features.

@@ -1,0 +1,4 @@
+VOTE: GUILTY
+REASON: I would not put my money into more development time when the record has one user, zero interviews, no organizer asked to pay, a price taken from desk research, and comparable products that were sold off or shut down, so the product is already ahead of the evidence and more code only adds to a bet nobody has tested.
+DECIDING FACT: "No organizer, university, org or sponsor has been asked to pay or has agreed to anything," while the team's own status line says "The app isn't the problem now. Content, a live link, and users are."
+WOULD FLIP IF: the case were changed from "keep investing development time" to a capped deploy-and-validate sprint that stops new features, with a kill date inside 30 days covering interviews, partner sign-ups and at least one organizer asked to pay, or if the record already showed even one org committed to the pilot.

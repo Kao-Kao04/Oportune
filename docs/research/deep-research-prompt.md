@@ -1,11 +1,13 @@
 # Deep Research Prompt — Final Validation of Oportune
 
+> **Historical (kept for the record).** This research was done on 2026-10-25. The two reports are [PH EdTech App Market Research](PH%20EdTech%20App%20Market%20Research.md) and [Philippine Tech Education Research](Philippine%20Tech%20Education%20Research.md). The decisions now live in [final-decisions.md](final-decisions.md), updated after the court review on 2026-10-26. Don't re-run this prompt; the next evidence comes from the [30-day validation sprint](../validation/06-30-day-validation-sprint.md). The product description inside the prompt is out of date (for example, it says "verified"; we now say "checked").
+
 Use this once, before the team switches to "build only" mode. Paste the prompt below into a deep-research tool (Claude Research, ChatGPT Deep Research, or Gemini Deep Research). Running it in **two different tools** and comparing the answers catches gaps and made-up sources.
 
 **How to use the results**
-1. Save each tool's report in `docs/research/` (e.g. `2026-11-validation-claude.md`).
+1. Save each tool's report in `docs/research/` (done: see the two reports linked above).
 2. Check every number that drives a decision against its source link. Discard claims without a source.
-3. Fill in the "Final decisions" table at the end of the report with the team, then update [idea Part 5](../idea/05-validation-metrics-risks.md) and the [launch checklist](../launch-checklist.md).
+3. Fill in the "Final decisions" table at the end of the report with the team (done: [final-decisions.md](final-decisions.md)), then update [idea Part 5](../idea/05-validation-metrics-risks.md) and the [launch checklist](../launch-checklist.md).
 
 ---
 

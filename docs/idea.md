@@ -1,6 +1,8 @@
-# Student Opportunity Hub — Product Idea
+# Oportune — Product Idea
 
-A free, phone-first platform where college students in the Philippines (any public or private school) **find verified opportunities, share them, save them, and get reminded before deadlines**. No payments.
+**Never miss a deadline.** A free, phone-first platform where students in the Philippines **find opportunities checked by a person against their source, share them, save them, and get reminded before deadlines**. Vision: every student from Junior High to PhD; launch: college, with an IT/CS pilot (hackathons, CTFs, OJT, tech scholarships). Free for students, always.
+
+**What to do next:** [action-plan.md](action-plan.md). **Feature freeze** until the [30-day validation sprint](validation/06-30-day-validation-sprint.md) passes (2026-11-25): everything below the MVP is a hypothesis until then.
 
 The full document is split into 5 parts — read them in order:
 

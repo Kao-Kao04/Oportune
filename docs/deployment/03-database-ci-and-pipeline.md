@@ -4,9 +4,10 @@
 
 ## ✅ What to do with this file
 
+- [ ] Reset the database password (it was pasted in chat) before pointing production at the database.
 - [ ] Provision managed PostgreSQL with separate staging/production databases.
 - [ ] Enable automated backups **and** test a restore.
-- [ ] Set up CI to run lint, typecheck, tests, build, and secret scanning on every PR.
+- [ ] CI (`.github/workflows/ci.yml`) already runs lint, typecheck, tests, and build; add secret scanning.
 - [ ] Follow the 10-step release flow; use backward-compatible migrations.
 
 ---
@@ -18,7 +19,7 @@
 - Create separate databases or isolated schemas for staging and production.
 - Configure a restricted application database user.
 - Enable Row-Level Security on **every** table and test the policies; the public reads listings only through the `public_opportunities` view ([System Design Part 3](../system-design/03-data-model.md)).
-- Apply versioned migrations during deployment.
+- Apply the versioned migrations in `supabase/migrations/` during deployment (`npm run db -- push`).
 - Add indexes for commonly queried fields, including opportunity status, category, deadline, and user-to-opportunity relationships.
 - Enable automated backups and define retention.
 - Test restoring a backup to a non-production environment.
@@ -28,15 +29,15 @@ For serverless or highly concurrent hosting, use a database connection strategy 
 
 ## 7. Continuous Integration
 
-Every pull request should run:
+Every pull request should run (✓ = already in `ci.yml`):
 
-- Dependency installation from the lockfile
-- Linting and formatting checks
-- Type checking
-- Unit and integration tests
-- Build verification
+- ✓ Dependency installation from the lockfile
+- ✓ Linting
+- ✓ Type checking
+- ✓ Unit tests; integration tests still to add
+- ✓ Build verification
 - Dependency and secret scanning
-- Migration validation where feasible
+- Migration validation where feasible (`npm run db -- lint`)
 
 Require review for changes affecting authentication, authorization, Row-Level Security policies, reminder and expiry logic, personal data, and production configuration.
 
@@ -48,7 +49,7 @@ Recommended flow:
 2. CI checks and tests the branch.
 3. Pull request is reviewed and merged.
 4. A preview deployment is created when supported.
-5. Smoke tests run against preview.
+5. Smoke tests run against preview (`npm run smoke -- <preview URL>`).
 6. A production release is deployed from a tagged or approved commit.
 7. Database migrations run using a controlled deployment step.
 8. Health checks and key workflows are verified.

@@ -4,49 +4,49 @@
 
 ## ✅ What to do with this file
 
-- [ ] Build in the module order from [Part 2](02-core-modules.md): public pages, then admin + import (so there is real data), then accounts, saved, and reminders.
-- [ ] Add input validation, authorization, and rate limiting to every endpoint.
-- [ ] Implement the badge, closing-soon, expiry, and reminder logic exactly as described, with unit tests.
+- [ ] Use §6 as the map of real routes and server actions; keep it in sync when the code changes.
+- [ ] Keep input validation, authorization, and rate limiting on every endpoint.
+- [ ] Keep the badge, closing-soon, expiry, and reminder logic as described, with unit tests in `tests/`.
+- [ ] Don't build the *planned* parts (§7.6–7.9) until the 30-day sprint passes ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)).
 - [ ] Test link previews by pasting a listing URL into Messenger.
 
 ---
 
 ## 6. API Surface
 
-Illustrative paths (these may become Next.js pages, route handlers, or server actions).
+Most writes are Next.js server actions on the page shown; only the paths under `/api/` and the calendar file are route handlers.
 
 ### Public (no login)
-- `GET /opportunities?category=&q=&sort=deadline`
-- `GET /opportunities/closing-soon`
+- `GET /` Browse: `?view=closing-soon&category=&q=&region=&course=&year=`
 - `GET /opportunities/{slug}` (an old slug in `opportunity_slug_redirects` returns a permanent redirect)
-- `GET /categories`
-- `GET /unsubscribe?token=` (turns off email reminders without signing in)
-- `POST /opportunities/{id}/report` (rate-limited)
-- `POST /events`: analytics events such as official-link clicks and shares (rate-limited)
+- `GET /opportunities/{slug}/calendar`: `.ics` file for a dated listing
+- Report a listing: server action on the detail page (Turnstile captcha, rate-limited)
+- `POST /api/events`: analytics events (`view`, `official_click`, `save`, `share`, `reminder_open`; rate-limited)
+- `GET /unsubscribe?token=` (turns off email reminders without signing in); `POST /api/unsubscribe` for one-click `List-Unsubscribe`
+- `GET /ojt`: OJT checklist (progress kept in the browser)
+- `/sign-in` (email link or Google), `GET /auth/confirm` (email-link landing)
 
 ### Student (logged in)
-- `GET /me`, `PATCH /me/profile`, `DELETE /me`
-- `GET /me/saved`, `POST /me/saved`, `DELETE /me/saved/{opportunityId}`
-- `PATCH /me/notification-settings`
-- `POST /me/push-subscriptions`, `DELETE /me/push-subscriptions/{id}`
-- Phase 2: `PATCH /me/saved/{id}` (tracker status), `/me/ojt-checklists`
-- Phase 2: `POST /me/documents` (get a one-time upload URL), `GET /me/documents`, `GET /me/documents/{id}/download` (short-lived link), `DELETE /me/documents/{id}`
-- Phase 2: `POST /ai/explain/{opportunityId}`, `POST /ai/eligibility-check/{opportunityId}`, `POST /ai/writing-help` (rate-limited per student)
+- `/welcome`: quick profile; `/me`: profile and reminder settings; `/me/delete`: delete account
+- `/saved`: saved list; save/unsave is a server action on each listing
+- Push subscriptions: save/remove server actions (`src/app/me/push-actions.ts`)
+- `/submit`: "Submit an opportunity" (built 2026-10-25)
+- Planned, frozen: tracker status on saved items, documents (one-time upload URL, short-lived download links), AI helper endpoints (rate-limited per student)
 
 ### Admin / curator
-- `POST /admin/opportunities`, `PATCH /admin/opportunities/{id}`
-- `POST /admin/opportunities/{id}/publish`, `POST /admin/opportunities/{id}/expire`
-- `POST /admin/import` (CSV upload → preview → confirm)
-- `GET /admin/reports`, `PATCH /admin/reports/{id}`
-- `GET /admin/recheck` (listings with `needs_check` or `recheck_due`), `POST /admin/opportunities/{id}/mark-checked`
-- Admin only: `GET /admin/roles`, `POST /admin/roles` (grant curator/admin), `DELETE /admin/roles/{userId}`
-- Phase 3: `GET /admin/inbox`, `POST /admin/inbox/{id}/convert` (creates a draft listing), `POST /admin/inbox/{id}/ignore`
-- Phase 3 (logged in, rate-limited): `POST /share` (Web Share Target / app share), `POST /submit-opportunity`, `POST /connected-pages` (OAuth with Facebook/LinkedIn), `DELETE /connected-pages/{id}`
-- Phase 3 job: `POST /jobs/sync-connected-pages` (protected by `CRON_SECRET`)
+- `/admin`: listings; `/admin/opportunities/new` and `/admin/opportunities/{id}`: create, edit, publish, expire, archive
+- `/admin/import`: CSV upload → preview → confirm
+- `/admin/reports`: open / fixed / dismissed
+- `/admin/recheck`: listings with `needs_check` or `recheck_due`; "Mark checked" sets `last_checked_at`
+- `/admin/submissions`: create a listing from a submission, or mark it duplicate / rejected
+- `/admin/stats`: analytics totals and top listings
+- Admin only: `/admin/roles` (grant or remove curator/admin)
+- Jobs: `GET /api/jobs/auto-expire`, `/api/jobs/send-reminders`, `/api/jobs/cleanup` (protected by `CRON_SECRET`)
+- Planned, frozen: curator inbox (convert/ignore), "Share to Oportune" (Web Share Target / app share), connected pages (OAuth with Facebook/LinkedIn) and a sync job
 
 All endpoints: input validation, authorization, rate limiting where needed, audit logs for admin actions.
 
-**Rate limiting:** serverless functions don't share memory, so counters live in a shared store: Upstash Redis (free tier) or the `rate_limits` table. Suggested limits: reports 5/hour per IP, analytics events 120/hour per IP, sign-in attempts per Supabase Auth settings, AI 20/day per student, shares/submissions 20/day per student. Logged-out forms (reports) also need a captcha such as Cloudflare Turnstile. IPs are stored only as a salted hash.
+**Rate limiting:** serverless functions don't share memory, so counters live in the Postgres `rate_limits` table (`hit_rate_limit()`; Upstash Redis isn't used). Limits in the code: reports 5/hour per IP, analytics events 120/hour per IP, submissions 10/day per account; sign-in attempts follow Supabase Auth settings. The report and submit forms also use Cloudflare Turnstile; `/submit` has a honeypot field. IPs are stored only as a salted hash.
 
 ## 7. Core Logic
 
@@ -54,13 +54,13 @@ All endpoints: input validation, authorization, rate limiting where needed, audi
 - Parse the URL with a real URL parser and read the **hostname** (don't regex the whole URL).
 - `official_gov` if the hostname is `gov.ph` or ends with `.gov.ph`; `official_edu` if it is `edu.ph` or ends with `.edu.ph`.
 - Reject lookalikes such as `gov.ph.example.com` or `example.com/gov.ph`. Require `https`.
-- The badge means "official website," **not** "we guarantee this opportunity."
+- The badge means "official website," **not** "we guarantee this opportunity." Other listings get no badge, only the "checked" date ([Part 2 §4.1](02-core-modules.md#41-opportunity-catalog-public)).
 
 ### 7.2 Closing soon and expiry
 - **Closing soon:** `status = published` and `deadline` between today and today + 7 days (Philippine time, UTC+8).
-- **Auto-expire job (daily):** set `status = expired` when `deadline < today` (Philippine time). Rolling/TBA listings never auto-expire. Instead, set `recheck_due = true` when `last_checked_at` is older than 30 days; saving the listing with a new `last_checked_at` clears it. The admin panel shows a "Re-check due" queue.
+- **Auto-expire job (daily):** set `status = expired` when `deadline < today` (Philippine time). Rolling/TBA listings never auto-expire. Instead, set `recheck_due = true` when `last_checked_at` is older than 30 days or empty; "Mark checked" clears it. The admin panel shows a "Re-check due" queue. Nothing checks links automatically; a curator opens the source.
 - If a curator extends the deadline of an expired listing, it goes back to `published` (audit-logged).
-- Sort order: dated deadlines first (soonest first), then rolling, then TBA.
+- Sort order: dated deadlines first (soonest first), then rolling, then TBA. An undated listing's summary says "Rolling: apply any time" or "Usually opens in <month> (based on <year>)" (a curator writes it; the code doesn't).
 
 ### 7.3 Reminders
 Reminders are **not** scheduled when a student saves. Instead, the daily job (8:00 AM Philippine time) works out what is due **today** from the current data, so TBA deadlines that later get a date, extensions, and earlier deadlines are all handled automatically.
@@ -69,7 +69,7 @@ Reminders are **not** scheduled when a student saves. Instead, the daily job (8:
 2. Find every saved listing where `status = published`, `deadline_type = date`, and `deadline = today + 7` (type `deadline_7d`) or `deadline = today + 1` (type `deadline_1d`).
 3. For each student and each enabled channel (email if `email_reminders_enabled`; push if `push_reminders_enabled` and they have a subscription), build `deduplication_key` = `user_id:opportunity_id:type:channel:deadline`.
 4. Insert the `notifications` row first with `on conflict (deduplication_key) do nothing`; send only if the insert succeeded. Running the job twice never sends twice, and a changed deadline gets new reminders because the key changes.
-5. Send in batches (e.g., 50 at a time) and continue in the next invocation if time runs out, so the job never hits the function time limit. Respect the email provider's daily limit; push goes first, email after.
+5. Stop after a time budget (45 s, under the 60 s function limit); the run is marked `failed` and the next run picks up the rest. Push goes first, email (Resend) after. Respect the email provider's daily limit.
 6. Mark each row `sent` or `failed`; retry `failed` once on the next run.
 7. **Catch-up:** the job records each run in `job_runs`. If any date since the last successful run was missed (e.g., cron didn't fire), it also processes those dates, still skipping reminders whose deadline has already passed. The dedup key keeps this safe.
 
@@ -90,6 +90,8 @@ Other rules:
 - Matching **published** rows → never changed silently. The preview marks them "Changed" and shows a field-by-field diff (e.g., deadline 2026-10-25 → 2026-11-08); the curator ticks which changes to apply. Applied changes update `last_checked_at` and are audit-logged.
 - The preview lists rejected rows with the reason (unknown category, bad date, non-`https` URL) before anything is saved.
 - Import as `draft` so a curator reviews them before publishing; `needs-check` rows keep `needs_check = true` and can't be published until a curator clears it.
+
+> **§7.6–7.9 are planned, not built, and frozen** until the 30-day sprint passes ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)). The app has no AI, uploads, inbox, or mobile app today. If AI comes, it assists curators and never decides ([§1b](../research/final-decisions.md#1b-updates-agreed-2026-10-26)).
 
 ### 7.6 AI helper (Phase 2)
 - Runs only on the server; the API key never reaches the browser or the mobile app.
@@ -113,7 +115,7 @@ Other rules:
 ### 7.8 Curator inbox (Phase 3)
 - **Share to Oportune:** the web app manifest declares a `share_target` that posts `title`, `text`, and `url` to `/share`; the mobile app registers an Android share intent and an iOS share extension that call the same endpoint. Web Share Target works only in the installed app on Android, not in iPhone Safari.
 - If the student isn't signed in, keep the shared link, sign them in, then save it.
-- Normalize the URL (strip tracking parameters such as `fbclid` and `utm_*`), then mark it `duplicate` if it matches an existing inbox item or a listing's `source_url`.
+- Normalize the URL (strip tracking parameters such as `fbclid` and `utm_*`), then mark it `duplicate` if it matches an existing inbox item or a listing's `source_url`. (Today's `/submit` queue has no automatic duplicate check; the curator marks duplicates.)
 - Don't fetch or store the contents of Facebook/LinkedIn posts; the curator opens the link themselves. Store only the link and the student's own note.
 - **Connected pages:** only the page's own admin can connect it, through the platform's official OAuth flow and permissions; tokens are encrypted, refreshed before expiry, and deleted on disconnect. The daily job reads new posts from connected pages only.
 - A curator converts an item into a draft listing in our own words, with the official source link (not the FB post) wherever one exists.

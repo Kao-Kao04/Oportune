@@ -1,0 +1,4 @@
+VOTE: GUILTY
+REASON: The machine is already built and has never been switched on, and the first thing that breaks when it grows is the content pipeline (one person, a 15-minute daily routine, 52 of 79 listings undated so reminders cannot fire), which no amount of extra development time fixes.
+DECIDING FACT: Four new features were added on 2026-10-25 while the reminder jobs "have never run", no admin account exists, the leaked Supabase secret and database password are still unrotated, and the team's own rule says "Don't build more features until steps 1-3 [admin/content/deploy] are done."
+WOULD FLIP IF: The case were restated as a feature freeze, with the next time going only to rotating the secrets, deploying, creating the admin account, dating or recurrence-tagging the listings, and running the 12-week kill test with two campus orgs.

@@ -7,6 +7,8 @@ Two kinds of copy-paste prompts:
 
 Use them after [stitch-student-friendly.md](stitch-student-friendly.md). Replace everything in `[brackets]`.
 
+> **Feature freeze (2026-10-26):** until the [30-day validation sprint](../validation/06-30-day-validation-sprint.md) (2026-10-27 → 2026-11-25) passes, use Part B only for bug fixes and copy fixes (such as the "checked" wording below). No new screens, sections, or data fields (B3) during the sprint ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)).
+
 ---
 
 ## Part A — Adjusting in Google Stitch
@@ -74,6 +76,12 @@ On the Opportunity detail screen, change the section headings to: "Who can apply
 ```
 On the Saved screen, change the empty state text to: "Wala ka pang na-save. I-bookmark mo lang ang gusto mo, and we'll remind you before it closes." Keep everything else the same.
 ```
+```
+On the Opportunity detail screen, change "Last checked [date]" to "Checked by our team on [date]", with a gray line under it: "A person opened the source and confirmed these details on this date." Don't use the word "verified" anywhere. Keep everything else the same.
+```
+```
+On the Browse screen, for listings with no fixed deadline, replace "Rolling", "Open", or "TBA" in the date column with "Rolling: apply any time" or "Usually opens in [month]" in gray. Keep everything else the same.
+```
 
 ### Trust and safety
 
@@ -81,7 +89,7 @@ On the Saved screen, change the empty state text to: "Wala ka pang na-save. I-bo
 On the Opportunity detail screen, add a small amber info box under "Why you can trust this" that says "Real scholarships never ask you to pay a fee to apply. Report anything suspicious." Keep everything else the same.
 ```
 ```
-On the Browse screen, make the "Official .gov.ph" badge slightly larger with a check icon, and add a tiny "?" that explains: "This links to an official government website." Keep everything else the same.
+On the Browse screen, make the "Official .gov.ph" badge slightly larger with a check icon, and add a tiny "?" that explains: "The source is an official government (.gov.ph) or school (.edu.ph) website." Keep everything else the same.
 ```
 
 ### Variants to compare with students

@@ -2,6 +2,8 @@
 
 Prompts for redesigning Oportune in [Google Stitch](https://stitch.withgoogle.com/), starting from what is **already built** and making it easier for students to use. The original prompts are in [stitch-prompts.md](stitch-prompts.md); the colors and font stay the same so designs can be built straight into the app.
 
+> **Feature freeze (2026-10-26):** no new screens or redesigns are designed for building until the [30-day validation sprint](../validation/06-30-day-validation-sprint.md) (2026-10-27 → 2026-11-25) passes ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)). Use these prompts after that, starting with what students asked for most in the sprint interviews. Copy says "checked" (a person opened the source and confirmed the details on the date shown), never "verified".
+
 ## How to use
 
 1. New Stitch project in **Mobile** mode. Paste **Prompt 0** first, then one screen prompt at a time.
@@ -27,7 +29,7 @@ Prompts for redesigning Oportune in [Google Stitch](https://stitch.withgoogle.co
 ## Prompt 0 — Master (paste first)
 
 ```
-Redesign a mobile app called "Oportune" for college students in the Philippines (any school, any course). It lists verified scholarships, internships, hackathons, CTFs, and free courses, sorted by deadline. Students browse without an account, share listings to Messenger group chats, save them, and get reminders before deadlines. It is free.
+Redesign a mobile app called "Oportune" for college students in the Philippines (any school, any course). It lists student opportunities in tech (hackathons, CTFs, OJT/internships, tech scholarships) plus other scholarships and free courses, each one checked by a person against its source, sorted by deadline. Students browse without an account, share listings to Messenger group chats, save them, and get reminders before deadlines. It is free.
 
 Make it feel friendly and easy for a busy 19-year-old on a cheap Android phone with prepaid data, while staying trustworthy and calm, like a helpful upperclassman, not a bank and not a game.
 
@@ -52,10 +54,10 @@ Tone: short, plain, warm. Talk like a classmate. Example: "Closes in 2 days", "F
 Same style. Create the Browse screen (logged out).
 
 From top to bottom:
-1. A one-line welcome under the top bar (only for first-time visitors): "Scholarships, internships, and contests for PH college students. Checked by our team." with a small "×" to hide it.
+1. A one-line welcome under the top bar (only for first-time visitors): "Never miss a deadline. Student opportunities in tech, each one checked by a person against its source." with a small "×" to hide it.
 2. A search field: "Search scholarships, OJT, contests…". Under it, 4 small suggestion chips: "DOST", "OJT", "CTF", "Free courses".
 3. Section "Closing this week" — a horizontal scroll of compact cards (not tall), each with: a big red or amber countdown ("Today", "2 days left"), the title (2 lines max), and the organization. Cards:
-   - "DOST-SEI ASTHRDP Graduate Scholarship" — DOST-SEI — Today — Official .edu.ph
+   - "DOST-SEI ASTHRDP Graduate Scholarship" — DOST-SEI — Today — Official .gov.ph
    - "IEEEXtreme 20.0" — IEEE — 2 days left
 4. Category chips (horizontal scroll): All, Scholarships, Internships, Jobs, Hackathons, CTFs, Courses.
 5. The main list, grouped under small gray labels "Later" and "No fixed deadline". Each row:
@@ -67,7 +69,8 @@ From top to bottom:
    - "2nd Call: DOST-PCHRD Undergraduate Thesis Grant" — DOST-PCHRD — Oct 31 — Free · In person · Research grant — Official .gov.ph
    - "HKCERT CTF 2026 (Qualifying Round)" — HKCERT — Nov 4 — Free · Online · CTF
    - "2027 Graduate Talent Program – Global Banking" — UBS — Nov 4 — In person · Graduate program
-   - "TESDA Online Program" — TESDA — Rolling — Free · Online · Course — Official .gov.ph
+   - "TESDA Online Program" — TESDA — "Rolling: apply any time" — Free · Online · Course — Official .gov.ph
+   Rows under "No fixed deadline" say why in gray in the date column: "Rolling: apply any time" or "Usually opens in <month>". They never fill the top of the list.
 6. At the end: "Checked by our team. Always confirm on the official site."
 ```
 
@@ -99,7 +102,7 @@ From top to bottom:
    1. "Check that your thesis hasn't started yet"
    2. "Prepare your proposal and endorsement"
    3. "Submit through your Regional Health R&D Consortium"
-5. A collapsible "Why you can trust this" panel: source "pchrd.dost.gov.ph", "Last checked Oct 23, 2026 by our team", and a tip in a soft amber box: "Real scholarships never ask you to pay a fee to apply."
+5. A collapsible "Why you can trust this" panel: source "pchrd.dost.gov.ph", "Checked by our team on Oct 23, 2026", a gray line under it "A person opened the source and confirmed these details on this date.", and a tip in a soft amber box: "Real scholarships never ask you to pay a fee to apply."
 6. Small gray link: "Something wrong? Report this listing".
 7. Sticky bottom bar (thumb zone): bookmark button (icon), share button (icon), and a wide teal button "Apply on official site ↗".
 ```

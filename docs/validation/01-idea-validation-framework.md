@@ -1,4 +1,4 @@
-# Validation 1/5 — How We Collect and Validate Every Idea
+# Validation 1/6 — How We Collect and Validate Every Idea
 
 > Part of [validation](../validation.md) · [Next](02-recruitment-and-consent.md) →
 

@@ -1,10 +1,10 @@
-# Student Opportunity Hub
+# Oportune
 
-A free, phone-first platform where college students in the Philippines (any public or private school) **find verified opportunities, share them, save them, and get reminded before deadlines**: scholarships, internships, hackathons, CTFs, free courses, and more.
+**Never miss a deadline.** A free, phone-first platform where college students in the Philippines **find opportunities checked by a person against their source, share them, save them, and get reminded before deadlines**. The pilot leads with IT/CS: hackathons, CTFs, OJT/internships, and tech scholarships; other scholarships, courses, and programs stay in the feed.
 
-Payments are deferred — the platform is free for students.
+Free for everyone, always: students, organizers, and schools never pay. Ads, in clearly marked slots and only once there's traffic, will be the only income ([why](docs/research/final-decisions.md#1d-money-free-for-everyone-ads-only-2026-10-26)).
 
-> Status: Phase 0 (curating and posting opportunities) and Phase 1: MVP milestones M1–M6 built. See [docs/launch-checklist.md](docs/launch-checklist.md) for what is left before launch.
+> **Status (2026-10-26):** MVP (M1–M6) and Phase 2 built, not deployed, 1 user (us), 0 interviews. **Feature freeze** while we run the [30-day validation sprint](docs/validation/06-30-day-validation-sprint.md) (2026-10-27 → 2026-11-25). Why: [final decisions §1c](docs/research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26). What's left before launch: [docs/launch-checklist.md](docs/launch-checklist.md).
 
 ## Project structure
 
@@ -16,9 +16,11 @@ Payments are deferred — the platform is free for students.
 │   ├── design/stitch-prompts.md  # Google Stitch UI prompts (original)
 │   ├── design/stitch-student-friendly.md  # v2: student-friendly redesign prompts
 │   ├── design/adjust-prompts.md  # Tweak designs in Stitch; build them with Claude Code
-│   ├── validation.md        # Optional interview kit → docs/validation/
+│   ├── validation.md        # Validation kit + the 30-day sprint → docs/validation/
+│   ├── action-plan.md       # Status + what we do next (start here)
 │   ├── launch-checklist.md  # What is left before launch
-│   └── research/deep-research-prompt.md  # Final validation prompt for deep-research tools
+│   ├── pitch/               # Pitch deck and video prompts (fill with real sprint numbers)
+│   └── research/            # Deep-research prompt, reports, and final-decisions.md (what we build next)
 ├── data/
 │   ├── opportunities.csv    # Curated opportunity list (seed data for the app)
 │   └── categories.csv       # Canonical category names + slugs
@@ -35,11 +37,14 @@ Payments are deferred — the platform is free for students.
 
 ## Where to start
 
-1. **[docs/idea.md](docs/idea.md)** — understand the product and validate it first.
-2. **[docs/system-design.md](docs/system-design.md)** — how the system will be built.
-3. **[docs/deployment.md](docs/deployment.md)** — how to run and ship it.
+**What to do next:** [docs/action-plan.md](docs/action-plan.md) (status + ordered steps). Decisions and reasons: [docs/research/final-decisions.md](docs/research/final-decisions.md).
 
-**Current step:** Phase 0 — post curated opportunities from [`data/opportunities.csv`](data/opportunities.csv) while building the MVP ([features](docs/idea/03-features-and-workflow.md)).
+1. **[docs/idea.md](docs/idea.md)** — the product, who it's for, and how we measure it.
+2. **[docs/validation/06-30-day-validation-sprint.md](docs/validation/06-30-day-validation-sprint.md)** — the test that decides whether we keep building.
+3. **[docs/system-design.md](docs/system-design.md)** — how the system is built.
+4. **[docs/deployment.md](docs/deployment.md)** — how to run and ship it.
+
+**Current step:** the 30-day validation sprint. Week 1: rotate the leaked keys, deploy, fill the feed with 40+ dated IT/CS listings from [`data/opportunities.csv`](data/opportunities.csv) and organizer pages, and line up two campus IT orgs. No new features until the sprint passes.
 
 Each part starts with a **"✅ What to do with this file"** checklist.
 
@@ -80,7 +85,7 @@ See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for t
 
 ### Admin panel
 
-Curators and admins sign in at `/sign-in` with a one-time email link, then use `/admin` (listings, re-check queue, reports, CSV import with diffs, users & roles).
+Curators and admins sign in at `/sign-in` with a one-time email link, then use `/admin` (listings, re-check queue, reports, student submissions, CSV import with diffs, users & roles). Tag each listing's region, course group, and year level in its form so the Browse filters work; leave a group empty when it's open to everyone.
 
 Create the first admin once (the account must have signed in at least once):
 

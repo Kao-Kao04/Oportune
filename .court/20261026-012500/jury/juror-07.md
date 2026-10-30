@@ -1,0 +1,4 @@
+VOTE: GUILTY
+REASON: In twenty years I never made money by restocking shelves in a shop whose doors weren't open yet, and this case asks for more development time when the record shows one person, no customers, nobody even asked to pay, and a daily curating chore that nobody has shown they can keep up through a slow month.
+DECIDING FACT: The team's own status line says "The app isn't the problem now. Content, a live link, and users are," yet four more features were built on 2026-10-25 while there was still no deployment, no admin account and zero interviews.
+WOULD FLIP IF: The case were restated so the next weeks go to deploying, curating and putting the app in front of the two pilot orgs, with features frozen, plus at least one organizer or org asked face to face whether they would pay before Year 2 relies on sponsored listings.

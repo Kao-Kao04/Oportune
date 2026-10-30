@@ -4,11 +4,11 @@
 
 ## ✅ What to do with this file
 
-- [ ] Turn the MVP tables into PostgreSQL migrations.
-- [ ] Add Row-Level Security so students can only read/write their own rows; serve listings to the public only through the `public_opportunities` view.
+- [ ] Keep this page in sync with [`supabase/migrations/`](../../supabase/migrations/), where the MVP and Phase 2 tables already live.
+- [ ] Keep Row-Level Security on every table so students can only read/write their own rows; serve listings to the public only through the `public_opportunities` view.
 - [ ] Keep roles in `user_roles`, never in a table students can edit.
 - [ ] Implement the [CSV → `opportunities` mapping](#csv--opportunities-mapping) in the importer, and seed `categories` from `data/categories.csv`.
-- [ ] Don't add columns for sensitive data (ID numbers, home address, income). Documents go only in the private storage bucket (Phase 2), never in table columns.
+- [ ] Don't add columns for sensitive data (ID numbers, home address, income). Documents (planned, frozen) would go only in a private storage bucket, never in table columns.
 
 ---
 
@@ -43,6 +43,7 @@ Auth credentials are managed by Supabase Auth. **The role is not in `profiles`**
 - `status` (`draft`, `published`, `expired`, `archived`)
 - `last_checked_at`, `created_by`, `reviewed_by` (FKs to auth users, `on delete set null`)
 - `search_vector` (generated `tsvector`, see Indexes)
+- `regions`, `course_groups`, `year_levels` (text arrays, added 2026-10-25; checked against fixed lists; empty = open to all)
 - unique (`source_url`, `title`) to block duplicate imports
 
 "Closing soon" is never stored; it is computed from `deadline` (see [Part 4 §7.2](04-api-and-logic.md#72-closing-soon-and-expiry)).
@@ -59,7 +60,7 @@ Auth credentials are managed by Supabase Auth. **The role is not in `profiles`**
 - Inserted only by the server (after the rate limit and captcha check), never directly with the publishable key. Only curators can read reports.
 
 **`saved_opportunities`**: `id`, `user_id` (`on delete cascade`), `opportunity_id`, `created_at`; unique (`user_id`, `opportunity_id`)
-- Phase 2 adds: `status` (`saved` / `applying` / `applied` / `result`), `result` (`accepted` / `not_accepted`, nullable), `notes`
+- Planned, frozen (application tracker): `status` (`saved` / `applying` / `applied` / `result`), `result` (`accepted` / `not_accepted`, nullable), `notes`
 
 **`push_subscriptions`**: `id`, `user_id` (`on delete cascade`), `endpoint` (unique), `p256dh`, `auth`, `user_agent`
 
@@ -67,15 +68,15 @@ Auth credentials are managed by Supabase Auth. **The role is not in `profiles`**
 
 **`audit_logs`**: `id`, `actor_id` (`on delete set null`), `action`, `target_type`, `target_id`, `metadata` (no secrets or personal data), `created_at`
 
-**`rate_limits`** (if not using a Redis service): `key` (e.g., `report:<ip-hash>`), `window_start`, `count`; primary key (`key`, `window_start`). Old windows are deleted daily.
+**`rate_limits`**: `key` (e.g., `report:<ip-hash>`, `submit:<user_id>`), `window_start`, `count`; primary key (`key`, `window_start`). Used through the `hit_rate_limit()` function (no Redis service). Old windows are deleted daily.
 
 **Account deletion:** every FK to a user is either `on delete cascade` (the student's own data) or `on delete set null` (records that must survive, like listings a curator created, audit logs, and reports). A test deletes a user who has data in every table.
 
-**`analytics_events`** (optional if using an analytics tool): `event` (`view`, `official_click`, `save`, `share`, `reminder_open`), `opportunity_id`, `anonymous_id`, `created_at`
-- Inserted only by the server after the rate limit, never directly with the publishable key; no one reads it through the public API.
+**`analytics_events`** (our only analytics): `event` (`view`, `official_click`, `save`, `share`, `reminder_open`, `visit`: one per browser per day), `opportunity_id` (`on delete set null`), `anonymous_id`, `ref` (the org's `?ref=` tag the browser first arrived with; short slug, nullable), `created_at`
+- Inserted only by the server after the rate limit, never directly with the publishable key; no one reads it through the public API. Admin → Stats reads it through `analytics_totals()` / `analytics_top_listings()` / `analytics_by_ref()` (visitors per source and how many came back in a later week, Manila time). Rows older than 13 months are deleted by the cleanup job.
 
 **`job_runs`**: `id`, `job` (`auto_expire` / `send_reminders` / `cleanup`), `run_for_date` (Philippine date), `started_at`, `finished_at`, `status` (`running` / `ok` / `failed`), `sent_count`, `failed_count`, `error`
-- Lets the reminder job catch up after a missed day and powers the "failed twice in a row" alert.
+- Lets the reminder job catch up after a missed day and powers the "failed twice in a row" alert. Runs older than 180 days are deleted by the cleanup job.
 
 ### CSV → `opportunities` mapping
 
@@ -107,6 +108,12 @@ Allowed CSV values: `status` ∈ {`ready`, `needs-check`, `closed`}; `delivery_m
 - `notifications(deduplication_key)` (unique)
 
 ### Phase 2 tables
+
+**Built 2026-10-25:**
+- `opportunity_submissions` (`id`, `user_id` (`on delete set null`), `url` (`https` only), `title`, `organization`, `deadline`, `note`, `submitter_role` (`student` / `organizer` / `school` / `other`), `status` (`new` / `added` / `duplicate` / `rejected`), `opportunity_id` (nullable)). Inserted only by the server after the captcha and rate limit; students read their own rows, curators read and update all
+- The OJT checklist has **no tables**: progress stays in the student's browser
+
+**Planned, frozen** ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)):
 - `ojt_checklist_templates` (`id`, `name`, `version`, `source_reference`, `is_active`)
 - `ojt_checklist_template_items` (`id`, `template_id`, `label`, `description`, `sort_order`)
 - `ojt_checklists` (`id`, `user_id`, `template_id`, `company_name`, `start_date`, `end_date`, `required_hours`)
@@ -115,8 +122,8 @@ Allowed CSV values: `status` ∈ {`ready`, `needs-check`, `closed`}; `delivery_m
 - `profiles` gains `ai_document_consent_at` (nullable timestamp; null = no consent or withdrawn)
 - `ai_requests` (`id`, `user_id`, `opportunity_id` (nullable), `feature` (`explain` / `eligibility_check` / `writing_help`), `tokens_used`, `created_at`). Used for daily limits and cost tracking; prompts and answers are **not** stored
 
-### Phase 3 tables
-- `inbox_items` (`id`, `source` (`share` / `submission` / `connected_page`), `url`, `note` (shared note or post text), `submitted_by` (nullable user), `submitter_email` (nullable, form only), `connected_page_id` (nullable), `status` (`new` / `converted` / `ignored` / `duplicate`), `opportunity_id` (nullable), `reviewed_by`); unique (`source`, `url`). No names, comments, or photos of other people
+### Phase 3 tables (planned, frozen)
+- `inbox_items` (could replace or extend `opportunity_submissions`) (`id`, `source` (`share` / `submission` / `connected_page`), `url`, `note` (shared note or post text), `submitted_by` (nullable user), `submitter_email` (nullable, form only), `connected_page_id` (nullable), `status` (`new` / `converted` / `ignored` / `duplicate`), `opportunity_id` (nullable), `reviewed_by`); unique (`source`, `url`). No names, comments, or photos of other people
 - `connected_pages` (`id`, `platform` (`facebook` / `linkedin`), `page_id`, `page_name`, `connected_by`, `access_token` (encrypted), `token_expires_at`, `is_active`); disconnecting deletes the token
 - `push_subscriptions` gains `platform` (`web` / `android` / `ios`) and `fcm_token` (nullable) for the mobile app
 

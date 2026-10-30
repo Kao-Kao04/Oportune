@@ -1,0 +1,4 @@
+VOTE: GUILTY
+REASON: The sample size behind this plan is zero: no interviews, one user who is the founder, and AI desk research in place of primary data. The defense's proof that this model works is one survivor, Opportunity Desk, while the record also shows Fastweb, Going Merry and Scholly ending in a sale or a shutdown. With no data, more development time cannot move the odds, and only a measured test can.
+DECIDING FACT: "Customer interviews: an interview guide and an interview-log template exist; the log is empty (zero interviews recorded)", while four more features were built on 2026-10-25 with "Users: 1 (the founder)."
+WOULD FLIP IF: The case were restated as "deploy now and run a dated test with pre-set thresholds," and those thresholds included more than the 12-week usage rule: a minimum number of student interviews and a minimum number of org pilots signed. No new features would be built until those thresholds were met.

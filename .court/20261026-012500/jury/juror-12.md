@@ -1,0 +1,4 @@
+VOTE: NOT GUILTY
+REASON: The legal traps I look for (student education data under RA 10173, DOLE recruitment licensing, Facebook's terms, leaked secrets) are already named in the team's own plan and checklist, and since nothing is deployed, no one is exposed yet; that makes them conditions on launch, not reasons to stop work, but the "verified" tagline over 63 "other" sources is a misrepresentation risk they need to fix before going public.
+DECIDING FACT: The launch checklist already lists "rotate the Supabase secret key and reset the database password (both noted as 'pasted in chat')" and "lawyer/DPO/NPC review not done", and the app is "Not deployed; no public URL", so no student's data or trust is at risk today.
+WOULD FLIP IF: The plan went live collecting student profiles (school, course, year level) before rotating the leaked keys and completing the privacy/DPO review, or started arranging OJT or job placements instead of only linking to the official page.
