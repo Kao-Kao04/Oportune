@@ -54,6 +54,12 @@ export default function PrivacyPage() {
             see its status.
           </li>
           <li>
+            <span className="font-semibold">Share a win:</span> what happened (joined, finalist, placed, won), your team,
+            org, or school name, any details and announcement link you add, and your confirmation that everyone named
+            agreed, linked to your account. If our team confirms it, only a short headline we write and the announcement
+            link appear on the listing, never your account or personal details.
+          </li>
+          <li>
             <span className="font-semibold">Use the site:</span> anonymous usage events (for example, that you visited
             today, that a listing was viewed, or that its official link was clicked), tied to a random ID stored in your
             browser, not to your name. If you opened a link shared by a student organization, we also note that
@@ -119,7 +125,7 @@ export default function PrivacyPage() {
           <li>Reminder records: until you delete your account, or the listing is removed.</li>
           <li>Hashed internet addresses used against abuse: up to two days.</li>
           <li>
-            Reports and submissions: kept to maintain listing quality. When you delete your account, they stay but are
+            Reports, submissions, and wins: kept to maintain listing quality. When you delete your account, they stay but are
             no longer linked to you.
           </li>
           <li>Anonymous usage events: 13 months, then deleted automatically.</li>

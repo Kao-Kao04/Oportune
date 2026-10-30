@@ -108,8 +108,8 @@ Where the MVP stands after M1–M6, and what is left before students can use it.
 
 ## 8. Next phases
 
-- **Now:** the [30-day validation sprint](validation/06-30-day-validation-sprint.md); no new features (`?ref=` links, the one exception, are built)
-- **First after "Continue":** "Wins on listings", if the student stories test worked ([final decisions §1e](research/final-decisions.md#1e-student-stories-and-wins-2026-10-30))
+- **Now:** the [30-day validation sprint](validation/06-30-day-validation-sprint.md); no more new features (`?ref=` links and "Wins on listings" are built)
+- **Wins on listings:** built 2026-10-30; keep it if the student stories test works ([final decisions §1e](research/final-decisions.md#1e-student-stories-and-wins-2026-10-30))
 - **After "Continue" (before January 2027):** the small builds in [idea Part 3 §6.2b](idea/03-features-and-workflow.md#62b-next-small-builds-after-the-sprint-passes), one at a time: education level, "Share to Oportune", paste-to-draft, hide thin categories
 - **Phase 3 (July 2027 push):** Android app, "For you" filter, Messenger/Telegram reminders, offline saved listings
 - **Deferred:** AI helper, document uploads, application tracker ([why](research/final-decisions.md))

@@ -49,6 +49,7 @@
 - **Import `data/opportunities.csv`** (`/admin/import`): preview, validate, save new rows as drafts, and show a diff for changes to already-published listings
 - Review queue for student reports (`/admin/reports`), and a re-check queue (`/admin/recheck`) for `needs_check` listings and rolling/TBA listings not checked in 30+ days
 - Submissions queue (`/admin/submissions`, built 2026-10-25): create a listing from a submission, or mark it "Already listed" / "Not real / not eligible". Duplicates are spotted by the curator; nothing checks them automatically
+- Wins queue (`/admin/wins`, built 2026-10-30): confirm a "we joined / placed / won" note on the organizer's or school's own announcement, edit the suggested headline (max 140 characters, team or school names only), then Publish, or "Can't confirm". Published wins can be taken down. Students send them from `/opportunities/<slug>/win` (signed in, 18+, consent checkbox); they show on the listing under "Students who joined"
 - Stats (`/admin/stats`): visitors, visitors who came back another week, listing views, official-link clicks, saves, shares, reminder opens, and a "Where visitors came from" table by `?ref=` tag (e.g. `/?ref=gdg-pup`, one per pilot org)
 - Admins grant or remove curator/admin roles (`/admin/roles`, audit-logged)
 - Audit log of admin actions

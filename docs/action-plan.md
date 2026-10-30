@@ -64,7 +64,8 @@ Full plan, pass lines, and kill criteria: [validation/06-30-day-validation-sprin
 ### Before the January 2027 soft launch
 - [ ] Lawyer review (privacy, terms, NPC registration, minors) before 1,000 users ([launch checklist §5](launch-checklist.md#5-before-launch-legal-and-privacy-data-privacy-act))
 - [ ] Domain, Google sign-in, custom SMTP ([launch checklist §3](launch-checklist.md#3-before-launch-accounts-and-services))
-- [ ] Unfreeze the small builds one at a time, in the order students asked for them; "Wins on listings" first if the stories test worked ([idea Part 3 §6.2b](idea/03-features-and-workflow.md#62b-next-small-builds-after-the-sprint-passes))
+- [x] "Wins on listings" built 2026-10-30 (founder's call): students send wins from the listing page; curators approve them in Admin → Wins
+- [ ] Unfreeze the other small builds one at a time, in the order students asked for them ([idea Part 3 §6.2b](idea/03-features-and-workflow.md#62b-next-small-builds-after-the-sprint-passes))
 - [ ] Soft launch to the pilot orgs and more IT orgs; per org in 4 weeks: 100 sign-ups, 30% save at least one listing
 
 ### Pitch and money

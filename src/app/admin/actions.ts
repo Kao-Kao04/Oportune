@@ -203,3 +203,29 @@ export async function updateSubmission(form: FormData) {
   await audit(supabase, user, `submission.${status}`, { type: "submission", id });
   redirect("/admin/submissions");
 }
+
+// Publish a win with the curator's own headline, reject it, or reopen it.
+export async function reviewWin(form: FormData) {
+  const user = await requireCurator();
+  const supabase = await createClient();
+  const id = String(form.get("id") ?? "");
+  const status = String(form.get("status") ?? "");
+  if (!["new", "published", "rejected"].includes(status)) throw new Error("Unknown win status.");
+
+  const headline = String(form.get("headline") ?? "").trim().slice(0, 140);
+  if (status === "published" && headline.length < 5) redirect("/admin/wins?error=headline");
+
+  const { error } = await supabase
+    .from("opportunity_wins")
+    .update(
+      status === "published"
+        ? { status, headline, reviewed_by: user.id, published_at: new Date().toISOString() }
+        : { status, reviewed_by: user.id, published_at: null },
+    )
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+
+  await audit(supabase, user, `win.${status}`, { type: "win", id });
+  updateTag(OPPORTUNITIES_TAG);
+  redirect("/admin/wins");
+}

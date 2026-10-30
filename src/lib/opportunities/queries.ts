@@ -60,6 +60,29 @@ export async function searchListings(query: string): Promise<Listing[]> {
   return data.map(toListing);
 }
 
+export type ListingWin = { id: string; result: string; headline: string; proof_url: string | null };
+
+// Curator-checked wins on a listing (supabase/migrations/*_opportunity_wins.sql),
+// newest first.
+export async function getListingWins(opportunityId: string): Promise<ListingWin[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(OPPORTUNITIES_TAG);
+
+  const { data, error } = await createPublicClient()
+    .from("public_opportunity_wins")
+    .select("id, result, headline, proof_url")
+    .eq("opportunity_id", opportunityId)
+    .order("published_at", { ascending: false })
+    .limit(20);
+  // Wins are extra: never let them break the listing page.
+  if (error) {
+    console.warn("[wins] not loaded", error.message);
+    return [];
+  }
+  return data.map((w) => ({ id: w.id!, result: w.result!, headline: w.headline!, proof_url: w.proof_url }));
+}
+
 // A published or expired listing by slug, or by an old slug that redirects.
 export async function getListingBySlug(
   slug: string,

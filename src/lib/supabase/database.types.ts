@@ -197,6 +197,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"opportunity_wins": {
+                  Row: {
+                    "consent": boolean,"created_at": string,"detail": string | null,"headline": string | null,"id": string,"opportunity_id": string,"proof_url": string | null,"published_at": string | null,"result": string,"reviewed_by": string | null,"status": string,"team": string,"updated_at": string,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "consent": boolean,"created_at"?: string,"detail"?: string | null,"headline"?: string | null,"id"?: string,"opportunity_id": string,"proof_url"?: string | null,"published_at"?: string | null,"result": string,"reviewed_by"?: string | null,"status"?: string,"team": string,"updated_at"?: string,"user_id"?: string | null
+                  }
+                  Update: {
+                    "consent"?: boolean,"created_at"?: string,"detail"?: string | null,"headline"?: string | null,"id"?: string,"opportunity_id"?: string,"proof_url"?: string | null,"published_at"?: string | null,"result"?: string,"reviewed_by"?: string | null,"status"?: string,"team"?: string,"updated_at"?: string,"user_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "opportunity_wins_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "opportunities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "opportunity_wins_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "public_opportunities"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "course": string | null,"course_group": string | null,"created_at": string,"display_name": string | null,"email_reminders_enabled": boolean,"email_unsubscribe_token": string,"interests": (string)[],"is_18_or_over": boolean | null,"push_reminders_enabled": boolean,"school": string | null,"updated_at": string,"user_id": string,"year_level": string | null
@@ -282,6 +308,27 @@ isOneToOne: false
                 }
           }
           Views: {
+            "public_opportunity_wins": {
+                  Row: {
+                    "headline": string | null,"id": string | null,"opportunity_id": string | null,"proof_url": string | null,"published_at": string | null,"result": string | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "opportunity_wins_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "opportunities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "opportunity_wins_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "public_opportunities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },
             "public_opportunities": {
                   Row: {
                     "application_opens": string | null,"application_opens_type": string | null,"application_url": string | null,"category_id": string | null,"category_name": string | null,"category_slug": string | null,"course_groups": (string)[] | null,"deadline": string | null,"deadline_type": string | null,"delivery_mode": string | null,"eligibility": string | null,"id": string | null,"last_checked_at": string | null,"location": string | null,"organization": string | null,"regions": (string)[] | null,"requirements": string | null,"search_vector": unknown,"slug": string | null,"source_trust": string | null,"source_url": string | null,"status": string | null,"summary": string | null,"title": string | null,"updated_at": string | null,"year_levels": (string)[] | null

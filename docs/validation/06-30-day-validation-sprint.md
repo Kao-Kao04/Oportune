@@ -130,11 +130,12 @@ Does student news bring students back? Test it by hand before building anything 
 - **Sources:** the students themselves, or the school's or organizer's own public announcement (link to it). Never copy photos or posts from social media.
 - **Post** each story on the pilot orgs' pages, with a link to the matching listing tagged with that org's `?ref=`.
 - **Measure:** clicks and visitors from those links (Admin → Stats), plus one interview question: "Would you read stories like this on Oportune?"
-- **Result:** if the stories bring more visitors than the plain listing posts and most interviewees say yes, "Wins on listings" ([idea Part 3 §6.2b](../idea/03-features-and-workflow.md#62b-next-small-builds-after-the-sprint-passes)) is the first thing built after "Continue". If not, drop it.
+- **Wins on listings is already built** (2026-10-30). Each story's team can also send their win from the listing page ("Sumali o nanalo kayo dito? Tell us"); approve it in Admin → Wins.
+- **Result:** if the stories bring more visitors than the plain listing posts, most interviewees say yes, and teams send wins on their own, keep "Wins on listings" and promote it after "Continue". If not, hide the "Tell us" link and stop promoting it.
 
 ## 7. What we don't do during the sprint
 
-- Build features (except `?ref=` links), redesign screens, or start the Android app.
+- Build more features (`?ref=` links and "Wins on listings" are the only exceptions), redesign screens, or start the Android app.
 - Sell anything, quote prices, or turn on ads.
 - Collect anything about students that they didn't give us themselves (no scraping, ever).
 - Add AI, scraping, or automated collection of any kind.

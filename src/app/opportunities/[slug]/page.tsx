@@ -11,11 +11,12 @@ import { googleCalendarUrl, hasCalendarDate } from "@/lib/opportunities/calendar
 import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
-import { getListingBySlug, getToday } from "@/lib/opportunities/queries";
+import { getListingBySlug, getListingWins, getToday } from "@/lib/opportunities/queries";
 import { shareMessage } from "@/lib/opportunities/share";
 import { SaveButton } from "@/components/save-button";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { winEmoji } from "@/lib/wins";
 import { ReportForm } from "./report-form";
 
 export async function generateMetadata({ params }: PageProps<"/opportunities/[slug]">): Promise<Metadata> {
@@ -65,6 +66,7 @@ async function OpportunityDetail({
   if ("redirectTo" in result) permanentRedirect(`/opportunities/${result.redirectTo}`);
 
   const { listing } = result;
+  const wins = await getListingWins(listing.id);
   const deadline = deadlineInfo(listing, today);
   const closed = deadline.tone === "closed";
 
@@ -102,6 +104,8 @@ async function OpportunityDetail({
         <AtAGlance listing={listing} closed={closed} />
 
         <Section title="What you need" body={listing.requirements} />
+
+        <Wins wins={wins} slug={listing.slug} />
 
         <section aria-labelledby="trust" className="sticker mt-6 p-4">
           <h2 id="trust" className="flex items-center gap-2 font-display text-lg font-extrabold text-ink">
@@ -260,6 +264,47 @@ function AtAGlance({ listing, closed }: { listing: Listing; closed: boolean }) {
           </div>
         ))}
       </dl>
+    </section>
+  );
+}
+
+// Checked "we joined / we won" notes: proof that students like them get in.
+function Wins({ wins, slug }: { wins: Awaited<ReturnType<typeof getListingWins>>; slug: string }) {
+  return (
+    <section aria-labelledby="wins" className="mt-6">
+      {wins.length > 0 && (
+        <>
+          <h2 id="wins" className="font-display text-lg font-extrabold text-ink">
+            Students who joined
+          </h2>
+          <ul className="sticker mt-2 divide-y-2 divide-dashed divide-line">
+            {wins.map((w) => (
+              <li key={w.id} className="flex items-start gap-3 px-4 py-3">
+                <span aria-hidden="true" className="text-xl leading-none">
+                  {winEmoji(w.result)}
+                </span>
+                <p className="leading-relaxed text-ink">
+                  {w.headline}
+                  {w.proof_url && (
+                    <>
+                      {" "}
+                      <a href={w.proof_url} target="_blank" rel="noopener noreferrer nofollow" className="text-sm font-semibold text-teal underline">
+                        Announcement
+                      </a>
+                    </>
+                  )}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      <Link
+        href={`/opportunities/${slug}/win`}
+        className="mt-2 inline-flex min-h-11 items-center text-sm font-bold text-teal underline"
+      >
+        Sumali o nanalo kayo dito? Tell us
+      </Link>
     </section>
   );
 }

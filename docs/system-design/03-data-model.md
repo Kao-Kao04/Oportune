@@ -111,6 +111,7 @@ Allowed CSV values: `status` ∈ {`ready`, `needs-check`, `closed`}; `delivery_m
 
 **Built 2026-10-25:**
 - `opportunity_submissions` (`id`, `user_id` (`on delete set null`), `url` (`https` only), `title`, `organization`, `deadline`, `note`, `submitter_role` (`student` / `organizer` / `school` / `other`), `status` (`new` / `added` / `duplicate` / `rejected`), `opportunity_id` (nullable)). Inserted only by the server after the captcha and rate limit; students read their own rows, curators read and update all
+- `opportunity_wins` (built 2026-10-30, [final decisions §1e](../research/final-decisions.md#1e-student-stories-and-wins-2026-10-30)): `id`, `opportunity_id` (`on delete cascade`), `user_id` (`on delete set null`), `result` (`won` / `placed` / `finalist` / `joined`), `team` (team, org, or school name), `detail`, `proof_url` (`https` only), `consent` (must be true), `headline` (curator-written; required to publish), `status` (`new` / `published` / `rejected`), `reviewed_by`, `published_at`. Inserted only by the server after sign-in, 18+, captcha, and a 5-per-day limit; students read their own rows, curators read and update all. The public reads only `public_opportunity_wins` (`result`, `headline`, `proof_url`, `published_at` for published wins on published/expired listings)
 - The OJT checklist has **no tables**: progress stays in the student's browser
 
 **Planned, frozen** ([final decisions §1c](../research/final-decisions.md#1c-updates-after-the-court-review-2026-10-26)):

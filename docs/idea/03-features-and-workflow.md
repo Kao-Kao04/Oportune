@@ -4,7 +4,7 @@
 
 ## ✅ What to do with this file
 
-- [ ] **Feature freeze until the [30-day sprint](../validation/06-30-day-validation-sprint.md) passes (2026-11-25).** §6.1 and §6.2 are built; nothing in §6.2b or later gets built before then, except `?ref=` links.
+- [ ] **Feature freeze until the [30-day sprint](../validation/06-30-day-validation-sprint.md) passes (2026-11-25).** §6.1 and §6.2 are built; nothing else in §6.2b or later gets built before then. Built anyway: `?ref=` links (needed to measure the sprint) and "Wins on listings" (founder's call, 2026-10-30).
 - [ ] Don't start §6.2b until the sprint says "Continue"; then build one item at a time, in the order students asked for them.
 - [ ] Don't start **Phase 3** (§6.3) until Phase 2 is live.
 - [ ] Don't build anything in **Not now** (§6.4).
@@ -47,7 +47,7 @@ Agreed 2026-10-26 ([final decisions §1b](../research/final-decisions.md#1b-upda
 
 | # | Feature | Notes |
 |---|---|---|
-| 0 | **Wins on listings** (first, if the stories test works) | Teams or orgs send "we joined / we won" through `/submit`; a curator checks it and attaches it to that event's listing, with consent. Points students to the next edition. Not a social feed ([final decisions §1e](../research/final-decisions.md#1e-student-stories-and-wins-2026-10-30)) |
+| 0 | **Wins on listings** ✅ built 2026-10-30 (founder's call, before the sprint ends) | Signed-in 18+ students send "we joined / placed / won" from the listing page, with consent; a curator confirms it and writes the headline (Admin → Wins); it shows under "Students who joined". Not a social feed ([final decisions §1e](../research/final-decisions.md#1e-student-stories-and-wins-2026-10-30)) |
 | 1 | **Education level** | JHS / SHS / College / Graduate in the profile, listing tags, and Browse filters, so later rings need content, not code |
 | 2 | **"Share to Oportune"** (moved up from Phase 3) | From the phone's share menu (installed web app, Android). Opens `/submit` with the link and text filled in. iPhone: copy-paste into `/submit` |
 | 3 | **Paste-to-draft** for curators | Paste the post text; the app pulls out dates and registration links into a draft. The curator still writes the summary and checks the source |
