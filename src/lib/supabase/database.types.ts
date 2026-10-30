@@ -7,14 +7,14 @@ export type Database = {
           Tables: {
             "analytics_events": {
                   Row: {
-                    "anonymous_id": string | null,"created_at": string,"event": string,"id": string,"opportunity_id": string | null
+                    "anonymous_id": string | null,"created_at": string,"event": string,"id": string,"opportunity_id": string | null,"ref": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "anonymous_id"?: string | null,"created_at"?: string,"event": string,"id"?: string,"opportunity_id"?: string | null
+                    "anonymous_id"?: string | null,"created_at"?: string,"event": string,"id"?: string,"opportunity_id"?: string | null,"ref"?: string | null
                   }
                   Update: {
-                    "anonymous_id"?: string | null,"created_at"?: string,"event"?: string,"id"?: string,"opportunity_id"?: string | null
+                    "anonymous_id"?: string | null,"created_at"?: string,"event"?: string,"id"?: string,"opportunity_id"?: string | null,"ref"?: string | null
                   }
                   Relationships: [
                     {
@@ -101,14 +101,14 @@ isOneToOne: false
                   ]
                 },"opportunities": {
                   Row: {
-                    "application_opens": string | null,"application_opens_type": string,"application_url": string | null,"category_id": string,"confidence": string | null,"created_at": string,"created_by": string | null,"deadline": string | null,"deadline_type": string,"delivery_mode": string | null,"eligibility": string | null,"external_id": string | null,"id": string,"last_checked_at": string | null,"location": string | null,"needs_check": boolean,"notes": string | null,"organization": string,"recheck_due": boolean,"requirements": string | null,"reviewed_by": string | null,"search_vector": unknown,"slug": string,"source_trust": string,"source_url": string,"status": string,"summary": string | null,"title": string,"updated_at": string
+                    "application_opens": string | null,"application_opens_type": string,"application_url": string | null,"category_id": string,"confidence": string | null,"course_groups": (string)[],"created_at": string,"created_by": string | null,"deadline": string | null,"deadline_type": string,"delivery_mode": string | null,"eligibility": string | null,"external_id": string | null,"id": string,"last_checked_at": string | null,"location": string | null,"needs_check": boolean,"notes": string | null,"organization": string,"recheck_due": boolean,"regions": (string)[],"requirements": string | null,"reviewed_by": string | null,"search_vector": unknown,"slug": string,"source_trust": string,"source_url": string,"status": string,"summary": string | null,"title": string,"updated_at": string,"year_levels": (string)[]
                   }
                   ComputedFields: never
                   Insert: {
-                    "application_opens"?: string | null,"application_opens_type"?: string,"application_url"?: string | null,"category_id": string,"confidence"?: string | null,"created_at"?: string,"created_by"?: string | null,"deadline"?: string | null,"deadline_type"?: string,"delivery_mode"?: string | null,"eligibility"?: string | null,"external_id"?: string | null,"id"?: string,"last_checked_at"?: string | null,"location"?: string | null,"needs_check"?: boolean,"notes"?: string | null,"organization": string,"recheck_due"?: boolean,"requirements"?: string | null,"reviewed_by"?: string | null,"search_vector"?: never,"slug": string,"source_trust"?: string,"source_url": string,"status"?: string,"summary"?: string | null,"title": string,"updated_at"?: string
+                    "application_opens"?: string | null,"application_opens_type"?: string,"application_url"?: string | null,"category_id": string,"confidence"?: string | null,"course_groups"?: (string)[],"created_at"?: string,"created_by"?: string | null,"deadline"?: string | null,"deadline_type"?: string,"delivery_mode"?: string | null,"eligibility"?: string | null,"external_id"?: string | null,"id"?: string,"last_checked_at"?: string | null,"location"?: string | null,"needs_check"?: boolean,"notes"?: string | null,"organization": string,"recheck_due"?: boolean,"regions"?: (string)[],"requirements"?: string | null,"reviewed_by"?: string | null,"search_vector"?: never,"slug": string,"source_trust"?: string,"source_url": string,"status"?: string,"summary"?: string | null,"title": string,"updated_at"?: string,"year_levels"?: (string)[]
                   }
                   Update: {
-                    "application_opens"?: string | null,"application_opens_type"?: string,"application_url"?: string | null,"category_id"?: string,"confidence"?: string | null,"created_at"?: string,"created_by"?: string | null,"deadline"?: string | null,"deadline_type"?: string,"delivery_mode"?: string | null,"eligibility"?: string | null,"external_id"?: string | null,"id"?: string,"last_checked_at"?: string | null,"location"?: string | null,"needs_check"?: boolean,"notes"?: string | null,"organization"?: string,"recheck_due"?: boolean,"requirements"?: string | null,"reviewed_by"?: string | null,"search_vector"?: never,"slug"?: string,"source_trust"?: string,"source_url"?: string,"status"?: string,"summary"?: string | null,"title"?: string,"updated_at"?: string
+                    "application_opens"?: string | null,"application_opens_type"?: string,"application_url"?: string | null,"category_id"?: string,"confidence"?: string | null,"course_groups"?: (string)[],"created_at"?: string,"created_by"?: string | null,"deadline"?: string | null,"deadline_type"?: string,"delivery_mode"?: string | null,"eligibility"?: string | null,"external_id"?: string | null,"id"?: string,"last_checked_at"?: string | null,"location"?: string | null,"needs_check"?: boolean,"notes"?: string | null,"organization"?: string,"recheck_due"?: boolean,"regions"?: (string)[],"requirements"?: string | null,"reviewed_by"?: string | null,"search_vector"?: never,"slug"?: string,"source_trust"?: string,"source_url"?: string,"status"?: string,"summary"?: string | null,"title"?: string,"updated_at"?: string,"year_levels"?: (string)[]
                   }
                   Relationships: [
                     {
@@ -165,6 +165,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     },{
       foreignKeyName: "opportunity_slug_redirects_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "public_opportunities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"opportunity_submissions": {
+                  Row: {
+                    "created_at": string,"deadline": string | null,"id": string,"note": string | null,"opportunity_id": string | null,"organization": string | null,"status": string,"submitter_role": string,"title": string | null,"updated_at": string,"url": string,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"deadline"?: string | null,"id"?: string,"note"?: string | null,"opportunity_id"?: string | null,"organization"?: string | null,"status"?: string,"submitter_role"?: string,"title"?: string | null,"updated_at"?: string,"url": string,"user_id"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"deadline"?: string | null,"id"?: string,"note"?: string | null,"opportunity_id"?: string | null,"organization"?: string | null,"status"?: string,"submitter_role"?: string,"title"?: string | null,"updated_at"?: string,"url"?: string,"user_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "opportunity_submissions_opportunity_id_fkey"
+      columns: ["opportunity_id"]
+isOneToOne: false
+      referencedRelation: "opportunities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "opportunity_submissions_opportunity_id_fkey"
       columns: ["opportunity_id"]
 isOneToOne: false
       referencedRelation: "public_opportunities"
@@ -258,7 +284,7 @@ isOneToOne: false
           Views: {
             "public_opportunities": {
                   Row: {
-                    "application_opens": string | null,"application_opens_type": string | null,"application_url": string | null,"category_id": string | null,"category_name": string | null,"category_slug": string | null,"deadline": string | null,"deadline_type": string | null,"delivery_mode": string | null,"eligibility": string | null,"id": string | null,"last_checked_at": string | null,"location": string | null,"organization": string | null,"requirements": string | null,"search_vector": unknown,"slug": string | null,"source_trust": string | null,"source_url": string | null,"status": string | null,"summary": string | null,"title": string | null,"updated_at": string | null
+                    "application_opens": string | null,"application_opens_type": string | null,"application_url": string | null,"category_id": string | null,"category_name": string | null,"category_slug": string | null,"course_groups": (string)[] | null,"deadline": string | null,"deadline_type": string | null,"delivery_mode": string | null,"eligibility": string | null,"id": string | null,"last_checked_at": string | null,"location": string | null,"organization": string | null,"regions": (string)[] | null,"requirements": string | null,"search_vector": unknown,"slug": string | null,"source_trust": string | null,"source_url": string | null,"status": string | null,"summary": string | null,"title": string | null,"updated_at": string | null,"year_levels": (string)[] | null
                   }
                   ComputedFields: never
                   Relationships: [
@@ -273,7 +299,12 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "analytics_top_listings":
+            "analytics_by_ref":
+{ Args: { "since": string }; Returns: {
+              "official_clicks": number,"ref": string,"returning_visitors": number,"shares": number,"views": number,"visitors": number
+            }[]
+                           },
+"analytics_top_listings":
 { Args: { "max_rows"?: number,"since": string }; Returns: {
               "official_clicks": number,"opportunity_id": string,"saves": number,"shares": number,"slug": string,"title": string,"views": number
             }[]
@@ -303,6 +334,7 @@ isOneToOne: false
 "category_id": string | null,
 "category_name": string | null,
 "category_slug": string | null,
+"course_groups": (string)[] | null,
 "deadline": string | null,
 "deadline_type": string | null,
 "delivery_mode": string | null,
@@ -311,6 +343,7 @@ isOneToOne: false
 "last_checked_at": string | null,
 "location": string | null,
 "organization": string | null,
+"regions": (string)[] | null,
 "requirements": string | null,
 "search_vector": unknown,
 "slug": string | null,
@@ -319,7 +352,8 @@ isOneToOne: false
 "status": string | null,
 "summary": string | null,
 "title": string | null,
-"updated_at": string | null
+"updated_at": string | null,
+"year_levels": (string)[] | null
             }[]
                           SetofOptions: {
         from: "*"

@@ -1,9 +1,15 @@
+import { COURSE_GROUPS, YEAR_LEVELS } from "../profile";
+import { cleanTags, REGIONS, type Audience } from "./audience";
 import { sourceTrust } from "./source-trust";
 import type { DbFields } from "./import-plan";
 
 // Parses and validates the admin "Edit listing" form.
 
-export type FormFields = Omit<DbFields, "external_id"> & { application_url: string | null };
+export type FormFields = Omit<DbFields, "external_id"> & Audience & { application_url: string | null };
+
+function all(form: FormData, name: string): string[] {
+  return form.getAll(name).filter((v): v is string => typeof v === "string");
+}
 
 export type FormResult = { ok: true; fields: FormFields } | { ok: false; errors: Record<string, string> };
 
@@ -82,6 +88,9 @@ export function parseOpportunityForm(form: FormData, categoryIds: Set<string>): 
       needs_check: form.get("needs_check") === "on",
       notes: optional(form, "notes"),
       last_checked_at: `${lastChecked}T00:00:00+08:00`,
+      regions: cleanTags(all(form, "regions"), REGIONS),
+      course_groups: cleanTags(all(form, "course_groups"), COURSE_GROUPS),
+      year_levels: cleanTags(all(form, "year_levels"), YEAR_LEVELS),
     },
   };
 }

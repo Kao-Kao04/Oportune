@@ -6,6 +6,8 @@ import { BackLink } from "@/components/back-link";
 import { OfficialBadge } from "@/components/official-badge";
 import { ShareButton } from "@/components/share-button";
 import { OfficialLink, ViewTracker } from "@/components/tracking";
+import { audienceSummary } from "@/lib/opportunities/audience";
+import { googleCalendarUrl, hasCalendarDate } from "@/lib/opportunities/calendar";
 import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
@@ -93,6 +95,7 @@ async function OpportunityDetail({
           )}
 
           <DeadlineBlock listing={listing} today={today} />
+          {!closed && hasCalendarDate(listing) && <AddToCalendar listing={listing} />}
 
           {listing.summary && <p className="mt-5 whitespace-pre-line text-[17px] leading-relaxed text-ink">{listing.summary}</p>}
 
@@ -207,9 +210,34 @@ function DeadlineBlock({ listing, today }: { listing: Listing; today: string }) 
   );
 }
 
+// Phones open the .ics file in their own calendar app; Google Calendar gets a
+// direct link for students who live in it.
+function AddToCalendar({ listing }: { listing: Listing }) {
+  const base = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  const pageUrl = `${base}/opportunities/${listing.slug}`;
+  const link = "inline-flex min-h-11 items-center gap-1.5 rounded-pill border-2 border-ink bg-card px-3 text-sm font-bold text-ink hover:bg-paper";
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2">
+      <span className="text-sm font-bold text-muted">Add to calendar:</span>
+      <a href={`/opportunities/${listing.slug}/calendar`} download className={link}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M3 10h18M8 3v4M16 3v4" strokeLinecap="round" />
+        </svg>
+        Phone calendar
+      </a>
+      <a href={googleCalendarUrl(listing, pageUrl)} target="_blank" rel="noopener noreferrer" className={link}>
+        Google Calendar
+        <span className="sr-only">(opens in a new tab)</span>
+      </a>
+    </div>
+  );
+}
+
 // The facts students check first, in one scannable box.
 function AtAGlance({ listing, closed }: { listing: Listing; closed: boolean }) {
   const rows = [
+    { label: "Open to", value: audienceSummary(listing) },
     { label: "Who can apply", value: listing.eligibility },
     {
       label: "Where",

@@ -30,4 +30,7 @@ export const emptyValues = (): FormValues => ({
   needs_check: false,
   notes: "",
   last_checked: todayInManila(),
+  regions: [],
+  course_groups: [],
+  year_levels: [],
 });

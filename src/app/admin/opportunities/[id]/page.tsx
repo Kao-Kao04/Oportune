@@ -113,6 +113,9 @@ export default async function EditOpportunityPage({ params, searchParams }: Page
             needs_check: row.needs_check,
             notes: row.notes ?? "",
             last_checked: row.last_checked_at ? todayInManila(new Date(row.last_checked_at)) : todayInManila(),
+            regions: row.regions,
+            course_groups: row.course_groups,
+            year_levels: row.year_levels,
           }}
         />
       </div>

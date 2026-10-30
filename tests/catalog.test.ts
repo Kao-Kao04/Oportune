@@ -32,6 +32,9 @@ function listing(overrides: Partial<Listing>): Listing {
     source_trust: "other",
     status: "published",
     last_checked_at: null,
+    regions: [],
+    course_groups: [],
+    year_levels: [],
     ...overrides,
   };
 }

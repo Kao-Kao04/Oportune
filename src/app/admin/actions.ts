@@ -27,7 +27,11 @@ export async function saveOpportunity(_prev: SaveState, form: FormData): Promise
   // submitted values back for the form to keep.
   const result = await save(form);
   const values: Record<string, string> = {};
-  for (const [key, value] of form.entries()) if (typeof value === "string") values[key] = value;
+  // Checkbox groups (regions, course groups, year levels) repeat their name;
+  // keep every ticked value, comma-separated.
+  for (const [key, value] of form.entries()) {
+    if (typeof value === "string") values[key] = key in values ? `${values[key]},${value}` : value;
+  }
   return { ...result, values };
 }
 
@@ -97,6 +101,16 @@ async function save(form: FormData): Promise<SaveState> {
       .single();
     if (error) return { message: friendlyDbError(error.message) };
     savedId = data.id;
+
+    // Created from a student's submission: close it and link the listing.
+    const submissionId = form.get("submission_id");
+    if (typeof submissionId === "string" && submissionId) {
+      const { error: submissionError } = await supabase
+        .from("opportunity_submissions")
+        .update({ status: "added", opportunity_id: savedId })
+        .eq("id", submissionId);
+      if (submissionError) return { message: submissionError.message };
+    }
   }
 
   await audit(supabase, user, id ? (intent === "publish" ? "opportunity.publish" : "opportunity.update") : "opportunity.create", {
@@ -172,4 +186,20 @@ export async function updateReport(form: FormData) {
 
   await audit(supabase, user, `report.${status}`, { type: "report", id });
   redirect("/admin/reports");
+}
+
+// Close a submission without creating a listing (already listed, or not a
+// real/eligible opportunity), or reopen it.
+export async function updateSubmission(form: FormData) {
+  const user = await requireCurator();
+  const supabase = await createClient();
+  const id = String(form.get("id") ?? "");
+  const status = String(form.get("status") ?? "");
+  if (!["new", "duplicate", "rejected"].includes(status)) throw new Error("Unknown submission status.");
+
+  const { error } = await supabase.from("opportunity_submissions").update({ status }).eq("id", id);
+  if (error) throw new Error(error.message);
+
+  await audit(supabase, user, `submission.${status}`, { type: "submission", id });
+  redirect("/admin/submissions");
 }

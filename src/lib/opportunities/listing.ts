@@ -1,11 +1,12 @@
 import type { Database } from "../supabase/database.types";
 import { CLOSING_SOON_DAYS, daysBetween } from "./dates";
+import type { Audience } from "./audience";
 import type { SourceTrust } from "./source-trust";
 
 type ViewRow = Database["public"]["Views"]["public_opportunities"]["Row"];
 
 // A listing as the public sees it (the public_opportunities view).
-export type Listing = {
+export type Listing = Audience & {
   id: string;
   slug: string;
   title: string;
@@ -52,6 +53,9 @@ export function toListing(row: ViewRow): Listing {
     source_trust: (row.source_trust ?? "other") as SourceTrust,
     status: row.status as Listing["status"],
     last_checked_at: row.last_checked_at,
+    regions: row.regions ?? [],
+    course_groups: row.course_groups ?? [],
+    year_levels: row.year_levels ?? [],
   };
 }
 

@@ -99,6 +99,17 @@ export default async function MePage({ searchParams }: PageProps<"/me">) {
         </div>
       </section>
 
+      <section className="mt-5 grid gap-3 sm:grid-cols-2">
+        <Link href="/ojt" className="sticker press flex min-h-16 flex-col justify-center bg-sky p-4">
+          <span className="font-display text-lg font-extrabold text-ink">OJT checklist</span>
+          <span className="text-sm text-ink">What to prepare before your internship</span>
+        </Link>
+        <Link href="/submit" className="sticker press flex min-h-16 flex-col justify-center bg-lime p-4">
+          <span className="font-display text-lg font-extrabold text-ink">Submit a link</span>
+          <span className="text-sm text-ink">Saw an opportunity? Send it to us</span>
+        </Link>
+      </section>
+
       <section className="sticker mt-5 p-4">
         <h2 className="font-display text-lg font-extrabold text-ink">About</h2>
         <p className="mt-1 text-sm text-muted">

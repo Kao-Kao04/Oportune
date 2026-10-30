@@ -1,11 +1,14 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { REGIONS } from "@/lib/opportunities/audience";
 import { sourceTrust } from "@/lib/opportunities/source-trust";
+import { COURSE_GROUPS, YEAR_LEVELS, yearLevelLabel } from "@/lib/profile";
 import { saveOpportunity, type SaveState } from "./actions";
 
 export type FormValues = {
   id?: string;
+  submission_id?: string;
   status: string;
   slug?: string;
   title: string;
@@ -26,7 +29,16 @@ export type FormValues = {
   needs_check: boolean;
   notes: string;
   last_checked: string;
+  regions: string[];
+  course_groups: string[];
+  year_levels: string[];
 };
+
+// After a failed save, checkbox groups come back comma-separated.
+function tags(value: string[] | string | undefined): string[] {
+  if (Array.isArray(value)) return value;
+  return value ? value.split(",") : [];
+}
 
 const input = "h-11 w-full rounded-ui border border-line bg-white px-3 text-base";
 const textarea = "w-full rounded-ui border border-line bg-white px-3 py-2 text-base";
@@ -53,6 +65,7 @@ export function OpportunityForm({
   return (
     <form action={action} className="flex flex-col gap-5">
       {values.id && <input type="hidden" name="id" value={values.id} />}
+      {values.submission_id && <input type="hidden" name="submission_id" value={values.submission_id} />}
 
       {state.message && (
         <p role="alert" className="rounded-ui bg-urgent/10 px-3 py-2 text-sm text-urgent">
@@ -103,6 +116,14 @@ export function OpportunityForm({
       <Field label="What you need (requirements)" error={errors.requirements}>
         <textarea name="requirements" rows={3} defaultValue={v.requirements} className={textarea} />
       </Field>
+
+      <fieldset className="rounded-ui border border-line bg-white p-3">
+        <legend className="px-1 text-sm font-semibold text-ink">Open to (for the Browse filters)</legend>
+        <p className="text-xs text-muted">Leave a group empty if it&apos;s open to everyone. Tick only what the official source says.</p>
+        <TagGroup label="Year level" name="year_levels" options={YEAR_LEVELS.map((y) => ({ value: y.value, label: yearLevelLabel(y.value) ?? y.label }))} checked={tags(v.year_levels)} />
+        <TagGroup label="Course group" name="course_groups" options={COURSE_GROUPS} checked={tags(v.course_groups)} />
+        <TagGroup label="Region" name="regions" options={REGIONS} checked={tags(v.regions)} />
+      </fieldset>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Location" error={errors.location}>
@@ -229,6 +250,32 @@ export function OpportunityForm({
         )}
       </div>
     </form>
+  );
+}
+
+function TagGroup({
+  label,
+  name,
+  options,
+  checked,
+}: {
+  label: string;
+  name: string;
+  options: readonly { value: string; label: string }[];
+  checked: string[];
+}) {
+  return (
+    <fieldset className="mt-3">
+      <legend className="text-sm font-semibold text-ink">{label}</legend>
+      <div className="mt-1 flex flex-wrap gap-2">
+        {options.map((o) => (
+          <label key={o.value} className="flex min-h-9 items-center gap-1.5 rounded-ui border border-line px-2 text-sm">
+            <input type="checkbox" name={name} value={o.value} defaultChecked={checked.includes(o.value)} className="h-4 w-4" />
+            {o.label}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }
 

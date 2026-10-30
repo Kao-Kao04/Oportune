@@ -12,19 +12,21 @@ export const instant = false;
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const user = await requireCurator();
   const supabase = await createClient();
-  const [{ count: openReports }, { count: recheck }] = await Promise.all([
+  const [{ count: openReports }, { count: recheck }, { count: newSubmissions }] = await Promise.all([
     supabase.from("opportunity_reports").select("id", { count: "exact", head: true }).eq("status", "open"),
     supabase
       .from("opportunities")
       .select("id", { count: "exact", head: true })
       .or("needs_check.eq.true,recheck_due.eq.true")
       .neq("status", "archived"),
+    supabase.from("opportunity_submissions").select("id", { count: "exact", head: true }).eq("status", "new"),
   ]);
 
   const links = [
     { href: "/admin", label: "Listings" },
     { href: "/admin/recheck", label: "Re-check", count: recheck },
     { href: "/admin/reports", label: "Reports", count: openReports },
+    { href: "/admin/submissions", label: "Submissions", count: newSubmissions },
     { href: "/admin/import", label: "Import" },
     { href: "/admin/stats", label: "Stats" },
     ...(user.role === "admin" ? [{ href: "/admin/roles", label: "Users & roles" }] : []),

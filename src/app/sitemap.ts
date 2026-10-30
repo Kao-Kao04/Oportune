@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: l.last_checked_at ?? undefined,
       changeFrequency: "weekly" as const,
     })),
+    { url: `${base}/ojt`, changeFrequency: "monthly" },
     { url: `${base}/privacy` },
     { url: `${base}/terms` },
   ];
