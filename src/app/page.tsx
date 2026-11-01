@@ -41,13 +41,15 @@ export default function BrowsePage({ searchParams }: PageProps<"/">) {
 }
 
 async function Browse({ filters }: { filters: Filters }) {
-  const [today, categories, listings, cookieStore, viewer] = await Promise.all([
+  const [today, categories, all, found, cookieStore, viewer] = await Promise.all([
     getToday(),
     getActiveCategories(),
-    filters.q ? searchListings(filters.q) : getPublishedListings(),
+    getPublishedListings(),
+    filters.q ? searchListings(filters.q) : null,
     cookies(),
     getViewer(),
   ]);
+  const listings = found ?? all;
   const savedIds = viewer.savedIds;
   // The hero and welcome note stay put when filters change, so the content
   // below them doesn't jump.
@@ -61,7 +63,8 @@ async function Browse({ filters }: { filters: Filters }) {
       (filters.view !== "closing-soon" || isClosingSoon(l, today)),
   );
 
-  const openCount = listings.filter((l) => isOpen(l, today)).length;
+  // The hero counts everything open, not just what a search found.
+  const openCount = all.filter((l) => isOpen(l, today)).length;
 
   return (
     <>

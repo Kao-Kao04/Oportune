@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
-import { deliveryModeLabel, type Listing } from "@/lib/opportunities/listing";
+import { whereText, type Listing } from "@/lib/opportunities/listing";
 import { shareMessage } from "@/lib/opportunities/share";
 import { CategoryIcon } from "./category-icon";
 import { OfficialBadge } from "./official-badge";
@@ -34,7 +34,6 @@ function initials(name: string): string {
 // "picture" with the deadline, and Save / Share / Apply actions.
 export function FeedPost({ listing, today, saved }: { listing: Listing; today: string; saved: boolean }) {
   const deadline = deadlineInfo(listing, today);
-  const delivery = deliveryModeLabel(listing.delivery_mode);
   const bg = categoryBg(listing.categorySlug);
   const href = `/opportunities/${listing.slug}`;
   const checked = listing.last_checked_at ? formatLongDate(todayInManila(new Date(listing.last_checked_at))) : null;
@@ -55,11 +54,7 @@ export function FeedPost({ listing, today, saved }: { listing: Listing; today: s
   const [month, rawDay] = deadline.label.split(" ");
   const day = rawDay?.replace(",", "");
   const isDate = listing.deadline_type === "date" && Boolean(day);
-  // "Online · Online (final in Hong Kong)" reads badly; skip the repeat.
-  const where =
-    listing.location && delivery && listing.location.toLowerCase().startsWith(delivery.toLowerCase())
-      ? listing.location
-      : [delivery, listing.location].filter(Boolean).join(" · ");
+  const where = whereText(listing);
 
   return (
     <article className="sticker overflow-hidden" aria-labelledby={`post-${listing.id}`}>
@@ -72,7 +67,7 @@ export function FeedPost({ listing, today, saved }: { listing: Listing; today: s
           {initials(listing.organization)}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-bold leading-tight text-ink">{listing.organization}</p>
+          <p className="line-clamp-2 font-bold leading-tight text-ink">{listing.organization}</p>
           <p className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted">
             <span>{categoryLabel(listing.categorySlug, listing.categoryName)}</span>
             {checked && (
@@ -82,8 +77,13 @@ export function FeedPost({ listing, today, saved }: { listing: Listing; today: s
               </>
             )}
           </p>
+          {/* Under the name, not beside it, so long organizer names aren't cut off. */}
+          {listing.source_trust !== "other" && (
+            <div className="mt-1.5">
+              <OfficialBadge trust={listing.source_trust} />
+            </div>
+          )}
         </div>
-        <OfficialBadge trust={listing.source_trust} />
       </header>
 
       {/* Body text */}

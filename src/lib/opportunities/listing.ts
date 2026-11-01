@@ -105,6 +105,15 @@ export function deliveryModeLabel(mode: Listing["delivery_mode"]): string | null
   return null;
 }
 
+// "Online · Online (final in Hong Kong)" reads badly; skip the repeat.
+export function whereText(listing: Pick<Listing, "location" | "delivery_mode">): string | null {
+  const delivery = deliveryModeLabel(listing.delivery_mode);
+  if (listing.location && delivery && listing.location.toLowerCase().startsWith(delivery.toLowerCase())) {
+    return listing.location;
+  }
+  return [delivery, listing.location].filter(Boolean).join(" · ") || null;
+}
+
 export function sourceHost(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");

@@ -48,8 +48,8 @@ export function PushDevice() {
 
   const text: Record<DeviceState, string> = {
     loading: "Checking this device…",
-    on: "On for this device.",
-    off: "Off for this device.",
+    on: "This phone gets notifications.",
+    off: "This phone doesn't get notifications yet. Each phone or browser has to be turned on once.",
     blocked: "Blocked in your browser settings for this site.",
     "ios-needs-install": "On iPhone: tap Share → Add to Home Screen, then open Oportune from there to turn this on.",
     unsupported: "This browser can't show notifications. We'll email you instead.",
@@ -65,7 +65,7 @@ export function PushDevice() {
           disabled={busy}
           className="btn-plain press mt-2 text-sm disabled:opacity-60"
         >
-          {state === "on" ? "Turn off on this device" : "Turn on for this device"}
+          {state === "on" ? "Turn off on this phone" : "Turn on for this phone"}
         </button>
       )}
     </div>

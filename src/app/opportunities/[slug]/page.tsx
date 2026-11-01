@@ -10,7 +10,7 @@ import { audienceSummary } from "@/lib/opportunities/audience";
 import { googleCalendarUrl, hasCalendarDate } from "@/lib/opportunities/calendar";
 import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { closedLabel, deadlineInfo, formatLongDate, todayInManila } from "@/lib/opportunities/dates";
-import { deliveryModeLabel, sourceHost, type Listing } from "@/lib/opportunities/listing";
+import { sourceHost, whereText, type Listing } from "@/lib/opportunities/listing";
 import { getListingBySlug, getListingWins, getToday } from "@/lib/opportunities/queries";
 import { shareMessage } from "@/lib/opportunities/share";
 import { SaveButton } from "@/components/save-button";
@@ -222,7 +222,7 @@ function AddToCalendar({ listing }: { listing: Listing }) {
   const link = "inline-flex min-h-11 items-center gap-1.5 rounded-pill border-2 border-ink bg-card px-3 text-sm font-bold text-ink hover:bg-paper";
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
-      <span className="text-sm font-bold text-muted">Add to calendar:</span>
+      <span className="w-full text-sm font-bold text-muted">Add the deadline to your calendar</span>
       <a href={`/opportunities/${listing.slug}/calendar`} download className={link}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
           <rect x="3" y="5" width="18" height="16" rx="2" />
@@ -243,10 +243,7 @@ function AtAGlance({ listing, closed }: { listing: Listing; closed: boolean }) {
   const rows = [
     { label: "Open to", value: audienceSummary(listing) },
     { label: "Who can apply", value: listing.eligibility },
-    {
-      label: "Where",
-      value: [listing.location, deliveryModeLabel(listing.delivery_mode)].filter(Boolean).join(" · ") || null,
-    },
+    { label: "Where", value: whereText(listing) },
     { label: "Applications open", value: closed ? null : opensText(listing) },
   ].filter((r) => r.value);
   if (rows.length === 0) return null;
