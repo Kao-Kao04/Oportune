@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 // DRAFT. Not legal advice; must be reviewed by a Philippine lawyer before launch.
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of use" updated="October 23, 2026 (draft)">
+    <LegalPage title="Terms of use" updated="November 1, 2026 (draft)">
       <section>
         <h2>1. About these terms</h2>
         <p className="mt-2">
@@ -62,15 +62,45 @@ export default function TermsPage() {
       </section>
 
       <section>
-        <h2>5. Content and trademarks</h2>
+        <h2>5. Sharing an opportunity with us</h2>
         <p className="mt-2">
-          Listing summaries, the design, and the Oportune name belong to us. Organization names and logos belong to their
-          owners and are used only to identify the opportunity. You may share links to listings freely.
+          When you send us a link or a post (through Submit or your phone&apos;s share menu), please:
+        </p>
+        <ul className="mt-2">
+          <li>only share opportunities that are open to the public;</li>
+          <li>
+            not share posts from a private group or group chat unless the organizer agreed, or the same opportunity is
+            posted publicly;
+          </li>
+          <li>leave out other people&apos;s phone numbers, email addresses, photos, and comments.</li>
+        </ul>
+        <p className="mt-2">
+          We use what you send only to find and check the official source. Listings show the opportunity&apos;s details
+          in our own words and link back to the organizer&apos;s post or page. We do not republish posts, posters, or
+          photos, or the names and contact details of people in them.
         </p>
       </section>
 
       <section>
-        <h2>6. Limits of our responsibility</h2>
+        <h2>6. For organizers: corrections and removal</h2>
+        <p className="mt-2">
+          If you run a listed opportunity and something is wrong, or you&apos;d rather not be listed, email us at [contact
+          email address] or use &quot;Something wrong? Report this listing&quot; on the listing page. We fix or remove it within 48 hours. Organizers
+          can also send their own opportunities through Submit for free.
+        </p>
+      </section>
+
+      <section>
+        <h2>7. Content and trademarks</h2>
+        <p className="mt-2">
+          Listing summaries, the design, and the Oportune name belong to us. Organization names and logos belong to their
+          owners and are used only to identify the opportunity; a listing does not mean the organizer endorses or partners
+          with Oportune. You may share links to listings freely.
+        </p>
+      </section>
+
+      <section>
+        <h2>8. Limits of our responsibility</h2>
         <p className="mt-2">
           Oportune is provided as is. To the extent allowed by Philippine law, we are not liable for losses that come from
           relying on a listing without checking the official source, from an organizer&apos;s decisions, or from service
@@ -79,7 +109,7 @@ export default function TermsPage() {
       </section>
 
       <section>
-        <h2>7. Changes and contact</h2>
+        <h2>9. Changes and contact</h2>
         <p className="mt-2">
           We may update these terms and will post the new version here. These terms are governed by the laws of the
           Republic of the Philippines. Questions: [contact email address].

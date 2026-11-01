@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 // a Philippine lawyer and the DPO before launch.
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy notice" updated="October 23, 2026 (draft)">
+    <LegalPage title="Privacy notice" updated="November 1, 2026 (draft)">
       <section>
         <h2>1. Who we are</h2>
         <p className="mt-2">
@@ -49,9 +49,10 @@ export default function PrivacyPage() {
             signed in, the report is linked to your account.
           </li>
           <li>
-            <span className="font-semibold">Submit an opportunity:</span> the link and any details you write (title,
-            organizer, deadline, note, and whether you&apos;re a student or organizer), linked to your account so you can
-            see its status.
+            <span className="font-semibold">Submit an opportunity:</span> the link and any details you write or share
+            from another app (title, organizer, deadline, note or post text, and whether you&apos;re a student or
+            organizer), linked to your account so you can see its status. Please leave out other people&apos;s personal
+            details; if a post includes them, we don&apos;t publish them.
           </li>
           <li>
             <span className="font-semibold">Share a win:</span> what happened (joined, finalist, placed, won), your team,
@@ -124,6 +125,10 @@ export default function PrivacyPage() {
           <li>Account, profile, saved listings, reminder settings, and push subscriptions: until you delete your account.</li>
           <li>Reminder records: until you delete your account, or the listing is removed.</li>
           <li>Hashed internet addresses used against abuse: up to two days.</li>
+          <li>
+            Submissions: the note or shared post text is deleted 30 days after our team reviews it; the link, title,
+            organizer, deadline, and status stay to avoid duplicates.
+          </li>
           <li>
             Reports, submissions, and wins: kept to maintain listing quality. When you delete your account, they stay but are
             no longer linked to you.

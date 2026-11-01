@@ -39,10 +39,12 @@ export async function autoExpire(): Promise<JobOutcome> {
 }
 
 // Daily: drop old rate-limit windows, job history, and analytics events
-// past the retention in the privacy notice (13 months).
+// past the retention in the privacy notice (13 months), and the note/post
+// text of submissions reviewed more than 30 days ago.
 export async function cleanup(): Promise<JobOutcome> {
   const admin = createAdminClient();
   const twoDaysAgo = new Date(Date.now() - 2 * 86_400_000).toISOString();
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86_400_000).toISOString();
   const halfYearAgo = new Date(Date.now() - 180 * 86_400_000).toISOString();
 
   const { error } = await admin.from("rate_limits").delete().lt("window_start", twoDaysAgo);
@@ -52,5 +54,15 @@ export async function cleanup(): Promise<JobOutcome> {
   const thirteenMonthsAgo = new Date(Date.now() - 395 * 86_400_000).toISOString();
   const { error: eventsError } = await admin.from("analytics_events").delete().lt("created_at", thirteenMonthsAgo);
   if (eventsError) throw eventsError;
-  return { ok: true };
+  // updated_at is when a curator last changed the status (clearing the note
+  // bumps it too, but the row no longer matches).
+  const { data: cleared, error: notesError } = await admin
+    .from("opportunity_submissions")
+    .update({ note: null })
+    .neq("status", "new")
+    .not("note", "is", null)
+    .lt("updated_at", thirtyDaysAgo)
+    .select("id");
+  if (notesError) throw notesError;
+  return { ok: true, details: { submissionNotesCleared: cleared.length } };
 }

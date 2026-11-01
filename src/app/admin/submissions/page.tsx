@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PublishChecklist } from "@/components/publish-checklist";
 import { requireCurator } from "@/lib/auth";
 import { formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { sourceHost } from "@/lib/opportunities/listing";
@@ -40,8 +41,9 @@ export default async function SubmissionsPage({ searchParams }: PageProps<"/admi
       </div>
       <p className="mt-1 text-sm text-muted">
         Oldest first. Open the link, find the <strong>official</strong> source, then create the listing in our own words.
-        Never copy the post or the submitter&apos;s note as-is.
+        Never copy the post or the submitter&apos;s note as-is. Notes are deleted 30 days after review.
       </p>
+      <PublishChecklist />
 
       {submissions.length === 0 ? (
         <p className="mt-8 text-center text-muted">No new submissions.</p>

@@ -1,3 +1,4 @@
+import { PublishChecklist } from "@/components/publish-checklist";
 import { requireCurator } from "@/lib/auth";
 import { pasteToDraft } from "./actions";
 
@@ -14,6 +15,7 @@ export default async function PastePage({ searchParams }: PageProps<"/admin/past
         paste them here. We pull out the title, links, and deadline into a new listing form. You still open the source,
         check every detail, and write the summary in our own words. Nothing is collected automatically.
       </p>
+      <PublishChecklist />
       {error === "link" && (
         <p role="alert" className="mt-3 rounded-ui border border-urgent px-3 py-2 text-sm text-urgent">
           Add the link to the post (or to the official page) so the listing has a source.

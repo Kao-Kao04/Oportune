@@ -31,7 +31,7 @@ Don't guess DNS records or callback URLs.
 |---|---|---|
 | Auto-expire (`/api/jobs/auto-expire`) | Daily, 00:05 PH time (`5 16 * * *` UTC) | Marks listings past their deadline as `expired`; sets `recheck_due` on rolling/TBA listings not checked in 30+ days |
 | Send reminders (`/api/jobs/send-reminders`) | Daily, 8:00 AM PH time (`0 0 * * *` UTC) | Finds saved listings due in 7 or 1 days and sends reminders by push, then email ([System Design §7.3](../system-design/04-api-and-logic.md#73-reminders)) |
-| Cleanup (`/api/jobs/cleanup`) | Daily, 00:30 PH time (`30 16 * * *` UTC) | Deletes old `rate_limits` windows, `job_runs` older than 180 days, and `analytics_events` older than 13 months |
+| Cleanup (`/api/jobs/cleanup`) | Daily, 00:30 PH time (`30 16 * * *` UTC) | Deletes old `rate_limits` windows, `job_runs` older than 180 days, and `analytics_events` older than 13 months; clears the `note` of submissions reviewed more than 30 days ago |
 
 Rules:
 - Store timestamps in UTC; calculate "today" in Philippine time (UTC+8). Cron schedules are in UTC: midnight PH = 16:00 UTC, 8:00 AM PH = 00:00 UTC.

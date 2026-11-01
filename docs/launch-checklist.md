@@ -79,6 +79,7 @@ Where the MVP stands after M1–M6, and what is left before students can use it.
 | [ ] | Verify NPC Advisory No. 2026-01 and NPC rules cited in the docs | Team |
 | [ ] | Ask the lawyer: is school/course/year "education" data (sensitive)? If yes, register with NPC before 1,000 users ([final decisions §2.4](research/final-decisions.md#24-data-privacy-act)) | Team |
 | [ ] | Add to Terms: Oportune is a free directory; it doesn't recruit, screen, place, or charge students | Team, then Dev |
+| [x] | Rules for shared posts in `/terms` §5–§6 (public only, no other people's details, organizer fix/removal within 48 hours) and 30-day deletion of submission notes ([final decisions §1f](research/final-decisions.md#1f-every-source-in-one-system-2026-11-01)). Lawyer to confirm; fill the contact email | Dev, then Team |
 
 ## 6. Before launch: content
 
@@ -99,7 +100,8 @@ Where the MVP stands after M1–M6, and what is left before students can use it.
 ## 7. After launch (first 2–4 weeks)
 
 - Review **Admin → Stats** every 2 weeks against the targets in [idea Part 5 §13](idea/05-validation-metrics-risks.md#13-how-well-know-each-feature-is-needed).
-- Fix reports within 48 hours; clear the Re-check queue weekly.
+- Fix reports within 48 hours (organizer fix or removal requests too); clear the Re-check queue weekly.
+- Before publishing any shared or pasted post, go through "Before you publish" (Admin → Submissions / Paste a post): public only, organizer's own source, own words, no people's details, no uploaded posters.
 - Weekly: Admin → Import → "Fetch upcoming CTFs" and re-import permitted calendar feeds; daily: clear Submissions (shared and pasted posts).
 - Watch `job_runs` (failed runs) and email sending limits.
 - Known small gaps to schedule:

@@ -98,6 +98,15 @@ Goal (founder): every opportunity a student could find on Facebook, Instagram, X
 
 Every automated or shared item lands as a draft or submission; **a curator always checks the source and publishes**. Nothing reaches students unchecked.
 
+**Rules for what people bring in (2026-11-01).** A person sharing a post they saw is normal use; the risks are in what we copy and where the post came from:
+- **Copyright:** we publish facts (name, deadline, eligibility) in our own words and link back to the organizer's post. Never the full caption, and never their poster or pubmat uploaded to us.
+- **Platforms:** our system never opens or fetches Facebook, Instagram, X, or LinkedIn pages; a person shares the link.
+- **Privacy:** listings carry event details only, never names, numbers, or photos of people in the post. The note or post text of a submission is deleted 30 days after review (cleanup job); the link, title, organizer, deadline, and status stay to catch duplicates.
+- **Private groups and chats:** list only opportunities open to the public. From a closed group or GC: find a public source or ask the organizer first.
+- **Organizers:** can ask for a fix or removal by email or the listing's report form; we act within 48 hours. A listing doesn't mean they endorse us.
+
+Shown in `/terms` §5–§7, `/privacy` (submissions, retention), the `/submit` page, and as a "Before you publish" checklist in Admin → Submissions and Admin → Paste a post. Still to confirm with the lawyer ([launch checklist §5](../launch-checklist.md#5-before-launch-legal-and-privacy-data-privacy-act)).
+
 **Distribution:** the founder is president of the Microsoft Student Community at PUP, so it is pilot org 1, and its Luma calendar can host the launch event (link tagged `?ref=msc-pup`). Because it's our own org, its numbers are friendlier than a stranger's: the sprint counts it, but org 2 must be one we don't run, and at least half of the interviews must be with students outside our own org.
 
 ## 2. Verified facts we rely on

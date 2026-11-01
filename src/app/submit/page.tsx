@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BackLink } from "@/components/back-link";
 import { getCurrentUser } from "@/lib/auth";
@@ -73,6 +74,13 @@ export default async function SubmitPage({ searchParams }: PageProps<"/submit">)
       </h1>
       <p className="mt-2 text-muted">
         Send the link. Our team checks the official source before it goes live, so classmates only see real ones.
+      </p>
+      <p className="mt-2 text-sm text-muted">
+        Public opportunities only: if you saw it in a private group or group chat, ask the organizer first. Leave out other
+        people&apos;s numbers, emails, and photos.{" "}
+        <Link href="/terms" className="font-semibold text-ink underline">
+          Rules
+        </Link>
       </p>
 
       <SubmitForm initial={shared} />
