@@ -1,8 +1,11 @@
 "use server";
 
 import { updateTag } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireCurator } from "@/lib/auth";
 import { parseCsv } from "@/lib/opportunities/csv-import";
+import { ctftimeToRows, fetchCtftimeEvents } from "@/lib/opportunities/ctftime";
+import { feedUrl, icsToRows, parseIcs } from "@/lib/opportunities/ics-feed";
 import { todayInManila } from "@/lib/opportunities/dates";
 import {
   DIFF_FIELDS,
@@ -157,4 +160,103 @@ export async function importAction(prev: ImportState, form: FormData): Promise<I
   }
 
   return { step: "upload" };
+}
+
+// Upcoming online CTFs from CTFtime become drafts flagged "needs check". The
+// same rules as the spreadsheet apply: drafts we already imported are
+// refreshed, published listings are never touched.
+export async function importCtftime() {
+  const user = await requireCurator();
+  const supabase = await createClient();
+  const [{ data: categories, error: catError }, { data: existing, error: oppError }] = await Promise.all([
+    supabase.from("categories").select("id, name"),
+    supabase.from("opportunities").select("*"),
+  ]);
+  if (catError) throw catError;
+  if (oppError) throw oppError;
+
+  let events;
+  try {
+    events = await fetchCtftimeEvents(new Date());
+  } catch (error) {
+    console.warn("[ctftime] fetch failed", error);
+    redirect("/admin/import?ctftime=error");
+  }
+  const rows = ctftimeToRows(events, new Date(), {
+    titles: existing.filter((o) => !o.external_id?.startsWith("CTFTIME-")).map((o) => o.title),
+    urls: existing
+      .filter((o) => !o.external_id?.startsWith("CTFTIME-"))
+      .flatMap((o) => [o.source_url, o.application_url].filter((u): u is string => Boolean(u))),
+  });
+  const plan = planImport(rows, categories, existing as ExistingOpportunity[]);
+
+  if (plan.inserts.length > 0) {
+    const { error } = await supabase.from("opportunities").insert(plan.inserts.map((r) => ({ ...r, created_by: user.id })));
+    if (error) throw new Error(`Insert failed: ${error.message}`);
+  }
+  for (const { id, fields } of plan.draftUpdates) {
+    const { error } = await supabase.from("opportunities").update(fields).eq("id", id);
+    if (error) throw new Error(`Update failed for ${fields.external_id}: ${error.message}`);
+  }
+  await audit(supabase, user, "opportunities.ctftime_import", { type: "opportunities" }, {
+    fetched: events.length,
+    inserted: plan.inserts.length,
+    updated: plan.draftUpdates.length,
+  });
+  redirect(`/admin/import?ctftime=${plan.inserts.length}-${plan.draftUpdates.length}`);
+}
+
+const MAX_FEED_BYTES = 2_000_000;
+
+// Calendar feed import: only for calendars we run (e.g. our org's Luma) or
+// whose owner agreed. Upcoming events become drafts marked "needs check".
+export async function importCalendarFeed(form: FormData) {
+  const user = await requireCurator();
+  const url = feedUrl(String(form.get("feed") ?? ""));
+  const organization = String(form.get("organization") ?? "").trim().slice(0, 200);
+  const categoryId = String(form.get("category_id") ?? "");
+  if (!url || organization.length < 2 || form.get("permission") !== "on") redirect("/admin/import?feed=invalid");
+
+  const supabase = await createClient();
+  const [{ data: categories, error: catError }, { data: existing, error: oppError }] = await Promise.all([
+    supabase.from("categories").select("id, name"),
+    supabase.from("opportunities").select("*"),
+  ]);
+  if (catError) throw catError;
+  if (oppError) throw oppError;
+  const category = categories.find((c) => c.id === categoryId);
+  if (!category) redirect("/admin/import?feed=invalid");
+
+  let text: string;
+  try {
+    const res = await fetch(url, { headers: { Accept: "text/calendar" }, cache: "no-store", signal: AbortSignal.timeout(15_000) });
+    if (!res.ok) throw new Error(`feed returned ${res.status}`);
+    text = await res.text();
+    if (text.length > MAX_FEED_BYTES || !text.includes("BEGIN:VCALENDAR")) throw new Error("not a calendar feed");
+  } catch (error) {
+    console.warn("[feed] fetch failed", error);
+    redirect("/admin/import?feed=error");
+  }
+
+  const rows = icsToRows(parseIcs(text), {
+    now: new Date(),
+    organization,
+    category: category.name,
+    feedHost: new URL(url).hostname,
+  });
+  const plan = planImport(rows, categories, existing as ExistingOpportunity[]);
+  if (plan.inserts.length > 0) {
+    const { error } = await supabase.from("opportunities").insert(plan.inserts.map((r) => ({ ...r, created_by: user.id })));
+    if (error) throw new Error(`Insert failed: ${error.message}`);
+  }
+  for (const { id, fields } of plan.draftUpdates) {
+    const { error } = await supabase.from("opportunities").update(fields).eq("id", id);
+    if (error) throw new Error(`Update failed for ${fields.external_id}: ${error.message}`);
+  }
+  await audit(supabase, user, "opportunities.feed_import", { type: "opportunities" }, {
+    feed_host: new URL(url).hostname,
+    inserted: plan.inserts.length,
+    updated: plan.draftUpdates.length,
+  });
+  redirect(`/admin/import?feed=${plan.inserts.length}-${plan.draftUpdates.length}`);
 }

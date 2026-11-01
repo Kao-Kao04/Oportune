@@ -10,10 +10,10 @@ const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const input = "mt-1 h-12 w-full rounded-[8px] border-2 border-ink bg-card px-3 text-base text-ink";
 
-export function SubmitForm() {
+export function SubmitForm({ initial }: { initial?: Record<string, string> }) {
   const [state, action, pending] = useActionState<SubmitState, FormData>(submitOpportunity, { status: "idle" });
   const errors = state.errors ?? {};
-  const v = state.values ?? {};
+  const v = state.values ?? initial ?? {};
 
   if (state.status === "sent") {
     return (

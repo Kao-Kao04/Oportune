@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { BackLink } from "@/components/back-link";
 import { getCurrentUser } from "@/lib/auth";
 import { formatLongDate, todayInManila } from "@/lib/opportunities/dates";
+import { parsePost } from "@/lib/opportunities/post-text";
 import { SUBMISSION_STATUS_LABELS, type SubmissionStatus } from "@/lib/submissions";
 import { createClient } from "@/lib/supabase/server";
 import { SubmitForm } from "./submit-form";
@@ -16,6 +17,22 @@ export const metadata: Metadata = {
 // Reads the session; let it block on the server.
 export const instant = false;
 
+// "Share to Oportune": Android's share menu opens /submit?title=&text=&url=.
+// Pre-fill the form from the shared post; the student can still edit it.
+function sharedValues(params: Record<string, string | string[] | undefined>): Record<string, string> | undefined {
+  const get = (k: string) => (typeof params[k] === "string" ? (params[k] as string).slice(0, 5000) : "");
+  const text = get("text");
+  const url = get("url");
+  if (!text && !url) return undefined;
+  const post = parsePost(`${get("title")}\n${text}`, new Date(), url || null);
+  return {
+    url: post.postUrl ?? post.applicationUrl ?? "",
+    title: get("title") || post.title || "",
+    deadline: post.deadline ?? "",
+    note: text.slice(0, 1000),
+  };
+}
+
 const STATUS_BG: Record<SubmissionStatus, string> = {
   new: "bg-sky",
   added: "bg-mint",
@@ -23,9 +40,20 @@ const STATUS_BG: Record<SubmissionStatus, string> = {
   rejected: "bg-line",
 };
 
-export default async function SubmitPage() {
+export default async function SubmitPage({ searchParams }: PageProps<"/submit">) {
+  const params = await searchParams;
+  const shared = sharedValues(params);
   const user = await getCurrentUser();
-  if (!user) redirect("/sign-in?next=/submit");
+  if (!user) {
+    // Keep what was shared through sign-in (trimmed: the destination is kept
+    // in a cookie, and cookies max out around 4 KB).
+    const query = new URLSearchParams(
+      Object.entries({ title: params.title, text: params.text, url: params.url })
+        .filter((e): e is [string, string] => typeof e[1] === "string")
+        .map(([k, v]) => [k, v.slice(0, 1000)]),
+    ).toString();
+    redirect(`/sign-in?next=${encodeURIComponent(query ? `/submit?${query}` : "/submit")}`);
+  }
 
   const supabase = await createClient();
   const { data: mine } = await supabase
@@ -47,7 +75,7 @@ export default async function SubmitPage() {
         Send the link. Our team checks the official source before it goes live, so classmates only see real ones.
       </p>
 
-      <SubmitForm />
+      <SubmitForm initial={shared} />
 
       {mine && mine.length > 0 && (
         <section aria-labelledby="mine" className="mt-8">

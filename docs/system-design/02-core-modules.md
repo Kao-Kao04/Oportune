@@ -81,9 +81,11 @@
 ### 4.7 Phase 3 modules (planned, frozen)
 - **Mobile app:** Capacitor wrapper around the web app for Google Play, with native push through Firebase Cloud Messaging alongside web push. The App Store comes after the app has enough native features to pass Apple's review (see [Part 4 §7.9](04-api-and-logic.md#79-mobile-app-phase-3))
 - **Curator inbox:** grow the submissions queue (4.5) into one queue of suggested opportunities from three sources:
-  - **"Share to Oportune":** the installed app appears in the phone's share menu (Web Share Target for the installed web app on Android; share intent / share extension in the mobile app). The student shares a link and optionally adds a note
+  - **"Share to Oportune":** ✅ built for the installed web app (manifest `share_target` → `GET /submit?title=&text=&url=`, pre-filled by `parsePost` in `src/lib/opportunities/post-text.ts`). Still to come: share intent / share extension in the mobile app
   - **"Submit an opportunity" form:** already built as `/submit` (4.6)
-  - **Paste-to-draft** for curators: paste a post's text and the app pulls out dates and links
+  - **Paste-to-draft** for curators: ✅ built as `/admin/paste`; the post becomes the curator's own submission and opens `/admin/opportunities/new?from=<id>`, pre-filled (title, source link, registration link, deadline, other dates in Notes)
+  - **CTFtime import:** ✅ built (`src/lib/opportunities/ctftime.ts`; Admin → Import or `npm run import:ctftime`), through the same `planImport` rules as the spreadsheet
+  - **Calendar feed import:** ✅ built (`src/lib/opportunities/ics-feed.ts`; Admin → Import), only for calendars we run or have permission for; private-network addresses are refused
   - **Connected pages:** a page admin signs in with Facebook or LinkedIn and grants read access to their own page; a daily job pulls that page's new posts
   - Sign-in required to share or submit; rate-limited
   - Stored: link, optional note or post text, submitter, dates. Not stored: names, comments, or photos of other people

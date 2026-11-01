@@ -42,8 +42,10 @@ Three hypotheses. Each has a pass line set **before** we start. These are our ow
 - [ ] **Content:** reach 40+ open, dated listings in hackathons, CTFs, OJT/internships, and tech scholarships. Rewrite every undated summary to say "Rolling: apply any time" or "Usually opens in <month> (based on <year>)".
 - [ ] Turnstile and Resend keys, then deploy on Vercel (the free `*.vercel.app` address is fine for the sprint; a domain can wait).
 - [x] `?ref=` links (the only code allowed): built 2026-10-30. Give each org its own link, e.g. `https://<site>/?ref=gdg-pup`; Admin → Stats shows visitors, returns, views, and clicks per tag.
-- [ ] Message 4–6 campus IT orgs (GDG on Campus, JPCS, AWS Cloud Clubs, MLSA). Ask what they need first ([final decisions §1b](../research/final-decisions.md#1b-updates-agreed-2026-10-26)). Goal: 2 say yes.
-- [ ] Book the first 5 student interviews.
+- [ ] **Org 1 = Microsoft Student Community PUP** (the founder's own org): post the link tagged `?ref=msc-pup`, and use its Luma calendar for a short launch session ("Paano hindi ma-miss ang next hackathon mo") with its own tag, e.g. `?ref=msc-pup-luma`. Import that Luma calendar's events through Admin → Import → calendar feed.
+- [ ] Message 3–5 other campus IT orgs (GDG on Campus, JPCS, AWS Cloud Clubs) for **org 2, one we don't run**. Ask what they need first ([final decisions §1b](../research/final-decisions.md#1b-updates-agreed-2026-10-26)). Goal: 2 say yes.
+- [ ] Book the first 5 student interviews; at least half of all interviews with students outside our own org ([§1f](../research/final-decisions.md#1f-every-source-in-one-system-2026-11-01)).
+- [ ] Sourcing routine: Admin → Import → "Fetch upcoming CTFs" weekly; Share to Oportune from your own phone for every post you see; Admin → Paste a post for the rest.
 
 ### Week 2 (Nov 3 – 9): first org live
 - [ ] Org 1 posts the link with its own `?ref=` tag. Offer the weekly "opportunity drop" post in return.
@@ -135,7 +137,7 @@ Does student news bring students back? Test it by hand before building anything 
 
 ## 7. What we don't do during the sprint
 
-- Build more features (`?ref=` links and "Wins on listings" are the only exceptions), redesign screens, or start the Android app.
+- Build more features (already built as founder's exceptions: `?ref=` links, "Wins on listings", and the sourcing tools in [final decisions §1f](../research/final-decisions.md#1f-every-source-in-one-system-2026-11-01)), redesign screens, or start the Android app.
 - Sell anything, quote prices, or turn on ads.
 - Collect anything about students that they didn't give us themselves (no scraping, ever).
 - Add AI, scraping, or automated collection of any kind.

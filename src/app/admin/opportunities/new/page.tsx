@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireCurator } from "@/lib/auth";
+import { parsePost } from "@/lib/opportunities/post-text";
 import { createClient } from "@/lib/supabase/server";
 import { OpportunityForm, type FormValues } from "../../opportunity-form";
 import { emptyValues, loadCategories } from "../load";
@@ -35,18 +36,29 @@ async function fromSubmission(id: string | null): Promise<FormValues> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("opportunity_submissions")
-    .select("id, url, title, organization, deadline, status")
+    .select("id, url, title, organization, deadline, note, status")
     .eq("id", id)
     .maybeSingle();
   if (!data || data.status !== "new") return values;
+  // Shared or pasted posts carry their text in the note: pull out the
+  // registration link and deadline as a starting point.
+  const post = parsePost(data.note ?? "", new Date(), data.url);
+  const otherDates = post.dates.filter((d) => d !== (data.deadline ?? post.deadline));
   return {
     ...values,
     submission_id: data.id,
-    title: data.title ?? "",
+    title: data.title ?? post.title ?? "",
     organization: data.organization ?? "",
     source_url: data.url,
-    deadline: data.deadline ?? "",
+    application_url: post.applicationUrl && post.applicationUrl !== data.url ? post.applicationUrl : "",
+    deadline: data.deadline ?? post.deadline ?? "",
     needs_check: true,
-    notes: "From a student submission.",
+    notes: [
+      "From a submission.",
+      post.deadline && !data.deadline ? `Deadline read from the post text (${post.deadline}): confirm it.` : "",
+      otherDates.length > 0 ? `Other dates in the post: ${otherDates.join(", ")}.` : "",
+    ]
+      .filter(Boolean)
+      .join(" "),
   };
 }

@@ -100,6 +100,7 @@ Where the MVP stands after M1–M6, and what is left before students can use it.
 
 - Review **Admin → Stats** every 2 weeks against the targets in [idea Part 5 §13](idea/05-validation-metrics-risks.md#13-how-well-know-each-feature-is-needed).
 - Fix reports within 48 hours; clear the Re-check queue weekly.
+- Weekly: Admin → Import → "Fetch upcoming CTFs" and re-import permitted calendar feeds; daily: clear Submissions (shared and pasted posts).
 - Watch `job_runs` (failed runs) and email sending limits.
 - Known small gaps to schedule:
   - Link-preview image uses the default font (title not bold)
@@ -108,7 +109,7 @@ Where the MVP stands after M1–M6, and what is left before students can use it.
 
 ## 8. Next phases
 
-- **Now:** the [30-day validation sprint](validation/06-30-day-validation-sprint.md); no more new features (`?ref=` links and "Wins on listings" are built)
+- **Now:** the [30-day validation sprint](validation/06-30-day-validation-sprint.md); no more new features (`?ref=` links, "Wins on listings", and the sourcing tools are built)
 - **Wins on listings:** built 2026-10-30; keep it if the student stories test works ([final decisions §1e](research/final-decisions.md#1e-student-stories-and-wins-2026-10-30))
 - **After "Continue" (before January 2027):** the small builds in [idea Part 3 §6.2b](idea/03-features-and-workflow.md#62b-next-small-builds-after-the-sprint-passes), one at a time: education level, "Share to Oportune", paste-to-draft, hide thin categories
 - **Phase 3 (July 2027 push):** Android app, "For you" filter, Messenger/Telegram reminders, offline saved listings

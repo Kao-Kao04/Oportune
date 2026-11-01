@@ -41,14 +41,16 @@ Full plan, pass lines, and kill criteria: [validation/06-30-day-validation-sprin
 - [ ] Set Turnstile, Resend, real `VAPID_SUBJECT`; deploy on Vercel (free Hobby plan and `*.vercel.app` address are fine for the sprint)
 - [x] `?ref=` links per org (built 2026-10-30; see Admin → Stats → "Where visitors came from")
 - [x] Code fixes allowed by the freeze (2026-10-30): 18+ enforced on sign-up, save, and reminders; listings never checked now get flagged for re-check; "verified" copy replaced with "checked"; unused env vars removed
-- [ ] Message 4–6 campus IT orgs (e.g. GDG on Campus PUP, MCC PUP, JPCS, AWS Cloud Clubs, MLSA); ask what they need first; goal: 2 yes
+- [ ] Org 1: **Microsoft Student Community PUP** (our own org): post the `?ref=msc-pup` link and run a short launch session on its Luma calendar
+- [ ] Org 2: message 3–5 other campus IT orgs we don't run (GDG on Campus PUP, JPCS, AWS Cloud Clubs); ask what they need first
+- [x] Sourcing tools built 2026-11-01: Share to Oportune, paste-to-draft (Admin → Paste a post), CTFtime import, calendar feed import ([§1f](research/final-decisions.md#1f-every-source-in-one-system-2026-11-01))
 - [ ] Book the first 5 student interviews
 
 ### Week 2 (Nov 3 – 9): first org live
 - [ ] Org 1 posts the link; we give the weekly "opportunity drop" in return
 - [ ] 8 interviews done ([guide](validation/06-30-day-validation-sprint.md#5-interview-guide-itcs-students-segment-f-20-minutes))
 - [ ] First 2 student stories, with written consent ([stories test](validation/06-30-day-validation-sprint.md#6-student-stories-test-no-code-not-a-gate))
-- [ ] Daily 15-minute curation from a fixed list of 20–30 organizer pages (Facebook by linking, Devpost, MLH, CTFtime, Luma, GDG pages, DICT); log the time
+- [ ] Daily 15-minute curation: follow 30–50 organizer pages with notifications on; Share to Oportune (phone) or Admin → Paste a post for each new one; Admin → Import → "Fetch upcoming CTFs" weekly; log the time
 
 ### Week 3 (Nov 10 – 16): second org live
 - [ ] Org 2 posts the link

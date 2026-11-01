@@ -43,7 +43,7 @@ An adversarial review ("court": prosecutor, defense, 12 independent jurors, judg
 
 | Topic | Decision | Why (what the jurors said) |
 |---|---|---|
-| **Feature freeze** | No new features until the [30-day validation sprint](../validation/06-30-day-validation-sprint.md) ends (2026-11-25) and passes. Allowed: security, config, deploy, bug fixes, content, and `?ref=` links so we know which org brought which visitors. **Update 2026-10-30:** the founder also chose to build "Wins on listings" now ([§1e](#1e-student-stories-and-wins-2026-10-30)); nothing else | 8 of 12 jurors: four features were built on 2026-10-25 while the app had never gone live, against our own "don't build more features" rule |
+| **Feature freeze** | No new features until the [30-day validation sprint](../validation/06-30-day-validation-sprint.md) ends (2026-11-25) and passes. Allowed: security, config, deploy, bug fixes, content, and `?ref=` links so we know which org brought which visitors. **Update 2026-10-30:** the founder also chose to build "Wins on listings" now ([§1e](#1e-student-stories-and-wins-2026-10-30)); **2026-11-01:** and the sourcing tools ([§1f](#1f-every-source-in-one-system-2026-11-01)). The jurors' warning still stands: features don't replace users and interviews | 8 of 12 jurors: four features were built on 2026-10-25 while the app had never gone live, against our own "don't build more features" rule |
 | **Phase 2 work** | The four features built 2026-10-25 (filters, calendar, submit, OJT checklist) stay as they are: commit them, don't extend them | Already built; polishing them is more building |
 | **Evidence first** | Until the sprint ends, every week has a number: interviews done, orgs signed, sign-ups, returns. A week with only code is a week lost | 6 of 12 jurors: 1 user (us), 0 interviews |
 | **Promise vs content** | The first screen must keep the promise. Pilot target: **40+ open, dated listings** in hackathons, CTFs, OJT/internships, and tech scholarships. A listing with no fixed date must say why at the start of its summary: "Rolling: apply any time", "Usually opens in <month> (based on <year>)", "Open now; no closing date listed", or "Not announced yet" (done for all 52 on 2026-10-30). Undated listings never fill the top of Browse | 5 of 12 jurors: 52 of 79 listings had no fixed date, so "never miss a deadline" broke on the first screen |
@@ -81,6 +81,24 @@ The founder wants student news in the feed, so students see people like them win
 | **Wins on listings: built 2026-10-30** | The founder chose to build it now instead of after "Continue" (a second exception to the §1c freeze, made knowingly). A signed-in 18+ student sends "we joined / placed / won" from the listing (`/opportunities/<slug>/win`), with a consent checkbox; a curator confirms it on the organizer's or school's own announcement, writes a one-line headline in our own words (Admin → Wins), and it shows on that listing ("🏆 PUP team placed 2nd"). Team or school names only | Keeps Oportune a radar: wins sit on listings and lead back to opportunities. The stories test now also tells us whether anyone uses it |
 | **Not a LinkedIn-style social feed** | No public student profiles or open posting. Revisit only if students send **10+ wins in a month without being asked** | Empty feed with no audience, months of building, heavy moderation, and the trust promise breaks if anyone can post |
 | **What a story may show** | Team or school name always; a student's name or photo only with their written consent (and a parent's if under 18). Prefer linking to the school's or organizer's own announcement | Consent first; official sources first |
+
+## 1f. Every source in one system (2026-11-01)
+
+Goal (founder): every opportunity a student could find on Facebook, Instagram, X, LinkedIn, websites, or calendars is reachable in Oportune. The founder also chose to build all of the sourcing tools now. How each source gets in:
+
+| Source | How it gets in | Status |
+|---|---|---|
+| **Facebook, Instagram, X, LinkedIn posts** (most PH opportunities) | **"Share to Oportune"**: on Android, the installed app is in the share menu; sharing a post opens `/submit` with the link, title, text, and any deadline filled in. iPhone: copy-paste into `/submit`. **Paste-to-draft**: a curator pastes a post's text in Admin → Paste a post and gets a pre-filled listing form (title, registration link, deadline, other dates). Both feed the same submissions queue | ✅ Built 2026-11-01 |
+| **CTFs** | **CTFtime's public API**: Admin → Import → "Fetch upcoming CTFs" (or `npm run import:ctftime`) adds online, open or student-only CTFs in the next 90 days as drafts marked "needs check", skipping ones we already list | ✅ Built 2026-11-01 (6 drafts added on day one) |
+| **Calendars we run or have permission for** (our org's Luma, GDG chapter calendars, Google Calendars) | **Calendar feed import**: Admin → Import → paste the calendar's subscribe link (.ics / webcal). Upcoming events with an event page become drafts marked "needs check". Requires ticking "this is our calendar, or its owner agreed" | ✅ Built 2026-11-01 |
+| **Organizers and orgs** | `/submit` (free); org scouts; weekly "opportunity drop" partnership | ✅ Built |
+| **Pages that connect themselves** (an org's own Facebook Page or Instagram business account) | Official Meta API with the page admin's permission. Needs a Meta developer app, business verification, and App Review, so it can't be finished in code alone | Planned: apply for the Meta app after the sprint; docs in [system design Part 2 §4.7](../system-design/02-core-modules.md#47-phase-3-modules-planned-frozen) |
+| **Devpost, MLH** | Not automated: Devpost's terms (Code of Conduct, §4) forbid scraping, and MLH has no public API. Their events come in through Share to Oportune or paste-to-draft like any post | Decided |
+| **Scraping other people's posts on any platform** | **Never.** Platform terms (Meta, X, LinkedIn), the Data Privacy Act, and our "checked by a person" promise. Being free or non-profit is no exemption | Decided |
+
+Every automated or shared item lands as a draft or submission; **a curator always checks the source and publishes**. Nothing reaches students unchecked.
+
+**Distribution:** the founder is president of the Microsoft Student Community at PUP, so it is pilot org 1, and its Luma calendar can host the launch event (link tagged `?ref=msc-pup`). Because it's our own org, its numbers are friendlier than a stranger's: the sprint counts it, but org 2 must be one we don't run, and at least half of the interviews must be with students outside our own org.
 
 ## 2. Verified facts we rely on
 

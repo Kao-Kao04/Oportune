@@ -81,11 +81,18 @@ npm run import:opportunities -- --apply  # write
 
 Re-running is safe: drafts are updated by their `OPP-###` id, slugs never change, and published listings are never touched.
 
+Upcoming online CTFs from CTFtime's public API, as drafts marked "needs check" (also in Admin → Import):
+
+```bash
+npm run import:ctftime             # preview
+npm run import:ctftime -- --apply  # write
+```
+
 See [Deployment Part 2](docs/deployment/02-configuration-and-local-dev.md) for the full local workflow.
 
 ### Admin panel
 
-Curators and admins sign in at `/sign-in` with a one-time email link, then use `/admin` (listings, re-check queue, reports, student submissions, CSV import with diffs, users & roles). Tag each listing's region, course group, and year level in its form so the Browse filters work; leave a group empty when it's open to everyone.
+Curators and admins sign in at `/sign-in` with a one-time email link, then use `/admin` (listings, re-check queue, reports, student submissions, wins, paste a post, imports: CSV with diffs, CTFtime, calendar feeds; users & roles). Tag each listing's region, course group, and year level in its form so the Browse filters work; leave a group empty when it's open to everyone.
 
 Create the first admin once (the account must have signed in at least once):
 

@@ -4,7 +4,7 @@
 
 ## ✅ What to do with this file
 
-- [ ] **Feature freeze until the [30-day sprint](../validation/06-30-day-validation-sprint.md) passes (2026-11-25).** §6.1 and §6.2 are built; nothing else in §6.2b or later gets built before then. Built anyway: `?ref=` links (needed to measure the sprint) and "Wins on listings" (founder's call, 2026-10-30).
+- [ ] **Feature freeze until the [30-day sprint](../validation/06-30-day-validation-sprint.md) passes (2026-11-25).** §6.1 and §6.2 are built; nothing else in §6.2b or later gets built before then. Built anyway: `?ref=` links (needed to measure the sprint), "Wins on listings" (founder's call, 2026-10-30), and the sourcing tools: Share to Oportune, paste-to-draft, CTFtime and calendar feed imports (founder's call, 2026-11-01).
 - [ ] Don't start §6.2b until the sprint says "Continue"; then build one item at a time, in the order students asked for them.
 - [ ] Don't start **Phase 3** (§6.3) until Phase 2 is live.
 - [ ] Don't build anything in **Not now** (§6.4).
@@ -49,8 +49,10 @@ Agreed 2026-10-26 ([final decisions §1b](../research/final-decisions.md#1b-upda
 |---|---|---|
 | 0 | **Wins on listings** ✅ built 2026-10-30 (founder's call, before the sprint ends) | Signed-in 18+ students send "we joined / placed / won" from the listing page, with consent; a curator confirms it and writes the headline (Admin → Wins); it shows under "Students who joined". Not a social feed ([final decisions §1e](../research/final-decisions.md#1e-student-stories-and-wins-2026-10-30)) |
 | 1 | **Education level** | JHS / SHS / College / Graduate in the profile, listing tags, and Browse filters, so later rings need content, not code |
-| 2 | **"Share to Oportune"** (moved up from Phase 3) | From the phone's share menu (installed web app, Android). Opens `/submit` with the link and text filled in. iPhone: copy-paste into `/submit` |
-| 3 | **Paste-to-draft** for curators | Paste the post text; the app pulls out dates and registration links into a draft. The curator still writes the summary and checks the source |
+| 2 | **"Share to Oportune"** ✅ built 2026-11-01 | From the phone's share menu (installed web app, Android). Opens `/submit` with the link, title, text, and any deadline filled in. iPhone: copy-paste into `/submit` ([§1f](../research/final-decisions.md#1f-every-source-in-one-system-2026-11-01)) |
+| 3 | **Paste-to-draft** ✅ built 2026-11-01 | Admin → Paste a post: paste the post text and link; the app fills a new listing form with the title, registration link, deadline, and other dates. The curator still checks the source and writes the summary |
+| 3b | **CTFtime import** ✅ built 2026-11-01 | Admin → Import → "Fetch upcoming CTFs" or `npm run import:ctftime`: online open/student CTFs for the next 90 days as needs-check drafts |
+| 3c | **Calendar feed import** ✅ built 2026-11-01 | Admin → Import: a calendar's .ics/webcal link (our org's Luma, permitted GDG/Google calendars) → upcoming events as needs-check drafts |
 | 4 | **`?ref=` links** ✅ built 2026-10-30 | Shows which org or post brought which visitors, and how many came back (anonymous counts only; Admin → Stats) |
 | 5 | **Hide thin categories** | Entry-level jobs, leadership, hardware grants stay hidden until they have enough listings |
 | Later | **"Remind me when it opens"** | On TBA/closed listings; most programs repeat yearly. Until it exists, curators write "Usually opens in <month> (based on <year>)" in the summary |
