@@ -18,7 +18,9 @@ export function ChipRow({
 
   useEffect(() => {
     const row = ref.current;
-    const active = row?.querySelector<HTMLElement>('[aria-current="page"]');
+    // The last selected chip: in Browse, "Closing soon" can be on together
+    // with a category further along the row.
+    const active = [...(row?.querySelectorAll<HTMLElement>('[aria-current="page"]') ?? [])].at(-1);
     if (!row || !active) return;
     const left = active.offsetLeft - row.offsetLeft;
     if (left < row.scrollLeft || left + active.offsetWidth > row.scrollLeft + row.clientWidth) {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { categoryBg, categoryLabel } from "@/lib/opportunities/categories";
 import { deadlineInfo, type DeadlineTone } from "@/lib/opportunities/dates";
 import { deliveryModeLabel, type Listing } from "@/lib/opportunities/listing";
+import { CategoryIcon } from "./category-icon";
 import { OfficialBadge } from "./official-badge";
 
 export const TONE_TEXT: Record<DeadlineTone, string> = {
@@ -67,7 +68,10 @@ export function ListingRow({
           <h3 className="line-clamp-3 font-display text-[17px] font-extrabold leading-snug text-ink">{listing.title}</h3>
           <p className="mt-0.5 line-clamp-1 text-sm text-muted">{listing.organization}</p>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
-            <span className="tag bg-card">{categoryLabel(listing.categorySlug, listing.categoryName)}</span>
+            <span className="tag bg-card">
+              <CategoryIcon slug={listing.categorySlug} size={12} strokeWidth={2.5} />
+              {categoryLabel(listing.categorySlug, listing.categoryName)}
+            </span>
             {delivery && <span className="tag bg-card">{delivery}</span>}
             <OfficialBadge trust={listing.source_trust} />
           </div>

@@ -7,14 +7,15 @@ import { ClosingStrip } from "@/components/closing-strip";
 import { RememberBrowse } from "@/components/back-link";
 import { AudienceForm } from "@/components/audience-form";
 import { ChipRow } from "@/components/chip-row";
-import { FeedPost } from "@/components/feed-post";
 import { FilterLink } from "@/components/filter-link";
+import { ListingRow } from "@/components/listing-row";
+import { SaveButton } from "@/components/save-button";
 import { SearchFocus } from "@/components/search-focus";
 import { WelcomeNote } from "@/components/welcome-note";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { WELCOME_COOKIE } from "@/lib/welcome";
-import { audienceFilterCount, browseHref, readFilters, type Filters, type View } from "@/lib/browse-filters";
+import { audienceFilterCount, browseHref, readFilters, type Filters } from "@/lib/browse-filters";
 import { fitsAudience, REGIONS, regionLabel } from "@/lib/opportunities/audience";
 import { COURSE_GROUPS, courseGroupLabel, YEAR_LEVELS, yearLevelLabel } from "@/lib/profile";
 import { categoryBg, categoryChipLabel } from "@/lib/opportunities/categories";
@@ -73,32 +74,30 @@ async function Browse({ filters }: { filters: Filters }) {
       <RememberBrowse />
       <SearchFocus />
       <SearchForm filters={filters} />
-      {!filters.q && <SearchSuggestions filters={filters} />}
-      <Tabs filters={filters} />
-      <AudienceFilters filters={filters} profile={viewer.profile} />
       <CategoryChips filters={filters} categories={categories} />
+      <AudienceFilters filters={filters} profile={viewer.profile} />
       <Results filters={filters} listings={visible} today={today} savedIds={savedIds} />
       <SubmitCta />
     </>
   );
 }
 
-// Big friendly headline at the top of Browse.
+// Short headline, so the first listings fit on a phone's first screen.
 function Hero({ openCount }: { openCount: number }) {
   return (
-    <section className="px-4 pt-6">
-      <p className="tag bg-lime">
-        <span className="tabular">{openCount}</span> open now · free for students
-      </p>
-      <h1 className="mt-3 font-display text-[34px] font-extrabold leading-[1.05] tracking-tight text-ink">
+    <section className="px-4 pt-4">
+      <h1 className="font-display text-[28px] font-extrabold leading-[1.1] tracking-tight text-ink">
         Huwag ma-late sa next{" "}
         <span className="relative inline-block">
-          <span aria-hidden="true" className="absolute inset-x-0 bottom-1 h-3 -rotate-1 rounded-sm bg-sun" />
+          <span aria-hidden="true" className="absolute inset-x-0 bottom-0.5 h-2.5 -rotate-1 rounded-sm bg-sun" />
           <span className="relative">opportunity</span>
         </span>{" "}
         mo.
       </h1>
-      <p className="mt-2 text-muted">Hackathons, CTFs, internships, and scholarships, sorted by deadline. Each one checked by a person.</p>
+      <p className="mt-1.5 text-sm text-muted">
+        <span className="tabular font-bold text-ink">{openCount} open now</span>, sorted by deadline. Each one checked by a
+        person.
+      </p>
     </section>
   );
 }
@@ -124,7 +123,7 @@ function SearchForm({ filters }: { filters: Filters }) {
           name="q"
           type="search"
           defaultValue={filters.q}
-          placeholder="Search DOST, OJT, hackathon…"
+          placeholder="Search DOST, OJT, CTF…"
           className="h-12 min-w-0 flex-1 scroll-mt-24 bg-transparent text-base text-ink outline-none placeholder:text-muted"
           style={{ border: 0 }}
           enterKeyHint="search"
@@ -137,58 +136,29 @@ function SearchForm({ filters }: { filters: Filters }) {
   );
 }
 
-// Common searches, so students don't have to type on a small keyboard.
-const SUGGESTIONS = ["DOST", "CHED", "OJT", "CTF", "TESDA"];
-
-function SearchSuggestions({ filters }: { filters: Filters }) {
-  return (
-    <ChipRow label="Popular searches" className="items-center px-4 pb-1 pt-3">
-      <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-muted">Try</span>
-      {SUGGESTIONS.map((q) => (
-        <FilterLink
-          key={q}
-          href={browseHref(filters, { q })}
-          className="inline-flex min-h-11 shrink-0 items-center rounded-pill border-2 border-dashed border-ink bg-card px-3 text-sm font-bold text-ink hover:bg-sun"
-        >
-          #{q}
-        </FilterLink>
-      ))}
-    </ChipRow>
-  );
-}
-
-function Tabs({ filters }: { filters: Filters }) {
-  const tabs: { view: View; label: string }[] = [
-    { view: "all", label: "All" },
-    { view: "closing-soon", label: "Closing soon" },
-  ];
-  return (
-    <nav aria-label="Views" className="mx-4 mt-4 grid grid-cols-2 rounded-ui border-2 border-ink bg-card p-1">
-      {tabs.map((tab) => {
-        const active = filters.view === tab.view;
-        return (
-          <FilterLink
-            key={tab.view}
-            href={browseHref(filters, { view: tab.view })}
-            current={active}
-            className={`flex min-h-11 items-center justify-center rounded-[8px] text-sm font-bold ${
-              active ? "bg-ink text-white" : "text-ink hover:bg-paper"
-            }`}
-          >
-            {tab.label}
-          </FilterLink>
-        );
-      })}
-    </nav>
-  );
-}
-
+// One row: "Closing soon" (a toggle that works with any category), then the
+// categories. Replaces separate tabs and suggestion chips to save height.
 function CategoryChips({ filters, categories }: { filters: Filters; categories: Category[] }) {
   const chips = [{ slug: null as string | null, label: "All" }].concat(
     categories.map((c) => ({ slug: c.slug, label: categoryChipLabel(c.slug, c.name) })),
   );
+  const soon = filters.view === "closing-soon";
   return (
-    <ChipRow label="Categories" className="px-4 pb-4 pt-3">
+    <ChipRow label="Categories" className="px-4 pt-3">
+      <FilterLink
+        href={browseHref(filters, { view: soon ? "all" : "closing-soon" })}
+        current={soon}
+        className={`inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-pill border-2 border-ink px-4 text-sm font-bold text-ink ${
+          soon ? "bg-tomato shadow-[2px_2px_0_0_#111]" : "bg-card hover:bg-paper"
+        }`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+          <circle cx="12" cy="13" r="8" />
+          <path d="M12 9v4l2.5 2M9 2h6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Closing soon
+      </FilterLink>
+      <span aria-hidden="true" className="my-2 w-0.5 shrink-0 rounded-full bg-line" />
       {chips.map((chip) => {
         const active = filters.category === chip.slug;
         return (
@@ -221,7 +191,7 @@ function Results({
 }) {
   if (listings.length === 0) {
     return (
-      <div className="sticker mx-4 px-4 py-10 text-center">
+      <div className="sticker mx-4 mt-4 px-4 py-10 text-center">
         <p className="font-display text-xl font-extrabold text-ink">
           {filters.q ? `Walang "${filters.q}" pa.` : "Wala pa dito ngayon."}
         </p>
@@ -242,11 +212,16 @@ function Results({
     );
   }
 
-  const count = (
-    <p className="tabular px-4 pb-2 text-sm font-semibold text-muted">
+  // Unfiltered, the hero already says how many are open.
+  const filtered = Boolean(filters.q || filters.category || filters.view !== "all" || audienceFilterCount(filters) > 0);
+  const count = filtered ? (
+    <p className="tabular px-4 pb-2 pt-4 text-sm font-semibold text-muted">
       {listings.length} {listings.length === 1 ? "opportunity" : "opportunities"}
+      {filters.view === "closing-soon" ? " closing soon" : ""}
       {filters.q ? ` for "${filters.q}"` : ""}
     </p>
+  ) : (
+    <div className="pt-3" />
   );
 
   // Search results keep their relevance order; everything else is grouped by deadline.
@@ -254,11 +229,7 @@ function Results({
     return (
       <>
         {count}
-        <div className="flex flex-col gap-5 px-4">
-          {listings.map((l) => (
-            <FeedPost key={l.id} listing={l} today={today} saved={savedIds.has(l.id)} />
-          ))}
-        </div>
+        <Rows listings={listings} today={today} savedIds={savedIds} />
       </>
     );
   }
@@ -278,14 +249,28 @@ function Results({
             <h2 id={`group-${group.label}`} className="px-4 pb-2 font-display text-lg font-extrabold text-ink">
               {group.label}
             </h2>
-            <div className="flex flex-col gap-5 px-4">
-              {group.listings.map((l) => (
-                <FeedPost key={l.id} listing={l} today={today} saved={savedIds.has(l.id)} />
-              ))}
-            </div>
+            <Rows listings={group.listings} today={today} savedIds={savedIds} />
           </section>
         ))}
     </>
+  );
+}
+
+// Compact cards (4–5 per phone screen) with a Save button on each.
+function Rows({ listings, today, savedIds }: { listings: Listing[]; today: string; savedIds: Set<string> }) {
+  return (
+    <ul className="flex flex-col gap-3 px-4">
+      {listings.map((l) => (
+        <ListingRow
+          key={l.id}
+          listing={l}
+          today={today}
+          trailing={
+            <SaveButton opportunityId={l.id} initialSaved={savedIds.has(l.id)} back={`/opportunities/${l.slug}`} compact />
+          }
+        />
+      ))}
+    </ul>
   );
 }
 
@@ -355,15 +340,13 @@ function AudienceFilters({ filters, profile }: { filters: Filters; profile: View
   return (
     <div className="px-4 pt-3">
       <details className="sticker group">
-        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-3 font-bold text-ink [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 px-3 font-bold text-ink [&::-webkit-details-marker]:hidden">
           <span className="flex min-w-0 items-center gap-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true" className="shrink-0">
               <path d="M4 6h16M7 12h10M10 18h4" strokeLinecap="round" />
             </svg>
-            <span className="flex min-w-0 flex-col py-1 leading-tight">
-              <span className="whitespace-nowrap">Para sa&apos;yo ba?</span>
-              <span className="text-xs font-semibold text-muted">Filter by region, course, year</span>
-            </span>
+            <span className="whitespace-nowrap">Para sa&apos;yo ba?</span>
+            <span className="truncate text-xs font-semibold text-muted">Region, course, year</span>
           </span>
           <span className="flex shrink-0 items-center gap-2">
             {count > 0 && <span className="tag tabular whitespace-nowrap bg-sun">{count} on</span>}

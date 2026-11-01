@@ -17,8 +17,8 @@ export function WelcomeNote() {
   return (
     <div className="sticker mx-4 mt-4 flex items-start gap-2 bg-sky py-2 pl-3 pr-1">
       <p className="flex-1 py-1 text-sm text-ink">
-        <span className="font-bold">Bago ka dito?</span> Browse without an account. Save a listing and we&apos;ll remind you
-        before it closes. Every listing is checked by our team.
+        <span className="font-bold">Bago ka dito?</span> No account needed. Save a listing and we&apos;ll remind you before
+        it closes.
       </p>
       <button
         type="button"
