@@ -19,6 +19,7 @@ Free for everyone, always: students, organizers, and schools never pay. Ads, in 
 │   ├── validation.md        # Validation kit + the 30-day sprint → docs/validation/
 │   ├── action-plan.md       # Status + what we do next (start here)
 │   ├── launch-checklist.md  # What is left before launch
+│   ├── curator-guide.md     # How scouts and curators add and check listings
 │   ├── pitch/               # Pitch deck and video prompts (fill with real sprint numbers)
 │   └── research/            # Deep-research prompt, reports, and final-decisions.md (what we build next)
 ├── data/

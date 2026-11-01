@@ -50,7 +50,8 @@ Full plan, pass lines, and kill criteria: [validation/06-30-day-validation-sprin
 - [ ] Org 1 posts the link; we give the weekly "opportunity drop" in return
 - [ ] 8 interviews done ([guide](validation/06-30-day-validation-sprint.md#5-interview-guide-itcs-students-segment-f-20-minutes))
 - [ ] First 2 student stories, with written consent ([stories test](validation/06-30-day-validation-sprint.md#6-student-stories-test-no-code-not-a-gate))
-- [ ] Daily 15-minute curation: follow 30–50 organizer pages with notifications on; Share to Oportune (phone) or Admin → Paste a post for each new one; Admin → Import → "Fetch upcoming CTFs" weekly; log the time
+- [ ] Daily 15-minute curation: follow 30–50 organizer pages with notifications on; Share to Oportune (phone) or Admin → Paste a post for each new one; Admin → Import → "Fetch upcoming CTFs" weekly; log the time ([curator guide](curator-guide.md))
+- [ ] Pick 2–3 scouts (one per pilot org); make the trusted ones curators in Admin → Users & roles; have them read the [curator guide](curator-guide.md)
 
 ### Week 3 (Nov 10 – 16): second org live
 - [ ] Org 2 posts the link

@@ -101,6 +101,7 @@ Where the MVP stands after M1–M6, and what is left before students can use it.
 
 - Review **Admin → Stats** every 2 weeks against the targets in [idea Part 5 §13](idea/05-validation-metrics-risks.md#13-how-well-know-each-feature-is-needed).
 - Fix reports within 48 hours (organizer fix or removal requests too); clear the Re-check queue weekly.
+- Every curator and scout reads the [curator guide](curator-guide.md) before their first listing.
 - Before publishing any shared or pasted post, go through "Before you publish" (Admin → Submissions / Paste a post): public only, organizer's own source, own words, no people's details, no uploaded posters.
 - Weekly: Admin → Import → "Fetch upcoming CTFs" and re-import permitted calendar feeds; daily: clear Submissions (shared and pasted posts).
 - Watch `job_runs` (failed runs) and email sending limits.
