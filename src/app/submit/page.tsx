@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BackLink } from "@/components/back-link";
+import { BottomNav } from "@/components/bottom-nav";
 import { getCurrentUser } from "@/lib/auth";
 import { formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { parsePost } from "@/lib/opportunities/post-text";
@@ -107,6 +108,7 @@ export default async function SubmitPage({ searchParams }: PageProps<"/submit">)
           </ul>
         </section>
       )}
+      <BottomNav active="/submit" />
     </main>
   );
 }

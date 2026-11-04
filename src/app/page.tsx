@@ -144,7 +144,8 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
   );
   const soon = filters.view === "closing-soon";
   return (
-    <ChipRow label="Categories" className="px-4 pt-3">
+    // Sticks under the header, so switching category never needs scrolling back up.
+    <ChipRow label="Categories" className="sticky top-[66px] z-10 bg-paper px-4 pb-2 pt-3">
       <FilterLink
         href={browseHref(filters, { view: soon ? "all" : "closing-soon" })}
         current={soon}
