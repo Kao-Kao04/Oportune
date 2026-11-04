@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { useActionState } from "react";
+import { WinIcon } from "@/components/win-icon";
 import { WIN_RESULTS } from "@/lib/wins";
 import { submitWin, type WinState } from "./actions";
 
@@ -56,7 +57,7 @@ export function WinForm({ opportunityId, slug }: { opportunityId: string; slug: 
                 defaultChecked={(v.result ?? "won") === r.value}
                 className="h-5 w-5"
               />
-              <span aria-hidden="true">{r.emoji}</span> {r.label}
+              <WinIcon result={r.value} /> {r.label}
             </label>
           ))}
         </div>

@@ -16,7 +16,7 @@ import { shareMessage } from "@/lib/opportunities/share";
 import { SaveButton } from "@/components/save-button";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { winEmoji } from "@/lib/wins";
+import { WinIcon } from "@/components/win-icon";
 import { ReportForm } from "./report-form";
 
 export async function generateMetadata({ params }: PageProps<"/opportunities/[slug]">): Promise<Metadata> {
@@ -105,7 +105,8 @@ async function OpportunityDetail({
 
         <Section title="What you need" body={listing.requirements} />
 
-        <Wins wins={wins} slug={listing.slug} />
+        {/* Before a dated deadline nobody has joined yet, so don't ask. */}
+        <Wins wins={wins} slug={listing.slug} ask={closed || listing.deadline_type !== "date" || wins.length > 0} />
 
         <section aria-labelledby="trust" className="sticker mt-6 p-4">
           <h2 id="trust" className="flex items-center gap-2 font-display text-lg font-extrabold text-ink">
@@ -266,7 +267,8 @@ function AtAGlance({ listing, closed }: { listing: Listing; closed: boolean }) {
 }
 
 // Checked "we joined / we won" notes: proof that students like them get in.
-function Wins({ wins, slug }: { wins: Awaited<ReturnType<typeof getListingWins>>; slug: string }) {
+function Wins({ wins, slug, ask }: { wins: Awaited<ReturnType<typeof getListingWins>>; slug: string; ask: boolean }) {
+  if (!ask) return null;
   return (
     <section aria-labelledby="wins" className="mt-6">
       {wins.length > 0 && (
@@ -277,8 +279,8 @@ function Wins({ wins, slug }: { wins: Awaited<ReturnType<typeof getListingWins>>
           <ul className="sticker mt-2 divide-y-2 divide-dashed divide-line">
             {wins.map((w) => (
               <li key={w.id} className="flex items-start gap-3 px-4 py-3">
-                <span aria-hidden="true" className="text-xl leading-none">
-                  {winEmoji(w.result)}
+                <span className="mt-0.5">
+                  <WinIcon result={w.result} />
                 </span>
                 <p className="leading-relaxed text-ink">
                   {w.headline}

@@ -3,7 +3,8 @@ import { requireCurator } from "@/lib/auth";
 import { formatLongDate, todayInManila } from "@/lib/opportunities/dates";
 import { sourceHost } from "@/lib/opportunities/listing";
 import { createClient } from "@/lib/supabase/server";
-import { suggestHeadline, WIN_RESULTS, WIN_STATUS_LABELS, winEmoji, type WinStatus } from "@/lib/wins";
+import { WinIcon } from "@/components/win-icon";
+import { suggestHeadline, WIN_RESULTS, WIN_STATUS_LABELS, type WinStatus } from "@/lib/wins";
 import { reviewWin } from "../actions";
 
 export const instant = false;
@@ -48,8 +49,8 @@ export default async function WinsPage({ searchParams }: PageProps<"/admin/wins"
           {wins.map((w) => (
             <li key={w.id} className="border-b border-line py-3">
               <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
-                <span className="font-semibold text-ink">
-                  {winEmoji(w.result)} {WIN_RESULTS.find((r) => r.value === w.result)?.label ?? w.result}
+                <span className="inline-flex items-center gap-1 font-semibold text-ink">
+                  <WinIcon result={w.result} size={16} /> {WIN_RESULTS.find((r) => r.value === w.result)?.label ?? w.result}
                 </span>
                 <span className="tabular">{formatLongDate(todayInManila(new Date(w.created_at)))}</span>
                 {w.status !== "new" && <span>· {WIN_STATUS_LABELS[w.status as WinStatus]}</span>}

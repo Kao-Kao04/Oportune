@@ -3,10 +3,10 @@
 // and writes the one-line headline the public sees. Not a social feed.
 
 export const WIN_RESULTS = [
-  { value: "won", label: "We won", emoji: "🏆" },
-  { value: "placed", label: "We placed (2nd, 3rd, special award)", emoji: "🥈" },
-  { value: "finalist", label: "We made the finals", emoji: "⭐" },
-  { value: "joined", label: "We joined", emoji: "🙌" },
+  { value: "won", label: "We won" },
+  { value: "placed", label: "We placed (2nd, 3rd, special award)" },
+  { value: "finalist", label: "We made the finals" },
+  { value: "joined", label: "We joined" },
 ] as const;
 
 export type WinResult = (typeof WIN_RESULTS)[number]["value"];
@@ -19,10 +19,6 @@ export const WIN_STATUS_LABELS: Record<WinStatus, string> = {
   published: "On the listing",
   rejected: "Not added",
 };
-
-export function winEmoji(result: string): string {
-  return WIN_RESULTS.find((r) => r.value === result)?.emoji ?? "🏆";
-}
 
 export type WinFields = {
   result: WinResult;

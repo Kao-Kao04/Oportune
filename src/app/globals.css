@@ -140,6 +140,12 @@ textarea {
   border-color: var(--color-field);
 }
 
+/* Ticked radios and checkboxes in our ink color, not the browser's blue. */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--color-ink);
+}
+
 /* Tailwind v4 resets buttons to the default cursor. */
 button:not(:disabled),
 [role="button"]:not([aria-disabled="true"]),
