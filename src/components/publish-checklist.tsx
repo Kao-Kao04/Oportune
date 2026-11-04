@@ -9,7 +9,7 @@ const CHECKS = [
 
 export function PublishChecklist() {
   return (
-    <details className="mt-3 rounded-ui border border-line bg-white px-3 py-2 text-sm text-ink">
+    <details className="mt-3 rounded-ui border border-line bg-card px-3 py-2 text-sm text-ink">
       <summary className="cursor-pointer font-semibold">Before you publish</summary>
       <ul className="mt-2 list-disc pl-5 text-muted">
         {CHECKS.map((c) => (

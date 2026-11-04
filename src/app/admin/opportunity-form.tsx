@@ -40,15 +40,18 @@ function tags(value: string[] | string | undefined): string[] {
   return value ? value.split(",") : [];
 }
 
-const input = "h-11 w-full rounded-ui border border-line bg-white px-3 text-base";
-const textarea = "w-full rounded-ui border border-line bg-white px-3 py-2 text-base";
+const input = "h-11 w-full rounded-ui border border-line bg-card px-3 text-base";
+const textarea = "w-full rounded-ui border border-line bg-card px-3 py-2 text-base";
 
 export function OpportunityForm({
   values,
   categories,
+  queue = false,
 }: {
   values: FormValues;
   categories: { id: string; name: string }[];
+  /** Opened from the Re-check queue: publishing goes on to the next item. */
+  queue?: boolean;
 }) {
   const [state, action, pending] = useActionState<SaveState, FormData>(saveOpportunity, {});
   const [deadlineType, setDeadlineType] = useState(values.deadline_type);
@@ -66,6 +69,7 @@ export function OpportunityForm({
     <form action={action} className="flex flex-col gap-5">
       {values.id && <input type="hidden" name="id" value={values.id} />}
       {values.submission_id && <input type="hidden" name="submission_id" value={values.submission_id} />}
+      {queue && <input type="hidden" name="then" value="next" />}
 
       {state.message && (
         <p role="alert" className="rounded-ui bg-urgent/10 px-3 py-2 text-sm text-urgent">
@@ -117,7 +121,7 @@ export function OpportunityForm({
         <textarea name="requirements" rows={3} defaultValue={v.requirements} className={textarea} />
       </Field>
 
-      <fieldset className="rounded-ui border border-line bg-white p-3">
+      <fieldset className="rounded-ui border border-line bg-card p-3">
         <legend className="px-1 text-sm font-semibold text-ink">Open to (for the Browse filters)</legend>
         <p className="text-xs text-muted">Leave a group empty if it&apos;s open to everyone. Tick only what the official source says.</p>
         <TagGroup label="Year level" name="year_levels" options={YEAR_LEVELS.map((y) => ({ value: y.value, label: yearLevelLabel(y.value) ?? y.label }))} checked={tags(v.year_levels)} />
@@ -206,7 +210,7 @@ export function OpportunityForm({
         </Field>
       </div>
 
-      <label className="flex items-start gap-3 rounded-ui border border-line bg-white p-3">
+      <label className="flex items-start gap-3 rounded-ui border border-line bg-card p-3">
         <input
           type="checkbox"
           name="needs_check"
@@ -232,7 +236,7 @@ export function OpportunityForm({
           name="intent"
           value="save"
           disabled={pending}
-          className="h-11 flex-1 rounded-ui border border-ink/20 bg-white px-4 font-semibold text-ink disabled:opacity-60"
+          className="h-11 flex-1 rounded-ui border border-ink/20 bg-card px-4 font-semibold text-ink disabled:opacity-60"
         >
           {isPublished ? "Save changes" : values.id ? "Save" : "Save draft"}
         </button>
@@ -243,9 +247,9 @@ export function OpportunityForm({
             value="publish"
             disabled={pending || needsCheck}
             title={needsCheck ? "Turn off “Needs check” first" : undefined}
-            className="h-11 flex-1 rounded-ui bg-teal px-4 font-semibold text-white hover:bg-teal-dark disabled:opacity-50"
+            className="h-11 flex-1 rounded-ui bg-teal px-4 font-semibold text-paper hover:bg-teal-dark disabled:opacity-50"
           >
-            {values.status === "expired" ? "Save and republish" : "Publish"}
+            {values.status === "expired" ? "Save and republish" : queue ? "Publish & next" : "Publish"}
           </button>
         )}
       </div>

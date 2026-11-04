@@ -10,11 +10,11 @@ export function ImportFlow() {
 
   if (state.step === "done") {
     return (
-      <div className="mt-4 rounded-ui border border-line bg-white p-4">
+      <div className="mt-4 rounded-ui border border-line bg-card p-4">
         <p className="font-semibold text-official">Import finished</p>
         <p className="mt-1 text-sm text-ink">{state.summary}</p>
         <form action={action} className="mt-3">
-          <button name="step" value="cancel" className={`${button} border border-line bg-white text-ink`}>
+          <button name="step" value="cancel" className={`${button} border border-line bg-card text-ink`}>
             Import another file
           </button>
         </form>
@@ -30,12 +30,12 @@ export function ImportFlow() {
             {state.error}
           </p>
         )}
-        <label className="block rounded-ui border border-dashed border-muted bg-white p-6 text-center">
+        <label className="block rounded-ui border border-dashed border-muted bg-card p-6 text-center">
           <span className="block font-semibold text-ink">Choose the opportunities CSV</span>
           <span className="mt-1 block text-sm text-muted">Same columns as data/opportunities.csv</span>
           <input name="file" type="file" accept=".csv,text/csv" required className="mt-3 text-sm" />
         </label>
-        <button name="step" value="preview" disabled={pending} className={`${button} bg-teal text-white`}>
+        <button name="step" value="preview" disabled={pending} className={`${button} bg-teal text-paper`}>
           {pending ? "Checking…" : "Preview import"}
         </button>
       </form>
@@ -111,10 +111,10 @@ export function ImportFlow() {
       )}
 
       <div className="flex gap-3">
-        <button name="step" value="cancel" disabled={pending} className={`${button} border border-line bg-white text-ink`}>
+        <button name="step" value="cancel" disabled={pending} className={`${button} border border-line bg-card text-ink`}>
           Cancel
         </button>
-        <button name="step" value="apply" disabled={pending} className={`${button} flex-1 bg-teal text-white`}>
+        <button name="step" value="apply" disabled={pending} className={`${button} flex-1 bg-teal text-paper`}>
           {pending ? "Importing…" : nothing ? "Apply ticked changes" : "Import"}
         </button>
       </div>

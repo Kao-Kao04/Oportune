@@ -39,8 +39,53 @@
   --radius-ui: 12px;
   --radius-pill: 999px;
 
-  --shadow-pop: 3px 3px 0 0 #111111;
-  --shadow-pop-lg: 5px 5px 0 0 #111111;
+  --shadow-pop: 3px 3px 0 0 var(--color-shadow);
+  --shadow-pop-lg: 5px 5px 0 0 var(--color-shadow);
+}
+
+:root {
+  --color-shadow: #111111;
+  color-scheme: light;
+}
+
+/* Dark mode follows the phone's setting. Same sticker look: dark paper,
+   light ink, and the pop colors stay bright. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #17150f;
+    --color-card: #221f19;
+    --color-ink: #f5eedf;
+    --color-muted: #b9b0a0;
+    --color-line: #3b362c;
+    --color-field: #857d70;
+    --color-teal: #8fb1ff;
+    --color-teal-dark: #b8ceff;
+    --color-urgent: #ff8f82;
+    --color-soon: #f0c35a;
+    --color-official: #7fdca6;
+    --color-closed: #a39d91;
+    --color-shadow: #4a4438;
+    color-scheme: dark;
+  }
+}
+
+/* Pop-colored surfaces always use the light palette inside, so text on
+   sun, tomato, sky... stays dark ink in both themes. */
+@layer base {
+  /* In the base layer, so a text-* utility on the same element still wins. */
+  .bg-sun, .bg-tomato, .bg-sky, .bg-mint, .bg-lilac, .bg-pink, .bg-orange, .bg-lime,
+  .btn-pop, .hover\:bg-sun:hover, .has-checked\:bg-sun:has(:checked) {
+    --color-ink: #111111;
+    --color-muted: #3f3b35;
+    --color-card: #ffffff;
+    --color-paper: #fff6e5;
+    --color-line: #e8dcc4;
+    --color-teal: #1746d1;
+    --color-urgent: #c42a1f;
+    --color-soon: #8a5a00;
+    --color-official: #1d6b3a;
+    color: var(--color-ink);
+  }
 }
 
 html {

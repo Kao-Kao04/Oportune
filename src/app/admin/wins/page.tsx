@@ -81,17 +81,17 @@ export default async function WinsPage({ searchParams }: PageProps<"/admin/wins"
                         name="headline"
                         maxLength={140}
                         defaultValue={suggestHeadline(w)}
-                        className="mt-1 rounded-ui border border-line bg-white px-2 py-1.5 text-sm text-ink"
+                        className="mt-1 rounded-ui border border-line bg-card px-2 py-1.5 text-sm text-ink"
                       />
                     </label>
-                    <button type="submit" className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-white">
+                    <button type="submit" className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-paper">
                       Publish
                     </button>
                   </form>
                   <form action={reviewWin}>
                     <input type="hidden" name="id" value={w.id} />
                     <input type="hidden" name="status" value="rejected" />
-                    <button type="submit" className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm">
+                    <button type="submit" className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm">
                       Can&apos;t confirm / not real
                     </button>
                   </form>

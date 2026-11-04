@@ -34,13 +34,13 @@ export default async function AdminListingsPage({ searchParams }: PageProps<"/ad
       {error && <p className="mb-3 rounded-ui bg-urgent/10 px-3 py-2 text-sm text-urgent">{error}</p>}
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-xl font-bold text-ink">Listings</h1>
-        <Link href="/admin/opportunities/new" className="rounded-ui bg-teal px-3 py-2 text-sm font-semibold text-white">
+        <Link href="/admin/opportunities/new" className="rounded-ui bg-teal px-3 py-2 text-sm font-semibold text-paper">
           New listing
         </Link>
       </div>
 
       <form className="mt-3 flex gap-2" action="/admin">
-        <select name="status" defaultValue={status} className="h-10 rounded-ui border border-line bg-white px-2 text-sm">
+        <select name="status" defaultValue={status} className="h-10 rounded-ui border border-line bg-card px-2 text-sm">
           {STATUSES.map((s) => (
             <option key={s} value={s}>
               {s === "all" ? "All statuses" : s[0].toUpperCase() + s.slice(1)}
@@ -52,9 +52,9 @@ export default async function AdminListingsPage({ searchParams }: PageProps<"/ad
           type="search"
           defaultValue={q}
           placeholder="Title or organization"
-          className="h-10 min-w-0 flex-1 rounded-ui border border-line bg-white px-3 text-sm"
+          className="h-10 min-w-0 flex-1 rounded-ui border border-line bg-card px-3 text-sm"
         />
-        <button type="submit" className="h-10 rounded-ui border border-line bg-white px-3 text-sm">
+        <button type="submit" className="h-10 rounded-ui border border-line bg-card px-3 text-sm">
           Filter
         </button>
       </form>

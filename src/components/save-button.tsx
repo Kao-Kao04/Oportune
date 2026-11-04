@@ -60,7 +60,7 @@ export function SaveButton({
         disabled={pending}
         aria-pressed={saved}
         aria-label={compact ? (saved ? "Remove from saved" : "Save") : undefined}
-        className={`press inline-flex h-12 items-center justify-center gap-2 rounded-ui border-2 border-ink text-sm font-bold text-ink shadow-[3px_3px_0_0_#111] disabled:opacity-60 ${
+        className={`press inline-flex h-12 items-center justify-center gap-2 rounded-ui border-2 border-ink text-sm font-bold text-ink shadow-[3px_3px_0_0_var(--color-shadow)] disabled:opacity-60 ${
           saved ? "bg-sun" : "bg-card"
         } ${compact ? "w-12" : "px-4"}`}
       >

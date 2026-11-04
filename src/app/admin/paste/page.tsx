@@ -29,7 +29,7 @@ export default async function PastePage({ searchParams }: PageProps<"/admin/past
             type="url"
             inputMode="url"
             placeholder="https://www.facebook.com/…"
-            className="mt-1 rounded-ui border border-line bg-white px-3 py-2 font-normal"
+            className="mt-1 rounded-ui border border-line bg-card px-3 py-2 font-normal"
           />
         </label>
         <label className="flex flex-col text-sm font-semibold text-ink">
@@ -39,10 +39,10 @@ export default async function PastePage({ searchParams }: PageProps<"/admin/past
             rows={12}
             required
             maxLength={20000}
-            className="mt-1 rounded-ui border border-line bg-white px-3 py-2 font-normal"
+            className="mt-1 rounded-ui border border-line bg-card px-3 py-2 font-normal"
           />
         </label>
-        <button type="submit" className="self-start rounded-ui bg-teal px-4 py-2 text-sm font-semibold text-white">
+        <button type="submit" className="self-start rounded-ui bg-teal px-4 py-2 text-sm font-semibold text-paper">
           Make a draft
         </button>
       </form>

@@ -12,7 +12,7 @@ export default async function ImportPage({ searchParams }: PageProps<"/admin/imp
   const [feedInserted, feedUpdated] = typeof feed === "string" ? feed.split("-") : [];
   return (
     <main className="px-4 py-4">
-      <section className="mb-6 rounded-ui border border-line bg-white p-3">
+      <section className="mb-6 rounded-ui border border-line bg-card p-3">
         <h2 className="font-semibold text-ink">Upcoming CTFs from CTFtime</h2>
         <p className="mt-1 text-sm text-muted">
           Online, open or student-only CTFs in the next 90 days, from CTFtime&apos;s public API. They arrive as drafts
@@ -29,13 +29,13 @@ export default async function ImportPage({ searchParams }: PageProps<"/admin/imp
           </p>
         )}
         <form action={importCtftime} className="mt-2">
-          <button type="submit" className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-white">
+          <button type="submit" className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-paper">
             Fetch upcoming CTFs
           </button>
         </form>
       </section>
 
-      <section className="mb-6 rounded-ui border border-line bg-white p-3">
+      <section className="mb-6 rounded-ui border border-line bg-card p-3">
         <h2 className="font-semibold text-ink">Events from a calendar feed</h2>
         <p className="mt-1 text-sm text-muted">
           For calendars we run (like our org&apos;s Luma calendar) or whose owner said yes. Paste the calendar&apos;s
@@ -80,7 +80,7 @@ export default async function ImportPage({ searchParams }: PageProps<"/admin/imp
             <input type="checkbox" name="permission" className="mt-0.5" />
             This is our calendar, or its owner agreed to be listed.
           </label>
-          <button type="submit" className="self-start rounded-ui bg-teal px-3 py-1.5 font-semibold text-white">
+          <button type="submit" className="self-start rounded-ui bg-teal px-3 py-1.5 font-semibold text-paper">
             Import events
           </button>
         </form>

@@ -62,7 +62,7 @@ export function ShareButton({
       <button
         type="button"
         onClick={share}
-        className={`press inline-flex h-12 items-center justify-center gap-2 rounded-ui border-2 border-ink bg-card text-sm font-bold text-ink shadow-[3px_3px_0_0_#111] ${compact ? "w-12" : "px-4"}`}
+        className={`press inline-flex h-12 items-center justify-center gap-2 rounded-ui border-2 border-ink bg-card text-sm font-bold text-ink shadow-[3px_3px_0_0_var(--color-shadow)] ${compact ? "w-12" : "px-4"}`}
         aria-expanded={fallbackOpen || undefined}
         aria-label={compact ? "Share" : undefined}
       >

@@ -83,7 +83,7 @@ export default async function StatsPage({ searchParams }: PageProps<"/admin/stat
 
       <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {tiles.map((t) => (
-          <div key={t.label} className="rounded-ui border border-line bg-white p-3">
+          <div key={t.label} className="rounded-ui border border-line bg-card p-3">
             <dt className="text-xs text-muted">{t.label}</dt>
             <dd className="tabular mt-1 text-2xl font-bold text-ink">{t.value.toLocaleString("en-US")}</dd>
             {t.note && <dd className="mt-1 text-xs text-muted">{t.note}</dd>}

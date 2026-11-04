@@ -64,7 +64,7 @@ export default async function ReportsPage({ searchParams }: PageProps<"/admin/re
                     <form key={status} action={updateReport}>
                       <input type="hidden" name="id" value={r.id} />
                       <input type="hidden" name="status" value={status} />
-                      <button type="submit" className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm">
+                      <button type="submit" className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm">
                         {status === "fixed" ? "Mark fixed" : "Dismiss"}
                       </button>
                     </form>

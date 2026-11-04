@@ -6,7 +6,7 @@ import { saveProfile, type ProfileState } from "./actions";
 
 const input = "h-12 w-full rounded-ui border-2 bg-card px-3 text-base";
 const option =
-  "flex min-h-12 cursor-pointer items-center justify-center rounded-ui border-2 border-ink bg-card px-3 text-sm font-semibold has-checked:bg-sun has-checked:font-extrabold has-checked:shadow-[3px_3px_0_0_#111] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-teal";
+  "flex min-h-12 cursor-pointer items-center justify-center rounded-ui border-2 border-ink bg-card px-3 text-sm font-semibold has-checked:bg-sun has-checked:font-extrabold has-checked:shadow-[3px_3px_0_0_var(--color-shadow)] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-teal";
 
 // Which step each field lives on (server errors jump back to that step).
 const STEP_OF: Record<string, number> = { school: 0, course_group: 1, year_level: 1, is_18_or_over: 2 };

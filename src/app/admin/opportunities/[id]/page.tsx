@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { markChecked, setOpportunityStatus } from "../../actions";
 import { OpportunityForm } from "../../opportunity-form";
 import { Flag, StatusLabel } from "../../status-label";
+import { nextInQueue, recheckQueue } from "../../queue";
 import { loadCategories } from "../load";
 
 export const instant = false;
@@ -13,6 +14,7 @@ export const instant = false;
 const SAVED_MESSAGES: Record<string, string> = {
   saved: "Saved.",
   published: "Published. It's live now.",
+  next: "Published the last one. Here is the next to check.",
   draft: "Moved to drafts. It's hidden from students.",
   expired: "Marked as expired. Its page shows “Closed”.",
   archived: "Archived. It's hidden everywhere.",
@@ -44,11 +46,32 @@ export default async function EditOpportunityPage({ params, searchParams }: Page
   const saved = typeof query.saved === "string" ? SAVED_MESSAGES[query.saved] : undefined;
   const isPublic = row.status === "published" || row.status === "expired";
 
+  // Opened from Re-check: show progress, Skip, and "Publish & next".
+  const queueIds = query.queue === "1" ? (await recheckQueue(supabase)).map((r) => r.id) : null;
+  const position = queueIds ? queueIds.indexOf(row.id) : -1;
+  const skipTo = queueIds ? nextInQueue(queueIds, row.id) : null;
+
   return (
     <main className="px-4 py-4">
-      <Link href="/admin" className="text-sm text-muted hover:text-ink">
-        ← Listings
-      </Link>
+      {queueIds ? (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-ui border border-line bg-card px-3 py-2 text-sm">
+          <Link href="/admin/recheck" className="text-muted hover:text-ink">
+            ← Re-check
+          </Link>
+          <span className="tabular font-semibold text-ink">
+            {position >= 0 ? `${position + 1} of ${queueIds.length}` : `${queueIds.length} left`}
+          </span>
+          {skipTo && (
+            <Link href={`/admin/opportunities/${skipTo}?queue=1`} className="font-semibold text-teal underline">
+              Skip →
+            </Link>
+          )}
+        </div>
+      ) : (
+        <Link href="/admin" className="text-sm text-muted hover:text-ink">
+          ← Listings
+        </Link>
+      )}
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <StatusLabel status={row.status} />
         {row.needs_check && <Flag>Needs check</Flag>}
@@ -60,11 +83,19 @@ export default async function EditOpportunityPage({ params, searchParams }: Page
       {saved && <p className="mt-3 rounded-ui bg-official/10 px-3 py-2 text-sm text-official">{saved}</p>}
 
       <div className="mt-3 flex flex-wrap gap-2">
+        <a
+          href={row.source_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-paper"
+        >
+          Open source ↗
+        </a>
         {isPublic && (
           <Link
             href={`/opportunities/${row.slug}`}
             target="_blank"
-            className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm text-teal"
+            className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm text-teal"
           >
             View public page
           </Link>
@@ -72,7 +103,7 @@ export default async function EditOpportunityPage({ params, searchParams }: Page
         <form action={markChecked}>
           <input type="hidden" name="id" value={row.id} />
           <input type="hidden" name="back" value={`/admin/opportunities/${row.id}?saved=saved`} />
-          <button type="submit" className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm">
+          <button type="submit" className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm">
             Checked source today
           </button>
         </form>
@@ -80,7 +111,7 @@ export default async function EditOpportunityPage({ params, searchParams }: Page
           <form key={a.to} action={setOpportunityStatus}>
             <input type="hidden" name="id" value={row.id} />
             <input type="hidden" name="to" value={a.to} />
-            <button type="submit" className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm">
+            <button type="submit" className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm">
               {a.label}
             </button>
           </form>
@@ -91,6 +122,7 @@ export default async function EditOpportunityPage({ params, searchParams }: Page
         <OpportunityForm
           key={row.updated_at}
           categories={categories}
+          queue={Boolean(queueIds)}
           values={{
             id: row.id,
             status: row.status,

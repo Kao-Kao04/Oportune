@@ -37,7 +37,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="border-b border-line bg-white px-4 py-3">
+      <div className="border-b border-line bg-card px-4 py-3">
         <div className="flex items-center justify-between gap-3 text-sm">
           <span className="truncate text-muted">
             {user.email} · <span className="font-semibold text-ink">{user.role}</span>
@@ -57,7 +57,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
             >
               {link.label}
               {link.count ? (
-                <span className="tabular ml-1.5 rounded-ui bg-urgent px-1.5 text-xs font-semibold text-white">
+                <span className="tabular ml-1.5 rounded-ui bg-urgent px-1.5 text-xs font-semibold text-paper">
                   {link.count}
                 </span>
               ) : null}

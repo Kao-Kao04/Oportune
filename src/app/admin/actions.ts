@@ -9,6 +9,7 @@ import { OPPORTUNITIES_TAG } from "@/lib/opportunities/queries";
 import { uniqueSlug } from "@/lib/opportunities/slug";
 import { createClient } from "@/lib/supabase/server";
 import { audit } from "./audit";
+import { nextInQueue, recheckQueue } from "./queue";
 
 export type SaveState = { errors?: Record<string, string>; message?: string; values?: Record<string, string> };
 
@@ -118,6 +119,11 @@ async function save(form: FormData): Promise<SaveState> {
     id: savedId,
   }, { status });
   updateTag(OPPORTUNITIES_TAG);
+  // "Publish & next" from the Re-check queue: open the next item.
+  if (intent === "publish" && form.get("then") === "next") {
+    const next = nextInQueue((await recheckQueue(supabase)).map((r) => r.id), savedId!);
+    redirect(next ? `/admin/opportunities/${next}?queue=1&saved=next` : "/admin/recheck?done=1");
+  }
   redirect(`/admin/opportunities/${savedId}?saved=${intent === "publish" ? "published" : "saved"}`);
 }
 

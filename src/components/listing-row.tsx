@@ -54,12 +54,12 @@ export function ListingRow({
           )}
           {TONE_BADGE[deadline.tone] ? (
             <span
-              className={`mt-1.5 rounded-pill border-[1.5px] border-ink px-1.5 text-[11px] font-bold leading-4 ${TONE_BADGE[deadline.tone]}`}
+              className={`mt-1.5 rounded-pill border-[1.5px] border-ink px-1.5 text-xs font-bold leading-4 ${TONE_BADGE[deadline.tone]}`}
             >
               {deadline.detail.replace("Closes ", "")}
             </span>
           ) : (
-            <span className="mt-1 text-[11px] font-semibold leading-tight">
+            <span className="mt-1 text-xs font-semibold leading-tight">
               {deadline.daysLeft === null ? (deadline.label === "Rolling" ? "Open" : "") : deadline.detail}
             </span>
           )}

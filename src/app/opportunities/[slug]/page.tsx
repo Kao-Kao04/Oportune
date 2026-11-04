@@ -200,6 +200,7 @@ function DeadlineBlock({ listing, today }: { listing: Listing; today: string }) 
   let text: string;
   if (deadline.daysLeft === null) text = deadline.detail;
   else if (deadline.tone === "closed") text = closedLabel(listing.deadline, today);
+  else if (deadline.daysLeft === 0) text = `Closes today, ${formatLongDate(listing.deadline!)}`;
   else text = `Closes ${formatLongDate(listing.deadline!)} · ${deadline.detail}`;
 
   return (

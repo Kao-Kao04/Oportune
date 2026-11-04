@@ -39,13 +39,13 @@ export default async function RolesPage({ searchParams }: PageProps<"/admin/role
           type="email"
           required
           placeholder="their@email.com"
-          className="h-10 min-w-0 flex-1 rounded-ui border border-line bg-white px-3 text-sm"
+          className="h-10 min-w-0 flex-1 rounded-ui border border-line bg-card px-3 text-sm"
         />
-        <select name="role" className="h-10 rounded-ui border border-line bg-white px-2 text-sm">
+        <select name="role" className="h-10 rounded-ui border border-line bg-card px-2 text-sm">
           <option value="curator">Curator</option>
           <option value="admin">Admin</option>
         </select>
-        <button type="submit" className="h-10 rounded-ui bg-teal px-3 text-sm font-semibold text-white">
+        <button type="submit" className="h-10 rounded-ui bg-teal px-3 text-sm font-semibold text-paper">
           Add
         </button>
       </form>
@@ -60,7 +60,7 @@ export default async function RolesPage({ searchParams }: PageProps<"/admin/role
             {r.user_id !== me.id && (
               <form action={removeRole}>
                 <input type="hidden" name="user_id" value={r.user_id} />
-                <button type="submit" className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm text-urgent">
+                <button type="submit" className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm text-urgent">
                   Remove
                 </button>
               </form>

@@ -44,7 +44,7 @@ export default async function DeleteAccountPage({ searchParams }: PageProps<"/me
           <Link href="/me" className="btn-plain press">
             Cancel
           </Link>
-          <button type="submit" className="press inline-flex min-h-12 flex-1 items-center justify-center rounded-ui border-2 border-ink bg-tomato px-4 font-bold text-ink shadow-[3px_3px_0_0_#111]">
+          <button type="submit" className="press inline-flex min-h-12 flex-1 items-center justify-center rounded-ui border-2 border-ink bg-tomato px-4 font-bold text-ink shadow-[3px_3px_0_0_var(--color-shadow)]">
             Delete
           </button>
         </div>

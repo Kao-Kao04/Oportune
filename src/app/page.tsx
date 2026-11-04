@@ -128,7 +128,7 @@ function SearchForm({ filters }: { filters: Filters }) {
           style={{ border: 0 }}
           enterKeyHint="search"
         />
-        <button type="submit" className="m-1 h-10 rounded-[8px] bg-ink px-4 text-sm font-bold text-white">
+        <button type="submit" className="m-1 h-10 rounded-[8px] bg-ink px-4 text-sm font-bold text-paper">
           Go
         </button>
       </div>
@@ -150,7 +150,7 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
         href={browseHref(filters, { view: soon ? "all" : "closing-soon" })}
         current={soon}
         className={`inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-pill border-2 border-ink px-4 text-sm font-bold text-ink ${
-          soon ? "bg-tomato shadow-[2px_2px_0_0_#111]" : "bg-card hover:bg-paper"
+          soon ? "bg-tomato shadow-[2px_2px_0_0_var(--color-shadow)]" : "bg-card hover:bg-paper"
         }`}
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
@@ -168,7 +168,7 @@ function CategoryChips({ filters, categories }: { filters: Filters; categories: 
             href={browseHref(filters, { category: chip.slug })}
             current={active}
             className={`inline-flex min-h-11 shrink-0 items-center rounded-pill border-2 border-ink px-4 text-sm font-bold text-ink ${
-              active ? `${chip.slug ? categoryBg(chip.slug) : "bg-sun"} shadow-[2px_2px_0_0_#111]` : "bg-card hover:bg-paper"
+              active ? `${chip.slug ? categoryBg(chip.slug) : "bg-sun"} shadow-[2px_2px_0_0_var(--color-shadow)]` : "bg-card hover:bg-paper"
             }`}
           >
             {chip.label}

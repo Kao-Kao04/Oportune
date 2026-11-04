@@ -67,7 +67,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps<"/admi
                 <div className="mt-2 flex flex-wrap gap-2">
                   <Link
                     href={`/admin/opportunities/new?from=${s.id}`}
-                    className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-white"
+                    className="rounded-ui bg-teal px-3 py-1.5 text-sm font-semibold text-paper"
                   >
                     Create listing
                   </Link>
@@ -75,7 +75,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps<"/admi
                     <form key={status} action={updateSubmission}>
                       <input type="hidden" name="id" value={s.id} />
                       <input type="hidden" name="status" value={status} />
-                      <button type="submit" className="rounded-ui border border-line bg-white px-3 py-1.5 text-sm">
+                      <button type="submit" className="rounded-ui border border-line bg-card px-3 py-1.5 text-sm">
                         {status === "duplicate" ? "Already listed" : "Not real / not eligible"}
                       </button>
                     </form>
